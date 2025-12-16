@@ -8,7 +8,10 @@ import { useTodos } from "../composables/useTodos";
 import { useAuth } from "../composables/useAuth";
 import { toast } from "vue3-toastify";
 
-const router = useRouter();
+import thunderSound from "../assets/thunder.mp3";
+import evilRoarSound from "../assets/evil-roar.mp3";
+
+const props = defineProps(["session"]);
 const { user, isGuest, getSession, logout } = useAuth();
 const {
   todos,
@@ -22,10 +25,48 @@ const {
   toggleSubtask,
   removeSubtask,
 } = useTodos();
+const router = useRouter();
 
 const newTodoTitle = ref("");
 const showSadEmoji = ref(false);
 const showWarningEmoji = ref(false);
+
+// Favicon & Title Management
+const updateMeta = () => {
+  const link =
+    document.querySelector("link[rel~='icon']") ||
+    document.createElement("link");
+  link.type = "image/svg+xml";
+  link.rel = "icon";
+
+  if (isGuest.value) {
+    document.title = "LISTA MALDITA 👹";
+    link.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👹</text></svg>`;
+  } else {
+    document.title = "ToDo App ✅";
+    link.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✅</text></svg>`;
+  }
+  document.getElementsByTagName("head")[0].appendChild(link);
+};
+
+// Watch Session for Audio & Meta
+watch(
+  isGuest,
+  (val) => {
+    updateMeta();
+    if (val) {
+      const audio = new Audio(thunderSound);
+      audio.volume = 0.6;
+      audio
+        .play()
+        .catch((e) =>
+          console.log("Audio play failed (user interaction needed)", e)
+        );
+    }
+  },
+  { immediate: true }
+);
+
 const expandedTodos = ref(new Set()); // Track IDs of expanded tasks for subtasks
 
 const onDragChange = (event) => {
@@ -52,15 +93,33 @@ const handleAddSubtask = async (todoId, event) => {
 };
 
 // Watch for all completed
+// Watch for all completed
 watch(
   todos,
   (newTodos) => {
     if (newTodos.length > 0 && newTodos.every((t) => t.is_complete)) {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
+      if (isGuest.value) {
+        // Vecna Confetti (Red/Black)
+        confetti({
+          particleCount: 150,
+          spread: 100,
+          origin: { y: 0.6 },
+          colors: ["#ef4444", "#7f1d1d", "#000000", "#450a0a"],
+          disableForReducedMotion: true,
+        });
+
+        // Vecna Evil Roar
+        const audio = new Audio(evilRoarSound);
+        audio.volume = 0.5;
+        audio.play().catch((e) => console.log("Roar play failed", e));
+      } else {
+        // Normal Confetti
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+      }
     }
   },
   { deep: true }
@@ -125,36 +184,58 @@ const handleLogout = () => {
     ? "¿Salir? Perderás tus datos si limpias caché."
     : "¿Cerrar sesión?";
 
+  const confirmToastData = {
+    message: isGuestSession
+      ? "¿Huir del Upside Down? Se perderán los datos."
+      : "¿Cerrar sesión?",
+    btnCancelClass: isGuestSession
+      ? "px-4 py-2 bg-red-900/50 hover:bg-red-800 text-red-200 rounded-lg text-sm font-semibold transition border border-red-800"
+      : "px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg text-sm font-semibold transition",
+    btnConfirmClass: isGuestSession
+      ? "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition shadow-[0_0_10px_rgba(220,38,38,0.5)]"
+      : "px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-sm font-semibold transition",
+  };
+
   const confirmToastId = toast(
     ({ closeToast }) =>
-      h("div", { class: "flex flex-col gap-2" }, [
-        h("p", { class: "font-bold text-gray-800" }, message),
-        h("div", { class: "flex gap-2 justify-end mt-1" }, [
+      h(
+        "div",
+        { class: "flex flex-col gap-3 items-center text-center w-full" },
+        [
           h(
-            "button",
+            "p",
             {
-              class:
-                "px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded text-sm font-semibold transition",
-              onClick: () => {
-                closeToast();
-              },
+              class: isGuestSession
+                ? "font-bold text-red-200 text-lg"
+                : "font-bold text-gray-800 text-lg",
             },
-            "Cancelar"
+            confirmToastData.message
           ),
-          h(
-            "button",
-            {
-              class:
-                "px-3 py-1 bg-emerald-500 hover:bg-emerald-600 text-white rounded text-sm font-semibold transition",
-              onClick: async () => {
-                closeToast();
-                await performLogout();
+          h("div", { class: "flex gap-3 justify-center mt-2 w-full" }, [
+            h(
+              "button",
+              {
+                class: confirmToastData.btnCancelClass,
+                onClick: () => {
+                  closeToast();
+                },
               },
-            },
-            "Sí, salir"
-          ),
-        ]),
-      ]),
+              "Cancelar"
+            ),
+            h(
+              "button",
+              {
+                class: confirmToastData.btnConfirmClass,
+                onClick: async () => {
+                  closeToast();
+                  await performLogout();
+                },
+              },
+              "Sí, salir"
+            ),
+          ]),
+        ]
+      ),
     {
       autoClose: false,
       closeOnClick: false,
@@ -162,15 +243,12 @@ const handleLogout = () => {
       type: "default",
       hideProgressBar: true,
       icon: false,
-      theme: "light",
-      style: {
-        width: "auto",
-        minWidth: "300px",
-        borderRadius: "16px",
-        border: "1px solid #e5e7eb",
-        boxShadow:
-          "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-      },
+      theme: isGuestSession ? "dark" : "light",
+      transition: toast.TRANSITIONS.FADE,
+      toastClassName: isGuestSession
+        ? "vecna-toast-override"
+        : "normal-toast-override",
+      style: {}, // Styles are handled by CSS overrides now to avoid double-box issues
     }
   );
 };
@@ -193,14 +271,23 @@ const handleAddTodo = async () => {
 
 <template>
   <div
-    class="min-h-screen bg-gray-100 flex items-center justify-center p-4 relative overflow-hidden"
+    class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-1000"
+    :class="isGuest ? 'vecna-theme' : 'bg-gray-100'"
   >
+    <!-- Ash/Particles Overlay (Adaptive) -->
+    <div
+      class="absolute inset-0 pointer-events-none z-0"
+      :class="isGuest ? 'ash-overlay' : 'ash-overlay-normal'"
+    ></div>
+
     <!-- Sad Emoji Overlay -->
     <div
       v-if="showSadEmoji"
       class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none animate-sad-zoom-fade"
     >
-      <div class="text-[150px] filter drop-shadow-2xl">😢</div>
+      <div class="text-[150px] filter drop-shadow-2xl">
+        {{ isGuest ? "👹" : "😢" }}
+      </div>
     </div>
 
     <!-- Warning Emoji Overlay -->
@@ -208,7 +295,9 @@ const handleAddTodo = async () => {
       v-if="showWarningEmoji"
       class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none animate-sad-zoom-fade"
     >
-      <div class="text-[150px] filter drop-shadow-2xl">🚨</div>
+      <div class="text-[150px] filter drop-shadow-2xl">
+        {{ isGuest ? "💀" : "🚨" }}
+      </div>
     </div>
 
     <div
@@ -219,7 +308,9 @@ const handleAddTodo = async () => {
         <div class="flex justify-between items-start mb-6">
           <div>
             <div class="flex items-center gap-2">
-              <h1 class="text-2xl font-bold text-gray-800">Todo List</h1>
+              <h1 class="text-2xl font-bold text-gray-800">
+                {{ isGuest ? "LISTA MALDITA" : "Todo List" }}
+              </h1>
               <span
                 v-if="isGuest"
                 class="bg-orange-100 text-orange-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-orange-200"
