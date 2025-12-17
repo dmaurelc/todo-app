@@ -47,11 +47,11 @@ export function useTodos() {
   const addTodo = async (title, userId) => {
     if (!title.trim()) return;
     try {
-      const currentMin =
+      const currentMax =
         todos.value.length > 0
-          ? Math.min(...todos.value.map((t) => t.position || 0))
+          ? Math.max(...todos.value.map((t) => t.position || 0))
           : 0;
-      const newPosition = currentMin - 1000;
+      const newPosition = currentMax + 1000;
 
       const newTodo = {
         title,
@@ -66,7 +66,7 @@ export function useTodos() {
         // Guest: Add locally
         // Generate pseudo-ID
         newTodo.id = crypto.randomUUID();
-        const newTodos = [newTodo, ...todos.value];
+        const newTodos = [...todos.value, newTodo];
         saveLocalTodos(newTodos);
       } else {
         // Supabase
@@ -77,7 +77,7 @@ export function useTodos() {
           .single();
 
         if (err) throw err;
-        todos.value.unshift(data);
+        todos.value.push(data);
       }
     } catch (err) {
       console.error("Error adding todo:", err);
