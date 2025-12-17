@@ -78,3 +78,180 @@ body {
 .Toastify__progress-bar {
   height: 3px !important;
 }
+
+/* --- VECNA / UPSIDE DOWN THEME --- */
+@keyframes fog-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes ash-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.vecna-theme {
+  background: url("./assets/upside-down.webp") no-repeat center center fixed;
+  background-size: cover;
+  animation: none; /* Disable fog animation on bg image */
+  color: #fda4a4;
+}
+
+.ash-overlay {
+  background-image: radial-gradient(#ffffff 1px, transparent 1px),
+    radial-gradient(#ffaaaa 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+  opacity: 0.3; /* Slightly more visible against image */
+  animation: ash-float 20s linear infinite;
+  mix-blend-mode: overlay;
+}
+
+/* Normal Theme Particles (Green/Fresh) */
+.ash-overlay-normal {
+  background-image: radial-gradient(#a7f3d0 1px, transparent 1px),
+    /* Green-200 */ radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+  opacity: 0.6;
+  animation: ash-float 25s linear infinite;
+  pointer-events: none;
+}
+
+/* Override Child Components in Vecna Theme */
+.vecna-theme .bg-white {
+  background-color: rgba(26, 5, 5, 0.95) !important; /* Slight transparency */
+  backdrop-filter: blur(5px);
+  border: 1px solid #450a0a !important;
+  box-shadow: 0 25px 50px -12px rgba(220, 38, 38, 0.25) !important;
+}
+
+/* Fix Hover on List Items - Prevent white background */
+.vecna-theme li.group:hover {
+  background-color: rgba(69, 10, 10, 0.4) !important; /* Dark Red transparent */
+}
+
+/* Fix Expanded Subtasks Area Background */
+.vecna-theme .bg-gray-50\/50 {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-top-color: #450a0a !important;
+}
+
+/* Vecna Toast Specific Override */
+.Toastify__toast.vecna-toast-override {
+  background: #1a0505 !important;
+  border: 1px solid #7f1d1d !important;
+  color: #fecaca !important;
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.4) !important;
+  border-radius: 16px !important;
+}
+
+/* Normal Toast Specific Override - Clean Clean Clean */
+.Toastify__toast.normal-toast-override {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 20px !important;
+  padding: 24px !important; /* Add generous padding */
+  overflow: visible !important;
+}
+
+/* Hide default shadow/border artifacts if any for both overrides */
+.Toastify__toast.vecna-toast-override::before,
+.Toastify__toast.vecna-toast-override::after,
+.Toastify__toast.normal-toast-override::before,
+.Toastify__toast.normal-toast-override::after {
+  display: none !important;
+}
+
+.vecna-theme h1,
+.vecna-theme h2,
+.vecna-theme .text-gray-800,
+.vecna-theme .text-gray-700 {
+  color: #fecaca !important; /* Red-200 */
+  text-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+}
+
+.vecna-theme .text-gray-500,
+.vecna-theme .text-gray-400 {
+  color: #991b1b !important; /* Red-800 */
+}
+
+/* Header Gradient Override */
+.vecna-theme .from-green-50 {
+  --tw-gradient-from: #2b0505 !important;
+  --tw-gradient-to: #1a0505 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+/* Inputs */
+.vecna-theme input {
+  background-color: #2b0505 !important;
+  border-color: #7f1d1d !important;
+  color: #fecaca !important;
+}
+.vecna-theme input::placeholder {
+  color: #7f1d1d !important;
+}
+
+/* Buttons */
+.vecna-theme button.bg-indigo-500,
+.vecna-theme button.bg-emerald-600 {
+  /* Fallback if emerald */
+  background-color: #991b1b !important; /* Red-800 */
+  color: #fee2e2 !important;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
+}
+.vecna-theme button:hover {
+  background-color: #7f1d1d !important;
+}
+
+/* Checkboxes & Toggles */
+.vecna-theme .border-gray-200 {
+  border-color: #450a0a !important;
+}
+.vecna-theme .bg-green-100 {
+  background-color: #450a0a !important; /* Dark Red bg */
+  border-color: #ef4444 !important; /* Red border */
+  color: #ef4444 !important; /* Red check */
+}
+
+/* Progress Bar */
+.vecna-theme .bg-gray-100 {
+  background-color: #2b0505 !important;
+}
+.vecna-theme .bg-green-400 {
+  background-color: #ef4444 !important; /* Red-500 */
+  box-shadow: 0 0 10px #ef4444;
+}
+
+/* Guest Badge Override */
+.vecna-theme .bg-orange-100 {
+  background-color: #450a0a !important;
+  color: #ef4444 !important;
+  border-color: #7f1d1d !important;
+  box-shadow: 0 0 5px #ef4444;
+}
+
+/* Toast Overrides for Vecna - Make them scary */
+.vecna-toast-theme {
+  background: #000 !important;
+  border: 1px solid #ef4444 !important;
+  color: #ef4444 !important;
+  font-family: "Creepster", cursive !important; /* Optional if we had the font, sticking to sans */
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.3) !important;
+}

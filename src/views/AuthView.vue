@@ -144,7 +144,7 @@ const handleGuestLogin = () => {
             @click="handleGuestLogin"
             class="text-emerald-600 hover:text-emerald-800 hover:underline font-semibold text-sm transition-colors py-2"
           >
-            Continuar como Invitado
+            Ir al Upside Down
           </button>
         </div>
       </div>
