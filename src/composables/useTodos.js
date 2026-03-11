@@ -1,40 +1,28 @@
 import { ref } from "vue";
-import { supabase } from "../lib/supabase";
-import { useAuth } from "./useAuth";
 import { toast } from "vue3-toastify";
+
+const STORAGE_KEY = "todos";
 
 export function useTodos() {
   const todos = ref([]);
   const loading = ref(false);
   const error = ref(null);
-  const { isGuest } = useAuth();
 
-  // Load from LocalStorage (Guest Mode)
+  // Load from LocalStorage
   const loadLocalTodos = () => {
-    const local = localStorage.getItem("guest_todos");
+    const local = localStorage.getItem(STORAGE_KEY);
     return local ? JSON.parse(local) : [];
   };
 
   const saveLocalTodos = (newTodos) => {
     todos.value = newTodos;
-    localStorage.setItem("guest_todos", JSON.stringify(newTodos));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newTodos));
   };
 
   const fetchTodos = async () => {
     loading.value = true;
-    error.value = null;
     try {
-      if (isGuest.value) {
-        todos.value = loadLocalTodos();
-      } else {
-        const { data, error: err } = await supabase
-          .from("todos")
-          .select("*")
-          .order("position", { ascending: true });
-
-        if (err) throw err;
-        todos.value = data;
-      }
+      todos.value = loadLocalTodos();
     } catch (err) {
       error.value = "Error al cargar tareas: " + err.message;
       toast.error("Error al cargar tareas");
@@ -44,7 +32,7 @@ export function useTodos() {
     }
   };
 
-  const addTodo = async (title, userId) => {
+  const addTodo = async (title) => {
     if (!title.trim()) return;
     try {
       const currentMax =
@@ -54,31 +42,16 @@ export function useTodos() {
       const newPosition = currentMax + 1000;
 
       const newTodo = {
+        id: crypto.randomUUID(),
         title,
-        user_id: userId,
         position: newPosition,
         is_complete: false,
-        subtasks: [], // Subtasks array
+        subtasks: [],
         created_at: new Date().toISOString(),
       };
 
-      if (isGuest.value) {
-        // Guest: Add locally
-        // Generate pseudo-ID
-        newTodo.id = crypto.randomUUID();
-        const newTodos = [...todos.value, newTodo];
-        saveLocalTodos(newTodos);
-      } else {
-        // Supabase
-        const { data, error: err } = await supabase
-          .from("todos")
-          .insert([newTodo])
-          .select()
-          .single();
-
-        if (err) throw err;
-        todos.value.push(data);
-      }
+      const newTodos = [...todos.value, newTodo];
+      saveLocalTodos(newTodos);
     } catch (err) {
       console.error("Error adding todo:", err);
       toast.error("Error al agregar tarea");
@@ -88,80 +61,17 @@ export function useTodos() {
 
   const toggleTodo = async (todo) => {
     todo.is_complete = !todo.is_complete;
-    try {
-      if (isGuest.value) {
-        saveLocalTodos(todos.value);
-      } else {
-        const { error: err } = await supabase
-          .from("todos")
-          .update({ is_complete: todo.is_complete })
-          .eq("id", todo.id);
-
-        if (err) {
-          todo.is_complete = !todo.is_complete;
-          throw err;
-        }
-      }
-    } catch (err) {
-      console.error("Error updating todo:", err);
-      toast.error("Error al actualizar tarea");
-    }
+    saveLocalTodos(todos.value);
   };
 
   const removeTodo = async (id) => {
-    const previousTodos = [...todos.value];
     todos.value = todos.value.filter((t) => t.id !== id);
-
-    try {
-      if (isGuest.value) {
-        saveLocalTodos(todos.value);
-      } else {
-        const { error: err } = await supabase
-          .from("todos")
-          .delete()
-          .eq("id", id);
-
-        if (err) {
-          todos.value = previousTodos;
-          throw err;
-        }
-      }
-    } catch (err) {
-      console.error("Error deleting todo:", err);
-      toast.error("Error al eliminar tarea");
-    }
+    saveLocalTodos(todos.value);
   };
 
   const updatePositions = async (newTodos) => {
-    todos.value = newTodos;
-
-    if (isGuest.value) {
-      saveLocalTodos(newTodos);
-      return;
-    }
-
-    // Prepare payload for RPC
-    const updates = newTodos.map((todo, index) => ({
-      id: todo.id,
-      position: index * 1000,
-    }));
-
-    try {
-      const { error: err } = await supabase.rpc("update_todo_positions", {
-        payload: updates,
-      });
-
-      if (err) throw err;
-
-      // Update local positions
-      todos.value = todos.value.map((t, i) => ({
-        ...t,
-        position: i * 1000,
-      }));
-    } catch (err) {
-      console.error("Error reordering:", err);
-      toast.error("Error al guardar el nuevo orden");
-    }
+    todos.value = newTodos.map((t, i) => ({ ...t, position: i * 1000 }));
+    saveLocalTodos(todos.value);
   };
 
   // Subtasks Logic
@@ -222,28 +132,7 @@ export function useTodos() {
   };
 
   const saveSubtasks = async (todo) => {
-    try {
-      if (isGuest.value) {
-        saveLocalTodos(todos.value);
-      } else {
-        // Update both subtasks and is_complete status
-        const { error: err } = await supabase
-          .from("todos")
-          .update({
-            subtasks: todo.subtasks,
-            is_complete: todo.is_complete,
-          })
-          .eq("id", todo.id);
-
-        if (err) {
-          // Basic rollback could go here, but omitted for brevity in MVP
-          throw err;
-        }
-      }
-    } catch (err) {
-      console.error("Error saving subtasks:", err);
-      toast.error("Error al guardar subtarea");
-    }
+    saveLocalTodos(todos.value);
   };
 
   return {

@@ -1,9 +1,7 @@
 <script setup>
 import { onMounted, ref, watch, h } from "vue";
-import { useRouter } from "vue-router";
 import confetti from "canvas-confetti";
 import draggable from "vuedraggable";
-import { supabase } from "../lib/supabase";
 import { useTodos } from "../composables/useTodos";
 import { useAuth } from "../composables/useAuth";
 import { toast } from "vue3-toastify";
@@ -11,8 +9,7 @@ import { toast } from "vue3-toastify";
 import thunderSound from "../assets/thunder.mp3";
 import evilRoarSound from "../assets/evil-roar.mp3";
 
-const props = defineProps(["session"]);
-const { user, isGuest, getSession, logout } = useAuth();
+const { user, isDarkMode, toggleDarkMode } = useAuth();
 const {
   todos,
   loading,
@@ -25,7 +22,6 @@ const {
   toggleSubtask,
   removeSubtask,
 } = useTodos();
-const router = useRouter();
 
 const newTodoTitle = ref("");
 const showSadEmoji = ref(false);
@@ -39,7 +35,7 @@ const updateMeta = () => {
   link.type = "image/svg+xml";
   link.rel = "icon";
 
-  if (isGuest.value) {
+  if (isDarkMode.value) {
     document.title = "LISTA MALDITA 👹";
     link.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👹</text></svg>`;
   } else {
@@ -49,9 +45,9 @@ const updateMeta = () => {
   document.getElementsByTagName("head")[0].appendChild(link);
 };
 
-// Watch Session for Audio & Meta
+// Watch Dark Mode for Audio & Meta
 watch(
-  isGuest,
+  isDarkMode,
   (val) => {
     updateMeta();
     if (val) {
@@ -60,14 +56,14 @@ watch(
       audio
         .play()
         .catch((e) =>
-          console.log("Audio play failed (user interaction needed)", e)
+          console.log("Audio play failed (user interaction needed)", e),
         );
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
-const expandedTodos = ref(new Set()); // Track IDs of expanded tasks for subtasks
+const expandedTodos = ref(new Set());
 
 const onDragChange = (event) => {
   if (event.moved) {
@@ -93,12 +89,11 @@ const handleAddSubtask = async (todoId, event) => {
 };
 
 // Watch for all completed
-// Watch for all completed
 watch(
   todos,
   (newTodos) => {
     if (newTodos.length > 0 && newTodos.every((t) => t.is_complete)) {
-      if (isGuest.value) {
+      if (isDarkMode.value) {
         // Vecna Confetti (Red/Black)
         confetti({
           particleCount: 150,
@@ -122,7 +117,7 @@ watch(
       }
     }
   },
-  { deep: true }
+  { deep: true },
 );
 
 const handleToggleTodo = async (todo) => {
@@ -132,15 +127,7 @@ const handleToggleTodo = async (todo) => {
     todo.subtasks &&
     todo.subtasks.some((s) => !s.is_complete)
   ) {
-    // Show Alert Animation
     triggerWarningEmoji();
-
-    // User requested to remove toast as the animation is enough feedback.
-    // toast.warning("Completa las subtareas pendientes", {
-    //   transition: toast.TRANSITIONS.ZOOM,
-    // });
-
-    // Expand to show the user which ones are missing
     if (!expandedTodos.value.has(todo.id)) {
       expandedTodos.value.add(todo.id);
     }
@@ -170,98 +157,13 @@ const triggerWarningEmoji = () => {
 };
 
 onMounted(async () => {
-  await getSession();
-  if (!user.value) {
-    router.push("/auth");
-    return;
-  }
   fetchTodos();
 });
-
-const handleLogout = () => {
-  const isGuestSession = isGuest.value;
-  const message = isGuestSession
-    ? "¿Salir? Perderás tus datos si limpias caché."
-    : "¿Cerrar sesión?";
-
-  const confirmToastData = {
-    message: isGuestSession
-      ? "¿Huir del Upside Down? Se perderán los datos."
-      : "¿Cerrar sesión?",
-    btnCancelClass: isGuestSession
-      ? "px-4 py-2 bg-red-900/50 hover:bg-red-800 text-red-200 rounded-lg text-sm font-semibold transition border border-red-800"
-      : "px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg text-sm font-semibold transition",
-    btnConfirmClass: isGuestSession
-      ? "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition shadow-[0_0_10px_rgba(220,38,38,0.5)]"
-      : "px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-sm font-semibold transition",
-  };
-
-  const confirmToastId = toast(
-    ({ closeToast }) =>
-      h(
-        "div",
-        { class: "flex flex-col gap-3 items-center text-center w-full" },
-        [
-          h(
-            "p",
-            {
-              class: isGuestSession
-                ? "font-bold text-red-200 text-lg"
-                : "font-bold text-gray-800 text-lg",
-            },
-            confirmToastData.message
-          ),
-          h("div", { class: "flex gap-3 justify-center mt-2 w-full" }, [
-            h(
-              "button",
-              {
-                class: confirmToastData.btnCancelClass,
-                onClick: () => {
-                  closeToast();
-                },
-              },
-              "Cancelar"
-            ),
-            h(
-              "button",
-              {
-                class: confirmToastData.btnConfirmClass,
-                onClick: async () => {
-                  closeToast();
-                  await performLogout();
-                },
-              },
-              "Sí, salir"
-            ),
-          ]),
-        ]
-      ),
-    {
-      autoClose: false,
-      closeOnClick: false,
-      position: toast.POSITION.BOTTOM_CENTER,
-      type: "default",
-      hideProgressBar: true,
-      icon: false,
-      theme: isGuestSession ? "dark" : "light",
-      transition: toast.TRANSITIONS.FADE,
-      toastClassName: isGuestSession
-        ? "vecna-toast-override"
-        : "normal-toast-override",
-      style: {}, // Styles are handled by CSS overrides now to avoid double-box issues
-    }
-  );
-};
-
-const performLogout = async () => {
-  await logout();
-  router.push("/auth");
-};
 
 const handleAddTodo = async () => {
   if (!newTodoTitle.value.trim()) return;
   try {
-    await addTodo(newTodoTitle.value, user.value.id);
+    await addTodo(newTodoTitle.value);
     newTodoTitle.value = "";
   } catch (e) {
     // Error is already toasted in useTodos
@@ -272,12 +174,12 @@ const handleAddTodo = async () => {
 <template>
   <div
     class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-1000"
-    :class="isGuest ? 'vecna-theme' : 'bg-gray-100'"
+    :class="isDarkMode ? 'vecna-theme' : 'bg-gray-100'"
   >
     <!-- Ash/Particles Overlay (Adaptive) -->
     <div
       class="absolute inset-0 pointer-events-none z-0"
-      :class="isGuest ? 'ash-overlay' : 'ash-overlay-normal'"
+      :class="isDarkMode ? 'ash-overlay' : 'ash-overlay-normal'"
     ></div>
 
     <!-- Sad Emoji Overlay -->
@@ -286,7 +188,7 @@ const handleAddTodo = async () => {
       class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none animate-sad-zoom-fade"
     >
       <div class="text-[150px] filter drop-shadow-2xl">
-        {{ isGuest ? "👹" : "😢" }}
+        {{ isDarkMode ? "👹" : "😢" }}
       </div>
     </div>
 
@@ -296,7 +198,7 @@ const handleAddTodo = async () => {
       class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none animate-sad-zoom-fade"
     >
       <div class="text-[150px] filter drop-shadow-2xl">
-        {{ isGuest ? "💀" : "🚨" }}
+        {{ isDarkMode ? "💀" : "🚨" }}
       </div>
     </div>
 
@@ -309,27 +211,19 @@ const handleAddTodo = async () => {
           <div>
             <div class="flex items-center gap-2">
               <h1 class="text-2xl font-bold text-gray-800">
-                {{ isGuest ? "LISTA MALDITA" : "Todo List" }}
+                {{ isDarkMode ? "LISTA MALDITA" : "Todo List" }}
               </h1>
-              <span
-                v-if="isGuest"
-                class="bg-orange-100 text-orange-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-orange-200"
-                >Invitado</span
-              >
             </div>
 
-            <p class="text-gray-500 text-sm mt-1" v-if="user && !isGuest">
-              Hola, {{ user.email }}
-            </p>
-            <p class="text-gray-400 text-xs mt-1 italic" v-else>
-              Tus datos se guardan en este dispositivo.
+            <p class="text-gray-400 text-xs mt-1 italic">
+              Tus datos se guardan localmente.
             </p>
           </div>
           <button
-            @click="handleLogout"
-            class="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg text-xs font-bold hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-all shadow-sm"
+            @click="toggleDarkMode"
+            class="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-lg text-xs font-bold hover:bg-gray-50 transition-all shadow-sm"
           >
-            {{ isGuest ? "Salir" : "Salir" }}
+            {{ isDarkMode ? "Modo Claro" : "Modo Oscuro" }}
           </button>
         </div>
 
@@ -392,12 +286,22 @@ const handleAddTodo = async () => {
         </div>
 
         <!-- Empty -->
-        <div v-else-if="todos.length === 0" class="p-12 text-center">
-          <div
-            class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
+        <div
+          v-else-if="todos.length === 0"
+          class="p-12 text-center flex flex-col items-center justify-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            class="mb-6"
           >
-            📝
-          </div>
+            <path
+              fill="currentColor"
+              d="M5.873 18.462q-1.961-.125-2.975-.935t-1.014-2.233q0-1.413 1.213-2.291t3.376-1.078q1.206-.113 1.809-.476q.603-.362.603-.999q0-.823-.738-1.273t-2.399-.638l.098-.981q2.037.238 3.038.95q1 .713 1 1.942q0 1.056-.866 1.7t-2.472.775q-1.83.164-2.746.751t-.915 1.618q0 .99.729 1.513q.728.522 2.282.655zm6.618-.616l-2.722-2.721l9.397-9.396l2.726 2.721zm-.65.604l-3.374.704l.692-3.385z"
+            />
+          </svg>
           <p class="text-gray-500">No hay tareas aún.</p>
           <p class="text-gray-400 text-sm">Empieza agregando una arriba.</p>
         </div>

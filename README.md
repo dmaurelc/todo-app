@@ -6,9 +6,9 @@ Una aplicación de gestión de tareas inmersiva, moderna y con un secreto oscuro
 
 ### 🌟 Experiencia Core
 
-- **Modo Invitado (Upside Down)**: Una experiencia temática oscura con efectos de partículas, sonidos ambientales de tormenta y una estética "Vecna" inspirada en Stranger Things.
-- **Modo Normal (Green Theme)**: Interfaz relajante en tonos esmeralda para máxima productividad.
-- **Sincronización en la Nube**: Regístrate para guardar tus tareas en la nube y acceder desde cualquier lugar (Powered by Supabase).
+- **Modo Oscuro (Vecna/Upside Down)**: Una experiencia temática oscura con efectos de partículas, sonidos ambientales de tormenta y una estética "Vecna" inspirada en Stranger Things.
+- **Modo Claro (Green Theme)**: Interfaz relajante en tonos esmeralda para máxima productividad.
+- **Almacenamiento Local**: Todas tus tareas se guardan localmente en el navegador. Sin registro, sin nube, 100% privado.
 
 ### 🚀 Funcionalidades Avanzadas
 
@@ -19,23 +19,22 @@ Una aplicación de gestión de tareas inmersiva, moderna y con un secreto oscuro
   - **Validación**: Alerta animada (🚨/💀) si intentas completar una tarea con pasos pendientes.
 - **Feedback Sensorial**:
   - **Favicon Dinámico**: Cambia según el modo (✅ vs 👹).
-  - **Audio Reactivo**: Truenos al entrar al modo invitado y un _Rugido Maligno_ al completar todas las tareas en el Upside Down.
+  - **Audio Reactivo**: Truenos al entrar al modo oscuro y un _Rugido Maligno_ al completar todas las tareas.
   - **Visuales**: Confetti temático (Verde vs Rojo/Negro) y partículas de ceniza flotantes.
 
 ## 🛠️ Tecnologías
 
 - **Frontend**: Vue 3 + Vite
 - **Estilos**: Tailwind CSS + Custom Animations
-- **Backend/Auth**: Supabase
 - **Animaciones**: Canvas Confetti, CSS Transitions
 - **Drag & Drop**: Vue Draggable Next
+- **Almacenamiento**: LocalStorage (sin backend)
 
 ## 🚀 Comenzar
 
 1.  Clona el repositorio.
 2.  Instala dependencias: `npm install`
-3.  Configura tus variables de entorno en `.env` (Supabase URL & Key).
-4.  Ejecuta el servidor de desarrollo: `npm run dev`
+3.  Ejecuta el servidor de desarrollo: `npm run dev`
 
 ---
 
