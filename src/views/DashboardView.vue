@@ -374,7 +374,7 @@ const handleAddTodo = async () => {
                     class="flex items-center gap-2 mt-1"
                   >
                     <div
-                      class="h-1 flex-1 bg-gray-100 rounded-full max-w-[60px] overflow-hidden"
+                      class="h-1 flex-1 bg-gray-100 rounded-full max-w-15 overflow-hidden"
                     >
                       <div
                         class="h-full bg-indigo-300"
