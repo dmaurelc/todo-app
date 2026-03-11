@@ -6,12 +6,13 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/dashboard",
-    },
-    {
-      path: "/dashboard",
-      name: "dashboard",
+      name: "home",
       component: DashboardView,
+    },
+    // Catch-all for SPA routing - prevents 404 on refresh
+    {
+      path: "/:pathMatch(.*)*",
+      redirect: "/",
     },
   ],
 });
