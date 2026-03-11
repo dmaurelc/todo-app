@@ -41,28 +41,20 @@ const onDragChange = (event) => {
     v-model="clonedTodos"
     item-key="id"
     tag="ul"
-    class="divide-y divide-gray-50"
+    class="divide-y divide-border"
     handle=".drag-handle"
     @change="onDragChange"
     :animation="200"
   >
-    <template #item="{ element: todo, index: index }">
-      <li
-        :class="['group hover:bg-gray-50/80 transition-colors duration-200', 'animate-fade-in']"
-        :style="{ animationDelay: `${index * 50}ms` }"
-      >
-        <TodoItem
-          :todo="todo"
-          :isExpanded="isExpanded(todo.id)"
-          :isDarkMode="isDarkMode"
-          @toggle="emit('toggleTodo', $event)"
-          @expand="emit('expandTodo', $event)"
-          @delete="emit('removeTodo', $event)"
-          @addSubtask="emit('addSubtask', $event)"
-          @toggleSubtask="emit('toggleSubtask', $event)"
-          @removeSubtask="emit('removeSubtask', $event)"
-        />
-      </li>
+    <template #item="{ element: todo }">
+      <TodoItem
+        :todo="todo"
+        :isExpanded="isExpanded(todo.id)"
+        :isDarkMode="isDarkMode"
+        @toggle="emit('toggleTodo', $event)"
+        @expand="emit('expandTodo', $event)"
+        @remove="emit('removeTodo', $event)"
+      />
     </template>
   </draggable>
 </template>

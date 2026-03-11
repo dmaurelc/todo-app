@@ -1,41 +1,58 @@
-# 📝 ToDo App + Vecna Mode 👹
+# ✅ ToDo App - Minimalist & Premium
 
-Una aplicación de gestión de tareas inmersiva, moderna y con un secreto oscuro. Gestiona tus pendientes diarios con estilo o entra al **Upside Down**.
+Una aplicación de tareas moderna, minimalista y con una estética premium, diseñada para una gestión eficiente y visual de tus tareas diarias.
 
-## ✨ Características
+## 🚀 Características Principales
 
-### 🌟 Experiencia Core
+- **Diseño Premium**: Interfaz ultra-limpia con efectos de glassmorphism, tipografía moderna (Inter/Outfit) y transiciones fluidas.
+- **Calendario Semanal Interactiva**: Filtra tus tareas seleccionando días directamente en la barra superior.
+- **Sistema de Prioridades (Rayos ⚡️)**: Clasifica la urgencia de tus tareas con iconos de rayos (1, 2 o 3 rayos).
+- **Ordenación Inteligente**: Las tareas se ordenan automáticamente por prioridad (de mayor a menor) y por posición personalizada.
+- **Categorización**: Organiza tus tareas en categorías (Trabajo, Personal, Salud, Ideas, Otros) con contadores dinámicos.
+- **Gestión de Subtareas**: Crea listas de verificación dentro de cada tarea con validación de progreso automática.
+- **Progreso Diario**: Barra de progreso visual que muestra el avance real de las tareas del día seleccionado.
+- **Arrastrar y Soltar (Drag & Drop)**: Reorganiza tus tareas fácilmente manteniendo el orden personalizado.
+- **Modo Oscuro/Claro**: Adaptado perfectamente para cualquier entorno visual con un solo toque.
+- **Totalmente Responsivo**: Experiencia optimizada para dispositivos móviles y escritorio.
 
-- **Modo Oscuro (Vecna/Upside Down)**: Una experiencia temática oscura con efectos de partículas, sonidos ambientales de tormenta y una estética "Vecna" inspirada en Stranger Things.
-- **Modo Claro (Green Theme)**: Interfaz relajante en tonos esmeralda para máxima productividad.
-- **Almacenamiento Local**: Todas tus tareas se guardan localmente en el navegador. Sin registro, sin nube, 100% privado.
+## 🛠️ Stack Tecnológico
 
-### 🚀 Funcionalidades Avanzadas
+- **Frontend**: [Vue 3](https://vuejs.org/) (Composition API)
+- **Framework de Estilos**: [Tailwind CSS 4.0](https://tailwindcss.com/)
+- **Gestión de Estado**: Composables nativos de Vue
+- **Herramienta de Construcción**: [Vite](https://vitejs.dev/)
+- **Efectos Visuales**: [Canvas-confetti](https://github.com/catdad/canvas-confetti)
+- **Notificaciones**: [Vue3-toastify](https://github.com/jerrybend/vue3-toastify)
+- **Interactividad**: [Vuedraggable](https://github.com/SortableJS/Vue.Draggable)
 
-- **Drag & Drop**: Reordena tus tareas simplemente arrastrándolas. Las nuevas tareas se agregan inteligentemente al final de la lista.
-- **Subtareas Inteligentes**:
-  - Divide tareas complejas en pasos.
-  - **Autocompletado**: La tarea padre se completa automáticamente al finalizar todas las subtareas.
-  - **Validación**: Alerta animada (🚨/💀) si intentas completar una tarea con pasos pendientes.
-- **Feedback Sensorial**:
-  - **Favicon Dinámico**: Cambia según el modo (✅ vs 👹).
-  - **Audio Reactivo**: Truenos al entrar al modo oscuro y un _Rugido Maligno_ al completar todas las tareas.
-  - **Visuales**: Confetti temático (Verde vs Rojo/Negro) y partículas de ceniza flotantes.
+## 📦 Instalación y Uso
 
-## 🛠️ Tecnologías
+1. **Clonar el repositorio**:
+   ```bash
+   git clone <url-del-repositorio>
+   cd ToDoApp
+   ```
 
-- **Frontend**: Vue 3 + Vite
-- **Estilos**: Tailwind CSS + Custom Animations
-- **Animaciones**: Canvas Confetti, CSS Transitions
-- **Drag & Drop**: Vue Draggable Next
-- **Almacenamiento**: LocalStorage (sin backend)
+2. **Instalar dependencias**:
+   ```bash
+   npm install
+   ```
 
-## 🚀 Comenzar
+3. **Ejecutar en desarrollo**:
+   ```bash
+   npm run dev
+   ```
 
-1.  Clona el repositorio.
-2.  Instala dependencias: `npm install`
-3.  Ejecuta el servidor de desarrollo: `npm run dev`
+4. **Construir para producción**:
+   ```bash
+   npm run build
+   ```
+
+## 🎨 Principios de Diseño
+
+- **Tipografía**: Uso exclusivo de pesos *Regular* y *Medium* para una lectura limpia.
+- **Iconografía**: SVGs minimalistas y personalizados para una carga rápida y escalabilidad perfecta.
+- **Micro-interacciones**: Animaciones sutiles en botones, checkbox y modales para mejorar la experiencia de usuario (UX).
 
 ---
-
-_Developed by Daniel MC_
+Desarrollado con ❤️ para una productividad sin distracciones.

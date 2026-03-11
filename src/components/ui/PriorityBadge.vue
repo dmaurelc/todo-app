@@ -21,7 +21,7 @@ const props = defineProps({
 const config = computed(() => getPriorityConfig(props.level));
 
 const badgeClasses = computed(() => [
-  "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border transition-colors",
+  "inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium border transition-colors",
   config.value.bgColor,
   config.value.textColor,
   config.value.borderColor,
@@ -34,10 +34,9 @@ const badgeClasses = computed(() => [
 <template>
   <span
     :class="badgeClasses"
-    :style="{ fontVariantEmoji: 'text' }"
     :aria-label="`${config.label} priority`"
   >
-    <span class="text-sm">{{ config.icon }}</span>
+    <span class="flex items-center justify-center w-3.5 h-3.5" v-html="config.icon"></span>
     <span v-if="!compact">{{ config.label }}</span>
   </span>
 </template>

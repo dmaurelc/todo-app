@@ -1,15 +1,11 @@
 <script setup>
 import { computed } from "vue";
-import { PRIORITIES, getPriorityConfig } from "../../constants/priorities.js";
+import { PRIORITIES } from "../../constants/priorities.js";
 
 const props = defineProps({
   modelValue: {
     type: String,
     default: "all",
-  },
-  isDarkMode: {
-    type: Boolean,
-    default: false,
   },
   counts: {
     type: Object,
@@ -19,86 +15,51 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const filterOptions = computed(() => [
-  { value: "all", label: "Todas", icon: "📋" },
-  ...Object.values(PRIORITIES),
-]);
+const priorities = computed(() => Object.values(PRIORITIES));
 
 const totalCount = computed(() => {
   return Object.values(props.counts).reduce((sum, count) => sum + count, 0);
 });
-
-const getCount = (value) => {
-  if (value === "all") return totalCount.value;
-  return props.counts[value] || 0;
-};
-
-const selectFilter = (value) => {
-  emit("update:modelValue", value);
-};
-
-const getChipClasses = (option) => {
-  const config = option.value !== "all" ? getPriorityConfig(option.value) : null;
-  const isActive = props.modelValue === option.value;
-
-  return [
-    "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border transition-all cursor-pointer whitespace-nowrap",
-    "hover:scale-105 active:scale-95",
-    isActive
-      ? config
-        ? [config.bgColor, config.textColor, config.borderColor, "ring-2 ring-offset-1 ring-blue-500"]
-        : "bg-gray-100 text-gray-700 border-gray-200 ring-2 ring-offset-1 ring-blue-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700 dark:ring-blue-400"
-      : config
-        ? [config.bgColor, config.textColor, config.borderColor, "opacity-60 hover:opacity-100"]
-        : "bg-gray-50 text-gray-500 border-gray-200 opacity-60 hover:opacity-100 dark:bg-gray-800/50 dark:text-gray-400 dark:border-gray-700",
-  ];
-};
 </script>
 
 <template>
-  <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+  <div class="flex gap-2 overflow-x-auto no-scrollbar">
     <button
-      v-for="option in filterOptions"
-      :key="option.value"
-      @click="selectFilter(option.value)"
-      :class="getChipClasses(option)"
-      :aria-label="`Filter by ${option.label}`"
-      :aria-pressed="modelValue === option.value"
-      :style="{ fontVariantEmoji: 'text' }"
+      @click="$emit('update:modelValue', 'all')"
+      class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-medium border transition-all cursor-pointer capitalize whitespace-nowrap"
+      :class="[
+        modelValue === 'all'
+          ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+          : 'bg-secondary text-secondary-foreground border-border hover:bg-accent'
+      ]"
     >
-      <span class="text-base">{{ option.icon }}</span>
-      <span>{{ option.label }}</span>
-      <span class="ml-1 px-1.5 py-0.5 rounded-full bg-black/10 text-xs dark:bg-white/20">
-        {{ getCount(option.value) }}
-      </span>
+      Todas
+      <span class="ml-0.5 opacity-50">{{ totalCount }}</span>
+    </button>
+
+    <button
+      v-for="prio in priorities"
+      :key="prio.value"
+      @click="$emit('update:modelValue', prio.value)"
+      class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-medium border transition-all cursor-pointer capitalize whitespace-nowrap shrink-0"
+      :class="[
+        modelValue === prio.value
+          ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+          : 'bg-secondary text-secondary-foreground border-border hover:bg-accent'
+      ]"
+    >
+      {{ prio.label }}
+      <span class="ml-0.5 opacity-50">{{ counts[prio.value] || 0 }}</span>
     </button>
   </div>
 </template>
 
 <style scoped>
-.scrollbar-thin {
-  scrollbar-width: thin;
-  scrollbar-color: rgb(209 213 219) transparent;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-
-.dark .scrollbar-thin {
-  scrollbar-color: rgb(55 65 81) transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar {
-  height: 4px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: rgb(209 213 219);
-  border-radius: 4px;
-}
-
-.dark .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: rgb(55 65 81);
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>

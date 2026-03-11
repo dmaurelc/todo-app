@@ -5,23 +5,19 @@ import { DEFAULT_CATEGORY } from "../constants/categories.js";
 
 const STORAGE_KEY = "todos";
 
-export function useTodos() {
-  const todos = ref([]);
-  const loading = ref(false);
-  const error = ref(null);
+const todos = ref([]);
+const loading = ref(false);
+const error = ref(null);
+const categoryFilter = ref("all");
+const dateFilter = ref(new Date().toISOString().split('T')[0]); // Default to today
+const timeRange = ref("all"); // all, today, tomorrow, week
 
-  // Load from LocalStorage with default priority and category for existing todos
+export function useTodos() {
+  // Load from LocalStorage
   const loadLocalTodos = () => {
     const local = localStorage.getItem(STORAGE_KEY);
     if (!local) return [];
-
-    const todos = JSON.parse(local);
-    // Apply default values (Red Team: no migration needed)
-    return todos.map(t => ({
-      ...t,
-      priority: t.priority || DEFAULT_PRIORITY,
-      category: t.category || DEFAULT_CATEGORY
-    }));
+    return JSON.parse(local);
   };
 
   const saveLocalTodos = (newTodos) => {
@@ -42,28 +38,33 @@ export function useTodos() {
     }
   };
 
-  const addTodo = async (title, priority = DEFAULT_PRIORITY, category = DEFAULT_CATEGORY) => {
+  const addTodo = async (
+    title,
+    category = DEFAULT_CATEGORY,
+    dueDate = new Date().toISOString().split("T")[0],
+    priority = 0 // 0: None, 1: Low, 2: Medium, 3: High
+  ) => {
     if (!title.trim()) return;
+    loading.value = true;
     try {
-      const currentMax =
-        todos.value.length > 0
-          ? Math.max(...todos.value.map((t) => t.position || 0))
-          : 0;
-      const newPosition = currentMax + 1000;
-
       const newTodo = {
         id: crypto.randomUUID(),
         title,
-        position: newPosition,
         is_complete: false,
-        priority,
         category,
+        due_date: dueDate,
+        priority: parseInt(priority) || 0,
+        position:
+          todos.value.length > 0
+            ? Math.max(...todos.value.map((t) => t.position || 0)) + 1000
+            : 1000,
         subtasks: [],
         created_at: new Date().toISOString(),
       };
 
       const newTodos = [...todos.value, newTodo];
       saveLocalTodos(newTodos);
+      loading.value = false;
     } catch (err) {
       console.error("Error adding todo:", err);
       toast.error("Error al agregar tarea");
@@ -113,15 +114,9 @@ export function useTodos() {
       // Check if all subtasks are complete
       const allSubtasksComplete = todo.subtasks.every((s) => s.is_complete);
 
-      // Update local state immediately for reactivity
-      // Only auto-complete, do not auto-uncomplete (user preference usually)
-      // Or consistent behavior: if all complete, mark parent complete.
       if (allSubtasksComplete && !todo.is_complete) {
         todo.is_complete = true;
-      }
-      // Optional: if user unchecks a subtask, should parent uncheck?
-      // Usually yes for strict dependency. Let's add that for consistency.
-      else if (!allSubtasksComplete && todo.is_complete) {
+      } else if (!allSubtasksComplete && todo.is_complete) {
         todo.is_complete = false;
       }
 
@@ -135,7 +130,6 @@ export function useTodos() {
 
     todo.subtasks = todo.subtasks.filter((s) => s.id !== subtaskId);
 
-    // Check if remaining subtasks (if any) are all complete
     if (todo.subtasks.length > 0 && todo.subtasks.every((s) => s.is_complete)) {
       if (!todo.is_complete) todo.is_complete = true;
     }
@@ -143,37 +137,61 @@ export function useTodos() {
     await saveSubtasks(todo);
   };
 
+  const updateSubtaskTitle = async (todoId, subtaskId, newTitle) => {
+    const todo = todos.value.find((t) => t.id === todoId);
+    if (!todo || !todo.subtasks) return;
+
+    const subtask = todo.subtasks.find((s) => s.id === subtaskId);
+    if (subtask) {
+      subtask.title = newTitle;
+      await saveSubtasks(todo);
+    }
+  };
+
   const saveSubtasks = async (todo) => {
     saveLocalTodos(todos.value);
   };
 
-  // Priority filter
-  const priorityFilter = ref("all");
-
-  // Category filter
-  const categoryFilter = ref("all");
-
-  // Combined filters (priority AND category)
   const filteredTodos = computed(() => {
-    return todos.value.filter(t => {
-      const priorityMatch = priorityFilter.value === "all" || t.priority === priorityFilter.value;
-      const categoryMatch = categoryFilter.value === "all" || t.category === categoryFilter.value;
-      return priorityMatch && categoryMatch;
+    return todos.value
+      .filter((t) => {
+        // Category filter
+        const categoryMatch =
+          categoryFilter.value === "all" || t.category === categoryFilter.value;
+
+        // Date filter - uses the selected day from the calendar bar
+        const taskDate = t.due_date || t.created_at?.split("T")[0];
+        const dateMatch = taskDate === dateFilter.value;
+
+        return categoryMatch && dateMatch;
+      })
+      .sort((a, b) => {
+        // Priority sort (3 to 0)
+        const pA = a.priority || 0;
+        const pB = b.priority || 0;
+        if (pA !== pB) return pB - pA;
+        // Secondary sort by position if exists
+        return (a.position || 0) - (b.position || 0);
+      });
+  });
+
+  const dayTodos = computed(() => {
+    return todos.value.filter((t) => {
+      const taskDate = t.due_date || t.created_at?.split("T")[0];
+      return taskDate === dateFilter.value;
     });
   });
 
-  // Priority counts for filter
-  const priorityCounts = computed(() => {
-    const counts = { low: 0, medium: 0, high: 0, urgent: 0 };
-    todos.value.forEach(t => {
-      if (t.priority && counts[t.priority] !== undefined) {
-        counts[t.priority]++;
-      }
-    });
-    return counts;
+  const dayProgress = computed(() => {
+    const total = dayTodos.value.length;
+    const completed = dayTodos.value.filter((t) => t.is_complete).length;
+    return {
+      total,
+      completed,
+      percent: total === 0 ? 0 : Math.round((completed / total) * 100),
+    };
   });
 
-  // Category counts for filter
   const categoryCounts = computed(() => {
     const counts = { trabajo: 0, personal: 0, salud: 0, ideas: 0, otros: 0 };
     todos.value.forEach(t => {
@@ -187,10 +205,11 @@ export function useTodos() {
   return {
     todos,
     filteredTodos,
-    priorityFilter,
     categoryFilter,
-    priorityCounts,
+    dateFilter,
+    timeRange,
     categoryCounts,
+    dayProgress,
     loading,
     error,
     fetchTodos,
@@ -201,5 +220,6 @@ export function useTodos() {
     addSubtask,
     toggleSubtask,
     removeSubtask,
+    updateSubtaskTitle,
   };
 }

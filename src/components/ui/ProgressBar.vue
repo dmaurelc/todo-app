@@ -16,27 +16,19 @@ const progressPercent = computed(() => {
   if (props.total === 0) return 0;
   return (props.completed / props.total) * 100;
 });
-
-const message = computed(() => {
-  if (props.total === 0) return "Haciendo progreso...";
-  if (props.total === props.completed) return "¡Buen trabajo!";
-  return "Haciendo progreso...";
-});
 </script>
 
 <template>
-  <div class="mb-6">
+  <div class="mb-8 px-2">
     <div class="flex justify-between items-end mb-2">
-      <h2 class="text-lg font-semibold text-gray-800">
-        {{ message }}
-      </h2>
-      <span class="text-xs text-gray-400 font-medium">
+      <span class="text-[14px] font-medium text-foreground capitalize">Progreso Diario</span>
+      <span class="text-[13px] font-medium text-muted-foreground tabular-nums">
         {{ completed }} / {{ total }}
       </span>
     </div>
-    <div class="h-2 bg-gray-100 rounded-full overflow-hidden flex">
+    <div class="h-1.5 bg-muted rounded-full overflow-hidden">
       <div
-        class="h-full bg-green-400 transition-all duration-500 ease-out"
+        class="h-full bg-primary transition-all duration-700 ease-out"
         :style="{ width: `${progressPercent}%` }"
       ></div>
     </div>

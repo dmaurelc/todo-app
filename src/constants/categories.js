@@ -1,72 +1,71 @@
-// Category system constants with emoji icons, colors, and labels
+// Category system constants with high-fidelity minimalist styling (Black & White)
 // Used across CategoryBadge, CategoryPicker, and CategoryFilter components
 
 export const CATEGORIES = {
   TRABAJO: {
     value: 'trabajo',
     label: 'Trabajo',
-    icon: '💼',
-    color: 'blue',
-    bgColor: 'bg-blue-100',
-    darkBgColor: 'dark:bg-blue-900/30',
-    textColor: 'text-blue-700',
-    darkTextColor: 'dark:text-blue-400',
-    borderColor: 'border-blue-200',
-    darkBorderColor: 'dark:border-blue-700'
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+    color: 'black',
+    bgColor: 'bg-gray-100',
+    darkBgColor: 'dark:bg-white/10',
+    textColor: 'text-black',
+    darkTextColor: 'dark:text-white',
+    borderColor: 'border-transparent',
+    darkBorderColor: 'dark:border-transparent'
   },
   PERSONAL: {
     value: 'personal',
     label: 'Personal',
-    icon: '🏠',
-    color: 'purple',
-    bgColor: 'bg-purple-100',
-    darkBgColor: 'dark:bg-purple-900/30',
-    textColor: 'text-purple-700',
-    darkTextColor: 'dark:text-purple-400',
-    borderColor: 'border-purple-200',
-    darkBorderColor: 'dark:border-purple-700'
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+    color: 'black',
+    bgColor: 'bg-gray-100',
+    darkBgColor: 'dark:bg-white/10',
+    textColor: 'text-black',
+    darkTextColor: 'dark:text-white',
+    borderColor: 'border-transparent',
+    darkBorderColor: 'dark:border-transparent'
   },
   SALUD: {
     value: 'salud',
     label: 'Salud',
-    icon: '💪',
-    color: 'green',
-    bgColor: 'bg-green-100',
-    darkBgColor: 'dark:bg-green-900/30',
-    textColor: 'text-green-700',
-    darkTextColor: 'dark:text-green-400',
-    borderColor: 'border-green-200',
-    darkBorderColor: 'dark:border-green-700'
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+    color: 'black',
+    bgColor: 'bg-gray-100',
+    darkBgColor: 'dark:bg-white/10',
+    textColor: 'text-black',
+    darkTextColor: 'dark:text-white',
+    borderColor: 'border-transparent',
+    darkBorderColor: 'dark:border-transparent'
   },
   IDEAS: {
     value: 'ideas',
     label: 'Ideas',
-    icon: '💡',
-    color: 'yellow',
-    bgColor: 'bg-yellow-100',
-    darkBgColor: 'dark:bg-yellow-900/30',
-    textColor: 'text-yellow-700',
-    darkTextColor: 'dark:text-yellow-400',
-    borderColor: 'border-yellow-200',
-    darkBorderColor: 'dark:border-yellow-700'
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>',
+    color: 'black',
+    bgColor: 'bg-gray-100',
+    darkBgColor: 'dark:bg-white/10',
+    textColor: 'text-black',
+    darkTextColor: 'dark:text-white',
+    borderColor: 'border-transparent',
+    darkBorderColor: 'dark:border-transparent'
   },
   OTROS: {
     value: 'otros',
     label: 'Otros',
-    icon: '📌',
-    color: 'gray',
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>',
+    color: 'black',
     bgColor: 'bg-gray-100',
-    darkBgColor: 'dark:bg-gray-800',
-    textColor: 'text-gray-700',
-    darkTextColor: 'dark:text-gray-300',
-    borderColor: 'border-gray-200',
-    darkBorderColor: 'dark:border-gray-700'
+    darkBgColor: 'dark:bg-white/10',
+    textColor: 'text-black',
+    darkTextColor: 'dark:text-white',
+    borderColor: 'border-transparent',
+    darkBorderColor: 'dark:border-transparent'
   }
 };
 
-export const DEFAULT_CATEGORY = 'otros';
+export const DEFAULT_CATEGORY = "trabajo";
 
-// Helper to get category config by value
 export const getCategoryConfig = (value) => {
   return Object.values(CATEGORIES).find(c => c.value === value) || CATEGORIES.OTROS;
 };

@@ -22,9 +22,9 @@ const props = defineProps({
 const config = computed(() => getCategoryConfig(props.category));
 
 const badgeClasses = computed(() => [
-  "inline-flex items-center gap-1 rounded-full border transition-colors",
+  "inline-flex items-center gap-1.5 rounded border transition-colors",
   props.size === "sm" ? "px-1.5 py-0.5" : "px-2 py-1",
-  props.size === "sm" ? "text-sm" : "text-base",
+  props.size === "sm" ? "text-xs font-medium" : "text-sm font-medium",
   config.value.bgColor,
   config.value.textColor,
   config.value.borderColor,
@@ -33,16 +33,15 @@ const badgeClasses = computed(() => [
   props.isDarkMode ? config.value.darkBorderColor : "",
 ]);
 
-const iconSize = computed(() => props.size === "sm" ? "text-base" : "text-lg");
+const iconSize = computed(() => props.size === "sm" ? "w-3.5 h-3.5" : "w-4 h-4");
 </script>
 
 <template>
   <span
     :class="badgeClasses"
-    :style="{ fontVariantEmoji: 'text' }"
     :aria-label="`${config.label} category`"
   >
-    <span :class="iconSize">{{ config.icon }}</span>
+    <span :class="['flex items-center justify-center', iconSize]" v-html="config.icon"></span>
     <span v-if="size === 'md'">{{ config.label }}</span>
   </span>
 </template>

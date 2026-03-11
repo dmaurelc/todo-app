@@ -22,20 +22,11 @@ const selectPriority = (value) => {
 };
 
 const getChipClasses = (option) => [
-  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border transition-all cursor-pointer",
-  "hover:scale-105 active:scale-95",
-  option.bgColor,
-  option.textColor,
-  option.borderColor,
-  props.isDarkMode ? option.darkBgColor : "",
-  props.isDarkMode ? option.darkTextColor : "",
-  props.isDarkMode ? option.darkBorderColor : "",
+  "flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium border transition-all cursor-pointer",
+  "hover:-translate-y-0.5 active:translate-y-0 duration-200",
   props.modelValue === option.value
-    ? "ring-2 ring-offset-1 ring-blue-500"
-    : "opacity-70 hover:opacity-100",
-  props.isDarkMode && props.modelValue === option.value
-    ? "dark:ring-blue-400"
-    : "",
+    ? [option.bgColor, option.textColor, option.darkBgColor, option.darkTextColor, "border-gray-400 shadow-[0_2px_4px_rgba(0,0,0,0.05)] dark:border-gray-600 dark:shadow-[0_2px_4px_rgba(0,0,0,0.2)]"]
+    : [option.bgColor, option.textColor, option.darkBgColor, option.darkTextColor, "border-transparent opacity-70 hover:opacity-100"]
 ];
 </script>
 
@@ -48,9 +39,8 @@ const getChipClasses = (option) => [
       :class="getChipClasses(option)"
       :aria-label="`Select ${option.label} priority`"
       :aria-pressed="modelValue === option.value"
-      :style="{ fontVariantEmoji: 'text' }"
     >
-      <span class="text-base">{{ option.icon }}</span>
+      <span class="flex items-center justify-center w-4 h-4" v-html="option.icon"></span>
       <span>{{ option.label }}</span>
     </button>
   </div>
