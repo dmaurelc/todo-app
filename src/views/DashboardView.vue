@@ -261,9 +261,7 @@ fetchTodos();
       </div>
 
       <!-- Content Card -->
-      <div
-        class="bg-card text-card-foreground rounded-lg dark:shadow-[0_8px_40px_rgba(0,0,0,0.2)] overflow-hidden"
-      >
+      <div class="text-card-foreground rounded-lg overflow-hidden">
         <!-- Task List Area -->
         <div class="relative min-h-115">
           <TodoList

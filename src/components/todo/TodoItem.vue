@@ -36,11 +36,14 @@ const {
 
 const newSubtaskTitle = ref("");
 
-// Press & hold for edit
+// Press & hold for edit (mobile only - touch events)
 const pressTimer = ref(null);
 const isPressing = ref(false);
 
-const handlePressStart = () => {
+const handlePressStart = (event) => {
+  // Only activate on touch events (mobile), not mouse events (desktop)
+  if (!event.touches || event.touches.length === 0) return;
+
   isPressing.value = true;
   pressTimer.value = setTimeout(() => {
     emit("edit", props.todo);
@@ -111,7 +114,7 @@ const formatDate = (dateStr) => {
 
 <template>
   <li
-    class="group/item relative transition-all duration-300 hover:bg-accent/30 border-b border-border/30 last:border-0 overflow-hidden"
+    class="group/item relative transition-all duration-300 hover:bg-accent/5 border-b border-border/30 last:border-0 overflow-hidden rounded-md"
   >
     <!-- Main Content Row -->
     <div
@@ -120,9 +123,6 @@ const formatDate = (dateStr) => {
       @click="$emit('expand', todo.id)"
       @touchstart="handlePressStart"
       @touchend="handlePressEnd"
-      @mousedown="handlePressStart"
-      @mouseup="handlePressEnd"
-      @mouseleave="handlePressEnd"
     >
       <!-- Custom Checkbox -->
       <div class="shrink-0" @click.stop>
