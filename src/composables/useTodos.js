@@ -1,6 +1,7 @@
 import { ref, computed } from "vue";
 import { toast } from "vue3-toastify";
 import { DEFAULT_PRIORITY } from "../constants/priorities.js";
+import { DEFAULT_CATEGORY } from "../constants/categories.js";
 
 const STORAGE_KEY = "todos";
 
@@ -9,16 +10,17 @@ export function useTodos() {
   const loading = ref(false);
   const error = ref(null);
 
-  // Load from LocalStorage with default priority for existing todos
+  // Load from LocalStorage with default priority and category for existing todos
   const loadLocalTodos = () => {
     const local = localStorage.getItem(STORAGE_KEY);
     if (!local) return [];
 
     const todos = JSON.parse(local);
-    // Apply default priority to todos without it (Red Team: no migration needed)
+    // Apply default values (Red Team: no migration needed)
     return todos.map(t => ({
       ...t,
-      priority: t.priority || DEFAULT_PRIORITY
+      priority: t.priority || DEFAULT_PRIORITY,
+      category: t.category || DEFAULT_CATEGORY
     }));
   };
 
@@ -40,7 +42,7 @@ export function useTodos() {
     }
   };
 
-  const addTodo = async (title, priority = DEFAULT_PRIORITY) => {
+  const addTodo = async (title, priority = DEFAULT_PRIORITY, category = DEFAULT_CATEGORY) => {
     if (!title.trim()) return;
     try {
       const currentMax =
@@ -55,6 +57,7 @@ export function useTodos() {
         position: newPosition,
         is_complete: false,
         priority,
+        category,
         subtasks: [],
         created_at: new Date().toISOString(),
       };
@@ -147,9 +150,16 @@ export function useTodos() {
   // Priority filter
   const priorityFilter = ref("all");
 
+  // Category filter
+  const categoryFilter = ref("all");
+
+  // Combined filters (priority AND category)
   const filteredTodos = computed(() => {
-    if (priorityFilter.value === "all") return todos.value;
-    return todos.value.filter(t => t.priority === priorityFilter.value);
+    return todos.value.filter(t => {
+      const priorityMatch = priorityFilter.value === "all" || t.priority === priorityFilter.value;
+      const categoryMatch = categoryFilter.value === "all" || t.category === categoryFilter.value;
+      return priorityMatch && categoryMatch;
+    });
   });
 
   // Priority counts for filter
@@ -163,11 +173,24 @@ export function useTodos() {
     return counts;
   });
 
+  // Category counts for filter
+  const categoryCounts = computed(() => {
+    const counts = { trabajo: 0, personal: 0, salud: 0, ideas: 0, otros: 0 };
+    todos.value.forEach(t => {
+      if (t.category && counts[t.category] !== undefined) {
+        counts[t.category]++;
+      }
+    });
+    return counts;
+  });
+
   return {
     todos,
     filteredTodos,
     priorityFilter,
+    categoryFilter,
     priorityCounts,
+    categoryCounts,
     loading,
     error,
     fetchTodos,

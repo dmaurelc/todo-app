@@ -2,6 +2,7 @@
 import { ref, computed } from "vue";
 import { useTodos } from "../../composables/useTodos";
 import PriorityBadge from "../ui/PriorityBadge.vue";
+import CategoryBadge from "../ui/CategoryBadge.vue";
 
 const props = defineProps({
   todo: {
@@ -91,7 +92,10 @@ const handleRemoveSubtask = async (subtask) => {
       </button>
 
       <!-- Priority Badge -->
-      <PriorityBadge :level="todo.priority || 'medium'" :isDarkMode="isDarkMode" class="shrink-0 mr-2" />
+      <PriorityBadge :level="todo.priority || 'medium'" :isDarkMode="isDarkMode" class="shrink-0 mr-1" />
+
+      <!-- Category Badge -->
+      <CategoryBadge :category="todo.category || 'otros'" :isDarkMode="isDarkMode" size="sm" class="shrink-0 mr-2" />
 
       <!-- Text -->
       <div class="flex-1 min-w-0 mr-2">

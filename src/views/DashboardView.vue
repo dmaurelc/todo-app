@@ -11,6 +11,7 @@ import ProgressBar from "../components/ui/ProgressBar.vue";
 import AddTodoForm from "../components/ui/AddTodoForm.vue";
 import TodoList from "../components/todo/TodoList.vue";
 import PriorityFilter from "../components/ui/PriorityFilter.vue";
+import CategoryFilter from "../components/ui/CategoryFilter.vue";
 
 // Assets
 import thunderSound from "../assets/thunder.mp3";
@@ -21,7 +22,9 @@ const {
   todos,
   filteredTodos,
   priorityFilter,
+  categoryFilter,
   priorityCounts,
+  categoryCounts,
   loading,
   fetchTodos,
   addTodo,
@@ -113,10 +116,10 @@ const handleToggleTodo = async (todo) => {
 };
 
 // Add todo
-const handleAddTodo = async ({ title, priority }) => {
+const handleAddTodo = async ({ title, priority, category }) => {
   if (!title.trim()) return;
   try {
-    await addTodo(title, priority);
+    await addTodo(title, priority, category);
   } catch (e) {
     // Error is already toasted in useTodos
   }
@@ -198,11 +201,15 @@ fetchTodos();
 
       <!-- Task List Area -->
       <div class="bg-white">
-        <!-- Priority Filter -->
-        <div
-          v-if="todos.length > 0"
-          class="px-4 pt-4 pb-2 border-b border-gray-50"
-        >
+        <!-- Filters -->
+        <div v-if="todos.length > 0" class="px-4 pt-4 pb-2 border-b border-gray-50 space-y-3">
+          <!-- Category Filter -->
+          <CategoryFilter
+            v-model="categoryFilter"
+            :isDarkMode="isDarkMode"
+            :counts="categoryCounts"
+          />
+          <!-- Priority Filter -->
           <PriorityFilter
             v-model="priorityFilter"
             :isDarkMode="isDarkMode"

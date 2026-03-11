@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import CategoryPicker from "./CategoryPicker.vue";
 import PriorityPicker from "./PriorityPicker.vue";
 
 const props = defineProps({
@@ -20,18 +21,30 @@ const props = defineProps({
 const emit = defineEmits(["submit"]);
 
 const newTodoTitle = ref("");
+const selectedCategory = ref("otros");
 const selectedPriority = ref("medium");
 
 const handleSubmit = () => {
   if (!newTodoTitle.value.trim()) return;
-  emit("submit", { title: newTodoTitle.value, priority: selectedPriority.value });
+  emit("submit", {
+    title: newTodoTitle.value,
+    priority: selectedPriority.value,
+    category: selectedCategory.value
+  });
   newTodoTitle.value = "";
+  selectedCategory.value = "otros";
   selectedPriority.value = "medium";
 };
 </script>
 
 <template>
   <div class="space-y-3">
+    <!-- Category Picker -->
+    <div class="flex flex-col gap-2">
+      <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Categoría:</span>
+      <CategoryPicker v-model="selectedCategory" :isDarkMode="isDarkMode" />
+    </div>
+
     <!-- Priority Picker -->
     <div class="flex items-center gap-2">
       <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Prioridad:</span>
