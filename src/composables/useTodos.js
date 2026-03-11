@@ -1,5 +1,6 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { toast } from "vue3-toastify";
+import { DEFAULT_PRIORITY } from "../constants/priorities.js";
 
 const STORAGE_KEY = "todos";
 
@@ -8,10 +9,17 @@ export function useTodos() {
   const loading = ref(false);
   const error = ref(null);
 
-  // Load from LocalStorage
+  // Load from LocalStorage with default priority for existing todos
   const loadLocalTodos = () => {
     const local = localStorage.getItem(STORAGE_KEY);
-    return local ? JSON.parse(local) : [];
+    if (!local) return [];
+
+    const todos = JSON.parse(local);
+    // Apply default priority to todos without it (Red Team: no migration needed)
+    return todos.map(t => ({
+      ...t,
+      priority: t.priority || DEFAULT_PRIORITY
+    }));
   };
 
   const saveLocalTodos = (newTodos) => {
@@ -32,7 +40,7 @@ export function useTodos() {
     }
   };
 
-  const addTodo = async (title) => {
+  const addTodo = async (title, priority = DEFAULT_PRIORITY) => {
     if (!title.trim()) return;
     try {
       const currentMax =
@@ -46,6 +54,7 @@ export function useTodos() {
         title,
         position: newPosition,
         is_complete: false,
+        priority,
         subtasks: [],
         created_at: new Date().toISOString(),
       };
@@ -135,8 +144,30 @@ export function useTodos() {
     saveLocalTodos(todos.value);
   };
 
+  // Priority filter
+  const priorityFilter = ref("all");
+
+  const filteredTodos = computed(() => {
+    if (priorityFilter.value === "all") return todos.value;
+    return todos.value.filter(t => t.priority === priorityFilter.value);
+  });
+
+  // Priority counts for filter
+  const priorityCounts = computed(() => {
+    const counts = { low: 0, medium: 0, high: 0, urgent: 0 };
+    todos.value.forEach(t => {
+      if (t.priority && counts[t.priority] !== undefined) {
+        counts[t.priority]++;
+      }
+    });
+    return counts;
+  });
+
   return {
     todos,
+    filteredTodos,
+    priorityFilter,
+    priorityCounts,
     loading,
     error,
     fetchTodos,

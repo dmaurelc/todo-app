@@ -10,6 +10,7 @@ import { useEmojiOverlay } from "../composables/use-emoji-overlay.js";
 import ProgressBar from "../components/ui/ProgressBar.vue";
 import AddTodoForm from "../components/ui/AddTodoForm.vue";
 import TodoList from "../components/todo/TodoList.vue";
+import PriorityFilter from "../components/ui/PriorityFilter.vue";
 
 // Assets
 import thunderSound from "../assets/thunder.mp3";
@@ -18,6 +19,9 @@ import evilRoarSound from "../assets/evil-roar.mp3";
 const { user, isDarkMode, toggleDarkMode } = useAuth();
 const {
   todos,
+  filteredTodos,
+  priorityFilter,
+  priorityCounts,
   loading,
   fetchTodos,
   addTodo,
@@ -28,7 +32,8 @@ const {
 
 // Composables
 const { updateMeta } = useMetaTags(isDarkMode);
-const { showSadEmoji, showWarningEmoji, triggerSad, triggerWarning } = useEmojiOverlay();
+const { showSadEmoji, showWarningEmoji, triggerSad, triggerWarning } =
+  useEmojiOverlay();
 
 // State
 const expandedTodos = ref(new Set());
@@ -108,10 +113,10 @@ const handleToggleTodo = async (todo) => {
 };
 
 // Add todo
-const handleAddTodo = async (title) => {
+const handleAddTodo = async ({ title, priority }) => {
   if (!title.trim()) return;
   try {
-    await addTodo(title);
+    await addTodo(title, priority);
   } catch (e) {
     // Error is already toasted in useTodos
   }
@@ -153,7 +158,7 @@ fetchTodos();
     </div>
 
     <div
-      class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden relative z-10"
+      class="max-w-lg w-full bg-white rounded-2xl shadow-xl overflow-hidden relative z-10"
     >
       <!-- Header Area -->
       <div class="p-8 pb-4 bg-linear-to-b from-green-50 to-white">
@@ -186,12 +191,25 @@ fetchTodos();
         <!-- Add Todo Form Component -->
         <AddTodoForm
           :loading="loading"
+          :isDarkMode="isDarkMode"
           @submit="handleAddTodo"
         />
       </div>
 
       <!-- Task List Area -->
       <div class="bg-white">
+        <!-- Priority Filter -->
+        <div
+          v-if="todos.length > 0"
+          class="px-4 pt-4 pb-2 border-b border-gray-50"
+        >
+          <PriorityFilter
+            v-model="priorityFilter"
+            :isDarkMode="isDarkMode"
+            :counts="priorityCounts"
+          />
+        </div>
+
         <!-- Loading -->
         <div
           v-if="loading && todos.length === 0"
@@ -219,7 +237,7 @@ fetchTodos();
         <!-- Todo List Component -->
         <TodoList
           v-else
-          :todos="todos"
+          :todos="filteredTodos"
           :expandedTodos="expandedTodos"
           :isDarkMode="isDarkMode"
           @dragChange="onDragChange"

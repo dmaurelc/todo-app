@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useTodos } from "../../composables/useTodos";
+import PriorityBadge from "../ui/PriorityBadge.vue";
 
 const props = defineProps({
   todo: {
@@ -77,7 +78,7 @@ const handleRemoveSubtask = async (subtask) => {
       <!-- Checkbox -->
       <button
         @click="handleToggle"
-        class="shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center mr-4 transition-all duration-200"
+        class="shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center mr-3 transition-all duration-200"
         :class="[
           todo.is_complete
             ? 'bg-green-100 border-green-400 text-green-500'
@@ -89,8 +90,11 @@ const handleRemoveSubtask = async (subtask) => {
         </svg>
       </button>
 
+      <!-- Priority Badge -->
+      <PriorityBadge :level="todo.priority || 'medium'" :isDarkMode="isDarkMode" class="shrink-0 mr-2" />
+
       <!-- Text -->
-      <div class="flex-1 min-w-0">
+      <div class="flex-1 min-w-0 mr-2">
         <span
           class="block text-gray-700 font-medium transition-all duration-200 truncate"
           :class="{ 'text-gray-400 line-through': todo.is_complete }"
