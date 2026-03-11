@@ -39,16 +39,39 @@ const newSubtaskTitle = ref("");
 // Press & hold for edit (mobile only - touch events)
 const pressTimer = ref(null);
 const isPressing = ref(false);
+const touchStartPos = ref({ x: 0, y: 0 });
 
 const handlePressStart = (event) => {
   // Only activate on touch events (mobile), not mouse events (desktop)
   if (!event.touches || event.touches.length === 0) return;
+
+  // Record initial touch position
+  touchStartPos.value = {
+    x: event.touches[0].clientX,
+    y: event.touches[0].clientY,
+  };
 
   isPressing.value = true;
   pressTimer.value = setTimeout(() => {
     emit("edit", props.todo);
     isPressing.value = false;
   }, 500);
+};
+
+const handlePressMove = (event) => {
+  // If user is dragging, cancel the press & hold
+  if (!pressTimer.value) return;
+
+  const touch = event.touches[0];
+  const deltaX = Math.abs(touch.clientX - touchStartPos.value.x);
+  const deltaY = Math.abs(touch.clientY - touchStartPos.value.y);
+
+  // If moved more than 10px, consider it a drag, cancel press
+  if (deltaX > 10 || deltaY > 10) {
+    clearTimeout(pressTimer.value);
+    pressTimer.value = null;
+    isPressing.value = false;
+  }
 };
 
 const handlePressEnd = () => {
@@ -122,6 +145,7 @@ const formatDate = (dateStr) => {
       :class="{ 'opacity-70': isPressing }"
       @click="$emit('expand', todo.id)"
       @touchstart="handlePressStart"
+      @touchmove="handlePressMove"
       @touchend="handlePressEnd"
     >
       <!-- Custom Checkbox -->
