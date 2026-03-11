@@ -14,9 +14,9 @@ export function useMetaTags(isDarkMode) {
     link.type = "image/svg+xml";
     link.rel = "icon";
 
-    document.title = "✅ ToDo App ✅";
+    document.title = "ToDo App - Organiza tu día";
     link.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✅</text></svg>`;
-    
+
     document.getElementsByTagName("head")[0].appendChild(link);
   };
 
@@ -31,6 +31,6 @@ export function useMetaTags(isDarkMode) {
 
   return {
     updateMeta,
-    watchDarkMode
+    watchDarkMode,
   };
 }

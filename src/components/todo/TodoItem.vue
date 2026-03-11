@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useTodos } from "../../composables/useTodos";
-import CategoryBadge from "../ui/CategoryBadge.vue";
 
 const props = defineProps({
   todo: {
@@ -25,6 +24,7 @@ const emit = defineEmits([
   "addSubtask",
   "toggleSubtask",
   "removeSubtask",
+  "edit",
 ]);
 
 const {
@@ -35,6 +35,26 @@ const {
 } = useTodos();
 
 const newSubtaskTitle = ref("");
+
+// Press & hold for edit
+const pressTimer = ref(null);
+const isPressing = ref(false);
+
+const handlePressStart = () => {
+  isPressing.value = true;
+  pressTimer.value = setTimeout(() => {
+    emit("edit", props.todo);
+    isPressing.value = false;
+  }, 500);
+};
+
+const handlePressEnd = () => {
+  isPressing.value = false;
+  if (pressTimer.value) {
+    clearTimeout(pressTimer.value);
+    pressTimer.value = null;
+  }
+};
 
 // Computed for subtask progress
 const subtaskProgress = computed(() => {
@@ -95,8 +115,14 @@ const formatDate = (dateStr) => {
   >
     <!-- Main Content Row -->
     <div
-      class="flex items-center px-4 sm:px-6 py-4 sm:py-5 gap-3 sm:gap-4 cursor-pointer select-none active:bg-accent/50 transition-colors"
+      class="flex items-center py-4 md:px-4 sm:py-5 gap-3 sm:gap-4 cursor-pointer select-none active:bg-accent/50 transition-colors"
+      :class="{ 'opacity-70': isPressing }"
       @click="$emit('expand', todo.id)"
+      @touchstart="handlePressStart"
+      @touchend="handlePressEnd"
+      @mousedown="handlePressStart"
+      @mouseup="handlePressEnd"
+      @mouseleave="handlePressEnd"
     >
       <!-- Custom Checkbox -->
       <div class="shrink-0" @click.stop>
@@ -126,11 +152,25 @@ const formatDate = (dateStr) => {
         </button>
       </div>
 
+      <!-- Drag Handle (hidden on mobile, visible on sm+) -->
+      <button
+        class="drag-handle hidden sm:block shrink-0 p-1 text-muted-foreground/20 hover:text-muted-50 transition-colors cursor-grab active:cursor-grabbing opacity-0 group-hover/item:opacity-100"
+      >
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <circle cx="9" cy="6" r="1.5" />
+          <circle cx="15" cy="6" r="1.5" />
+          <circle cx="9" cy="12" r="1.5" />
+          <circle cx="15" cy="12" r="1.5" />
+          <circle cx="9" cy="18" r="1.5" />
+          <circle cx="15" cy="18" r="1.5" />
+        </svg>
+      </button>
+
       <!-- Task Details -->
       <div class="flex-1 min-w-0 flex flex-col justify-center">
         <div class="flex flex-col">
           <span
-            class="block text-[15px] sm:text-[17px] font-medium leading-tight sm:leading-snug transition-all duration-300 text-foreground"
+            class="block text-[14px] sm:text-[17px] font-medium leading-tight sm:leading-snug transition-all duration-300 text-foreground"
             :class="{ 'opacity-30 line-through grayscale': todo.is_complete }"
           >
             {{ todo.title }}
@@ -195,8 +235,27 @@ const formatDate = (dateStr) => {
         </div>
       </div>
 
-      <!-- Actions -->
-      <div class="flex items-center gap-1">
+      <!-- Actions (hidden on mobile, visible on sm+) -->
+      <div class="hidden sm:flex items-center gap-1">
+        <button
+          @click.stop="$emit('edit', todo)"
+          class="p-2 text-muted-foreground/30 hover:text-primary hover:bg-primary/10 rounded-xl transition-all opacity-0 group-hover/item:opacity-100 active:scale-95"
+        >
+          <svg
+            class="w-3.5 h-3.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="2.5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+            />
+          </svg>
+        </button>
+
         <button
           @click.stop="$emit('remove', todo.id)"
           class="p-2 text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 rounded-xl transition-all opacity-0 group-hover/item:opacity-100 active:scale-95"
@@ -241,13 +300,13 @@ const formatDate = (dateStr) => {
     <transition name="expand">
       <div
         v-if="isExpanded"
-        class="bg-accent/5 pb-10 pl-16 pr-8 border-t border-border/20 shadow-inner overflow-hidden"
+        class="bg-accent/5 p-6 sm:p-8 border-t border-border/20 overflow-hidden"
       >
-        <ul class="space-y-1.5 mt-5">
+        <ul class="grid gap-1">
           <li
             v-for="subtask in todo.subtasks"
             :key="subtask.id"
-            class="flex items-center group/sub py-2.5 px-3 rounded-2xl hover:bg-card transition-colors"
+            class="flex items-center group/sub py-1 sm:py-2.5 px-2 sm:px-3 rounded-2xl hover:bg-card transition-colors"
           >
             <button
               @click.stop="toggleSubtask(todo.id, subtask.id)"
@@ -305,7 +364,7 @@ const formatDate = (dateStr) => {
             v-model="newSubtaskTitle"
             type="text"
             placeholder="+ Añadir subtarea..."
-            class="w-full bg-secondary/30 dark:bg-white/5 border border-border/30 px-5 py-3 rounded-2xl text-[14px] font-medium focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/30 outline-none"
+            class="w-full bg-secondary/30 dark:bg-white/5 border border-border/30 px-3 sm:px-5 py-2 sm:py-3 rounded-2xl text-[14px] font-medium focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/30 outline-none"
             @keyup.enter="handleAddSubtask"
           />
         </div>

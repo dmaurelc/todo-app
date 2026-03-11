@@ -82,6 +82,14 @@ export function useTodos() {
     saveLocalTodos(todos.value);
   };
 
+  const updateTodo = async (id, updates) => {
+    const todo = todos.value.find((t) => t.id === id);
+    if (!todo) return;
+
+    Object.assign(todo, updates);
+    saveLocalTodos(todos.value);
+  };
+
   const updatePositions = async (newTodos) => {
     todos.value = newTodos.map((t, i) => ({ ...t, position: i * 1000 }));
     saveLocalTodos(todos.value);
@@ -166,11 +174,15 @@ export function useTodos() {
         return categoryMatch && dateMatch;
       })
       .sort((a, b) => {
-        // Priority sort (3 to 0)
+        // Primero: tareas completadas al final
+        if (a.is_complete !== b.is_complete) {
+          return a.is_complete ? 1 : -1;
+        }
+        // Segundo: prioridad (3 a 0)
         const pA = a.priority || 0;
         const pB = b.priority || 0;
         if (pA !== pB) return pB - pA;
-        // Secondary sort by position if exists
+        // Tercero: position personalizado
         return (a.position || 0) - (b.position || 0);
       });
   });
@@ -216,6 +228,7 @@ export function useTodos() {
     addTodo,
     toggleTodo,
     removeTodo,
+    updateTodo,
     updatePositions,
     addSubtask,
     toggleSubtask,

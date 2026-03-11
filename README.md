@@ -4,16 +4,18 @@ Una aplicación de tareas moderna, minimalista y con una estética premium, dise
 
 ## 🚀 Características Principales
 
-- **Diseño Premium**: Interfaz ultra-limpia con efectos de glassmorphism, tipografía moderna (Inter/Outfit) y transiciones fluidas.
-- **Calendario Semanal Interactiva**: Filtra tus tareas seleccionando días directamente en la barra superior.
+- **Diseño Premium**: Interfaz ultra-limpia con tipografía moderna (DM Sans), bordes refinados y transiciones fluidas.
+- **Calendario Semanal Interactivo**: Filtra tus tareas seleccionando días directamente en la barra superior.
 - **Sistema de Prioridades (Rayos ⚡️)**: Clasifica la urgencia de tus tareas con iconos de rayos (1, 2 o 3 rayos).
-- **Ordenación Inteligente**: Las tareas se ordenan automáticamente por prioridad (de mayor a menor) y por posición personalizada.
+- **Ordenación Inteligente**: Las tareas completadas pasan al final automáticamente, manteniendo el criterio de prioridad dentro de cada grupo.
+- **Edición Completa**: Modifica cualquier tarea mediante botón de editar o manteniendo presionado (press & hold 500ms).
 - **Categorización**: Organiza tus tareas en categorías (Trabajo, Personal, Salud, Ideas, Otros) con contadores dinámicos.
 - **Gestión de Subtareas**: Crea listas de verificación dentro de cada tarea con validación de progreso automática.
 - **Progreso Diario**: Barra de progreso visual que muestra el avance real de las tareas del día seleccionado.
-- **Arrastrar y Soltar (Drag & Drop)**: Reorganiza tus tareas fácilmente manteniendo el orden personalizado.
+- **Arrastrar y Soltar (Drag & Drop)**: Reorganiza tus tareas fácilmente mediante handle visible en desktop o gestos táctiles en móvil.
+- **Modal Optimizado**: Interface de creación/edición con diseño responsive, botón eliminar integrado y bordes refinados.
 - **Modo Oscuro/Claro**: Adaptado perfectamente para cualquier entorno visual con un solo toque.
-- **Totalmente Responsivo**: Experiencia optimizada para dispositivos móviles y escritorio.
+- **Totalmente Responsivo**: Experiencia optimizada para dispositivos móviles y escritorio con adaptación inteligente de elementos.
 
 ## 🛠️ Stack Tecnológico
 
@@ -50,9 +52,25 @@ Una aplicación de tareas moderna, minimalista y con una estética premium, dise
 
 ## 🎨 Principios de Diseño
 
-- **Tipografía**: Uso exclusivo de pesos *Regular* y *Medium* para una lectura limpia.
+- **Tipografía**: DM Sans con pesos Regular y Medium para una lectura limpia y moderna.
 - **Iconografía**: SVGs minimalistas y personalizados para una carga rápida y escalabilidad perfecta.
-- **Micro-interacciones**: Animaciones sutiles en botones, checkbox y modales para mejorar la experiencia de usuario (UX).
+- **Micro-interacciones**: Animaciones sutiles en botones, checkbox, press & hold y modales para mejorar la experiencia de usuario (UX).
+- **Mobile-First**: Diseño pensado primero para móvil con expansiones responsivas en pantallas más grandes.
+- **Gestos Táctiles**: Press & hold para edición rápida, swipe y drag & drop naturales en dispositivos táctiles.
+
+## 📱 Características Específicas por Plataforma
+
+### Desktop (sm+)
+- Handle visible para drag & drop
+- Botones de editar/eliminar hover en cada tarea
+- Espaciado ampliado para mejor legibilidad
+
+### Móvil
+- Interfaz compacta con padding optimizado
+- Press & hold (500ms) para abrir edición
+- Drag & drop mediante gestos táctiles
+- Botones de acción ocultos (acceso desde modal)
+- Modal con borde inferior plano
 
 ---
 Desarrollado con ❤️ para una productividad sin distracciones.

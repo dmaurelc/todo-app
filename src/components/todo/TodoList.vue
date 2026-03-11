@@ -18,7 +18,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["dragChange", "toggleTodo", "expandTodo", "removeTodo", "addSubtask", "toggleSubtask", "removeSubtask"]);
+const emit = defineEmits(["dragChange", "toggleTodo", "expandTodo", "removeTodo", "addSubtask", "toggleSubtask", "removeSubtask", "editTodo"]);
 
 // CRITICAL: Clone array before passing to draggable for reactivity (Red Team fix)
 const clonedTodos = computed(() => {
@@ -54,6 +54,7 @@ const onDragChange = (event) => {
         @toggle="emit('toggleTodo', $event)"
         @expand="emit('expandTodo', $event)"
         @remove="emit('removeTodo', $event)"
+        @edit="emit('editTodo', $event)"
       />
     </template>
   </draggable>

@@ -28,6 +28,7 @@ const {
   addTodo,
   toggleTodo: originalToggleTodo,
   removeTodo,
+  updateTodo,
   updatePositions,
 } = useTodos();
 
@@ -39,6 +40,7 @@ const { showSadEmoji, showWarningEmoji, triggerSad, triggerWarning } =
 // State
 const expandedTodos = ref(new Set());
 const showAddSheet = ref(false);
+const editingTodo = ref(null);
 
 // Watch dark mode for meta updates
 watch(isDarkMode, (val) => {
@@ -80,6 +82,53 @@ const handleAddTodo = async ({ title, category, dueDate, priority }) => {
   }
 };
 
+// Edit todo
+const handleEditTodo = (todo) => {
+  editingTodo.value = todo;
+  showAddSheet.value = true;
+};
+
+// Update todo
+const handleUpdateTodo = async ({ title, category, dueDate, priority }) => {
+  if (!title.trim() || !editingTodo.value) return;
+  try {
+    await updateTodo(editingTodo.value.id, {
+      title,
+      category,
+      due_date: dueDate,
+      priority,
+    });
+    editingTodo.value = null;
+    showAddSheet.value = false;
+  } catch (e) {
+    // Error is already toasted in useTodos
+  }
+};
+
+// Unified submit handler
+const handleSubmit = (data) => {
+  if (editingTodo.value) {
+    handleUpdateTodo(data);
+  } else {
+    handleAddTodo(data);
+  }
+};
+
+// Close handler that clears editing state
+const handleClose = () => {
+  editingTodo.value = null;
+  showAddSheet.value = false;
+};
+
+// Delete todo from edit modal
+const handleDeleteTodo = () => {
+  if (editingTodo.value) {
+    removeTodo(editingTodo.value.id);
+    editingTodo.value = null;
+    showAddSheet.value = false;
+  }
+};
+
 // Handle time range changes
 const onTimeRangeChange = (val) => {
   if (val !== "custom") {
@@ -118,13 +167,13 @@ fetchTodos();
 
 <template>
   <div
-    class="min-h-screen flex flex-col items-center bg-background transition-colors duration-500 pb-32"
+    class="min-h-dvh flex flex-col items-center bg-background transition-colors duration-500"
   >
     <!-- Header -->
     <header
-      class="sticky top-0 w-full z-40 bg-background/80 backdrop-blur-xl saturate-150 border-b border-border/50 shadow-sm"
+      class="sticky top-0 w-full z-40 bg-background/80 backdrop-blur-xl saturate-150 border-b border-border/50"
     >
-      <div class="max-w-xl mx-auto px-6 pt-6 pb-2">
+      <div class="max-w-xl mx-auto px-6 pt-6 pb-2 border-x border-border/50">
         <div class="flex justify-between items-start mb-6">
           <div class="flex-1">
             <div class="flex items-center gap-2 mb-1">
@@ -185,7 +234,9 @@ fetchTodos();
     </header>
 
     <!-- Main Content -->
-    <main class="w-full max-w-xl mx-auto px-6 mt-6 flex-1">
+    <main
+      class="w-full h-full max-w-xl mx-auto px-6 mt-0 py-6 border-x border-border/50 flex-1 min-h-0"
+    >
       <!-- Dashboard Stats Area -->
       <div v-if="dayProgress.total > 0" class="w-full">
         <ProgressBar
@@ -211,10 +262,10 @@ fetchTodos();
 
       <!-- Content Card -->
       <div
-        class="bg-card text-card-foreground rounded-lg dark:shadow-[0_8px_40px_rgba(0,0,0,0.2)] border border-border/50 overflow-hidden"
+        class="bg-card text-card-foreground rounded-lg dark:shadow-[0_8px_40px_rgba(0,0,0,0.2)] overflow-hidden"
       >
         <!-- Task List Area -->
-        <div class="relative min-h-[460px]">
+        <div class="relative min-h-115">
           <TodoList
             v-if="filteredTodos.length > 0"
             :todos="filteredTodos"
@@ -224,6 +275,7 @@ fetchTodos();
             @toggleTodo="handleToggleTodo"
             @expandTodo="toggleExpand"
             @removeTodo="removeTodo"
+            @editTodo="handleEditTodo"
           />
 
           <!-- Empty State -->
@@ -232,7 +284,7 @@ fetchTodos();
             class="absolute inset-0 flex flex-col items-center justify-center text-center p-12 transition-all duration-500 animate-in fade-in"
           >
             <div
-              class="w-24 h-24 mb-8 bg-secondary rounded-[32px] flex items-center justify-center shadow-inner border border-border/30 text-primary/40"
+              class="w-24 h-24 mb-8 rounded-2xl flex items-center justify-center text-primary/40"
             >
               <svg
                 class="w-10 h-10"
@@ -251,11 +303,9 @@ fetchTodos();
             <h3
               class="text-[20px] font-medium tracking-tight text-foreground mb-2"
             >
-              {{ loading ? "Cargando..." : "Todo al día" }}
+              {{ loading ? "Cargando..." : "To-do al día" }}
             </h3>
-            <p
-              class="text-muted-foreground text-[14px] font-medium max-w-[220px]"
-            >
+            <p class="text-muted-foreground text-[14px] font-medium max-w-55">
               {{
                 loading
                   ? "Preparando tus tareas..."
@@ -279,26 +329,28 @@ fetchTodos();
 
     <!-- Bottom Action Bar -->
     <div
-      class="fixed bottom-0 left-0 right-0 p-6 z-50 flex flex-col items-center"
+      class="fixed bottom-0 left-0 right-0 p-4 z-50 flex flex-col items-center"
     >
-      <div class="w-full max-w-xl">
+      <div class="w-full max-w-xl md:px-6 px-0">
         <!-- Floating Create Sheet WITH BACKDROP -->
         <transition name="fade">
           <div
             v-if="showAddSheet"
-            class="fixed inset-0 z-60 flex items-end justify-center px-6 pb-6"
+            class="fixed inset-0 z-60 flex items-end justify-center"
           >
             <div
               class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
-              @click="showAddSheet = false"
+              @click="handleClose"
             ></div>
             <div class="w-full max-w-xl relative">
               <AddTodoForm
                 :loading="loading"
                 :isDarkMode="isDarkMode"
                 :initialDate="dateFilter"
-                @submit="handleAddTodo"
-                @close="showAddSheet = false"
+                :editingTodo="editingTodo"
+                @submit="handleSubmit"
+                @close="handleClose"
+                @delete="handleDeleteTodo"
               />
             </div>
           </div>

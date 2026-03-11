@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { DEFAULT_CATEGORY } from "../../constants/categories.js";
 import CategoryPicker from "./CategoryPicker.vue";
 
@@ -16,9 +16,13 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  editingTodo: {
+    type: Object,
+    default: null,
+  },
 });
 
-const emit = defineEmits(["submit", "close"]);
+const emit = defineEmits(["submit", "close", "delete"]);
 
 const today = new Date().toISOString().split("T")[0];
 const title = ref("");
@@ -35,6 +39,20 @@ watch(
   { immediate: true },
 );
 
+// Sync with editingTodo when in edit mode
+watch(
+  () => props.editingTodo,
+  (todo) => {
+    if (todo) {
+      title.value = todo.title;
+      selectedCategory.value = todo.category;
+      dueDate.value = todo.due_date;
+      selectedPriority.value = todo.priority;
+    }
+  },
+  { immediate: true },
+);
+
 const handleSubmit = () => {
   if (!title.value.trim()) return;
   emit("submit", {
@@ -46,11 +64,19 @@ const handleSubmit = () => {
   title.value = "";
   selectedPriority.value = 0;
 };
+
+const isEditMode = computed(() => !!props.editingTodo);
+
+const formTitle = computed(() =>
+  isEditMode.value ? "Editar tarea" : "Nueva tarea",
+);
+
+const buttonText = computed(() => (isEditMode.value ? "Guardar" : "Agregar"));
 </script>
 
 <template>
   <div
-    class="bg-card text-card-foreground rounded-3xl p-6 shadow-2xl border border-border animate-slide-up relative overflow-hidden ring-1 ring-black/5"
+    class="bg-card text-card-foreground rounded-t-3xl p-6 shadow-2xl border border-border animate-slide-up relative overflow-hidden ring-1 ring-black/5"
   >
     <!-- Close Button -->
     <button
@@ -75,13 +101,13 @@ const handleSubmit = () => {
     <div class="space-y-6">
       <div class="pt-2">
         <h2 class="text-sm font-medium text-muted-foreground mb-3">
-          Nueva tarea
+          {{ formTitle }}
         </h2>
         <input
           v-model="title"
           type="text"
           placeholder="¿Qué necesitas hacer?"
-          class="w-full bg-transparent border-none text-[24px] font-medium focus:ring-0 placeholder:text-muted-foreground/20 outline-none pr-8"
+          class="w-full bg-transparent border-none text-[20px] sm:text-[24px] font-medium focus:ring-0 placeholder:text-muted-foreground/20 outline-none pr-8"
           autofocus
           @keyup.enter="handleSubmit"
         />
@@ -159,11 +185,33 @@ const handleSubmit = () => {
         </div>
       </div>
 
-      <div class="flex items-center justify-end pt-4">
+      <div class="flex items-center justify-between gap-3 pt-4">
+        <!-- Delete button (only in edit mode, on left in mobile) -->
+        <button
+          v-if="isEditMode"
+          @click="$emit('delete')"
+          class="flex items-center gap-2 text-destructive hover:text-destructive/80 text-sm font-medium transition-all px-4 py-3.5 rounded-2xl hover:bg-destructive/10 order-1"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="2.5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            />
+          </svg>
+          <span class="hidden sm:inline">Eliminar</span>
+        </button>
+
         <button
           @click="handleSubmit"
           :disabled="loading || !title.trim()"
-          class="bg-primary text-primary-foreground px-8 py-3.5 rounded-2xl font-medium text-[15px] transition-all active:scale-[0.98] disabled:opacity-30 flex items-center gap-2 shadow-lg shadow-primary/20"
+          class="bg-primary text-primary-foreground px-8 py-3.5 rounded-2xl font-medium text-[15px] transition-all active:scale-[0.98] disabled:opacity-30 flex items-center gap-2 shadow-lg shadow-primary/20 flex-1 sm:flex-none justify-center order-2 sm:order-1"
         >
           <svg
             v-if="loading"
@@ -185,7 +233,7 @@ const handleSubmit = () => {
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          <span v-else>Agregar</span>
+          <span v-else>{{ buttonText }}</span>
         </button>
       </div>
     </div>
