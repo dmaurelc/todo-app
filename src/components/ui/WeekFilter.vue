@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, nextTick, ref, watch } from "vue";
+import { computed, onMounted, nextTick, ref } from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -11,6 +11,7 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "change"]);
 
 const containerRef = ref(null);
+const isInitialized = ref(false);
 
 const weekDays = computed(() => {
   const result = [];
@@ -48,8 +49,8 @@ const selectDate = (iso) => {
   emit("change", iso);
 };
 
-// Scroll al día de hoy (alineado a la izquierda) al montar
-const scrollToToday = async () => {
+// Scroll al día seleccionado
+const scrollToSelectedDate = async (targetIso) => {
   await nextTick();
   if (!containerRef.value) return;
 
@@ -57,13 +58,17 @@ const scrollToToday = async () => {
 
   if (!buttons || buttons.length === 0) return;
 
-  const firstButton = buttons[0];
-  const buttonWidth = firstButton.offsetWidth;
+  // Buscar el botón con la fecha seleccionada
+  const targetButton = Array.from(buttons).find(btn => btn.getAttribute('data-iso') === targetIso);
+
+  if (!targetButton) return;
+
+  const buttonWidth = buttons[0].offsetWidth;
   const gap = window.innerWidth >= 640 ? 12 : 8;
 
-  // Posición del primer "hoy" en el array (índice 7)
-  const todayIndex = 7;
-  const scrollPosition = (buttonWidth + gap) * todayIndex;
+  // Calcular índice del botón encontrado
+  const buttonIndex = Array.from(buttons).indexOf(targetButton);
+  const scrollPosition = (buttonWidth + gap) * buttonIndex;
 
   containerRef.value.scrollTo({
     left: scrollPosition,
@@ -71,12 +76,17 @@ const scrollToToday = async () => {
   });
 };
 
-onMounted(() => {
-  scrollToToday();
+// Scroll inicial al día de hoy (solo al montar)
+onMounted(async () => {
+  await nextTick();
+  const todayIso = new Date().toISOString().split("T")[0];
+  await scrollToSelectedDate(todayIso);
+  isInitialized.value = true;
 });
 
-watch(() => props.modelValue, () => {
-  scrollToToday();
+// Exponer función para scroll externo
+defineExpose({
+  scrollToSelectedDate
 });
 </script>
 

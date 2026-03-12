@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, computed } from "vue";
+import { ref, watch, onMounted, computed, onUnmounted, nextTick } from "vue";
 import confetti from "canvas-confetti";
 import { useTodos } from "../composables/useTodos";
 import { useAuth } from "../composables/useAuth";
@@ -41,6 +41,67 @@ const { showSadEmoji, showWarningEmoji, triggerSad, triggerWarning } =
 const expandedTodos = ref(new Set());
 const showAddSheet = ref(false);
 const editingTodo = ref(null);
+const mainContentRef = ref(null);
+const weekFilterRef = ref(null);
+
+// Swipe gesture handling for mobile date navigation
+let touchStartX = 0;
+let touchStartY = 0;
+const SWIPE_THRESHOLD = 50;
+
+const handleTouchStart = (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+};
+
+const handleTouchEnd = (e) => {
+  const touchEndX = e.changedTouches[0].clientX;
+  const touchEndY = e.changedTouches[0].clientY;
+
+  const deltaX = touchEndX - touchStartX;
+  const deltaY = touchEndY - touchStartY;
+
+  // Solo procesar swipes horizontales (evitar conflictos con scroll vertical)
+  if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > SWIPE_THRESHOLD) {
+    // Swipe izquierdo = día siguiente
+    if (deltaX < 0) {
+      navigateDate(1);
+    }
+    // Swipe derecho = día anterior
+    else {
+      navigateDate(-1);
+    }
+  }
+};
+
+const navigateDate = (direction) => {
+  const currentDate = new Date(dateFilter.value + "T00:00:00");
+  currentDate.setDate(currentDate.getDate() + direction);
+  const newDate = currentDate.toISOString().split("T")[0];
+  dateFilter.value = newDate;
+  timeRange.value = "custom";
+
+  // Scroll a la nueva fecha en el WeekFilter
+  nextTick(() => {
+    weekFilterRef.value?.scrollToSelectedDate(newDate);
+  });
+};
+
+onMounted(() => {
+  const mainEl = mainContentRef.value;
+  if (mainEl) {
+    mainEl.addEventListener("touchstart", handleTouchStart, { passive: true });
+    mainEl.addEventListener("touchend", handleTouchEnd, { passive: true });
+  }
+});
+
+onUnmounted(() => {
+  const mainEl = mainContentRef.value;
+  if (mainEl) {
+    mainEl.removeEventListener("touchstart", handleTouchStart);
+    mainEl.removeEventListener("touchend", handleTouchEnd);
+  }
+});
 
 // Watch dark mode for meta updates
 watch(isDarkMode, (val) => {
@@ -229,12 +290,13 @@ fetchTodos();
         </div>
 
         <!-- Week Calendar Filter -->
-        <WeekFilter v-model="dateFilter" @change="onDateChange" class="mt-2" />
+        <WeekFilter ref="weekFilterRef" v-model="dateFilter" @change="onDateChange" class="mt-2" />
       </div>
     </header>
 
     <!-- Main Content -->
     <main
+      ref="mainContentRef"
       class="w-full h-full max-w-xl mx-auto px-6 mt-0 py-6 border-x border-border/50 flex-1 min-h-0"
     >
       <!-- Dashboard Stats Area -->
