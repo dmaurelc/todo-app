@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, nextTick, ref, watch } from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -10,11 +10,15 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "change"]);
 
+const containerRef = ref(null);
+
 const weekDays = computed(() => {
   const result = [];
   const start = new Date();
+  start.setDate(start.getDate() - 7); // 7 días atrás
 
-  for (let i = 0; i < 7; i++) {
+  // Generar 30 días para scroll infinito (2 ciclos completos)
+  for (let i = 0; i < 30; i++) {
     const d = new Date(start);
     d.setDate(start.getDate() + i);
     const dayName =
@@ -43,13 +47,45 @@ const selectDate = (iso) => {
   emit("update:modelValue", iso);
   emit("change", iso);
 };
+
+// Scroll al día de hoy (alineado a la izquierda) al montar
+const scrollToToday = async () => {
+  await nextTick();
+  if (!containerRef.value) return;
+
+  const buttons = containerRef.value?.querySelectorAll('button');
+
+  if (!buttons || buttons.length === 0) return;
+
+  const firstButton = buttons[0];
+  const buttonWidth = firstButton.offsetWidth;
+  const gap = window.innerWidth >= 640 ? 12 : 8;
+
+  // Posición del primer "hoy" en el array (índice 7)
+  const todayIndex = 7;
+  const scrollPosition = (buttonWidth + gap) * todayIndex;
+
+  containerRef.value.scrollTo({
+    left: scrollPosition,
+    behavior: 'smooth'
+  });
+};
+
+onMounted(() => {
+  scrollToToday();
+});
+
+watch(() => props.modelValue, () => {
+  scrollToToday();
+});
 </script>
 
 <template>
-  <div class="flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-2 -mx-6 px-6">
+  <div ref="containerRef" class="flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-2 -mx-6 px-6 scroll-smooth">
     <button
       v-for="day in weekDays"
       :key="day.iso"
+      :data-iso="day.iso"
       @click="selectDate(day.iso)"
       class="flex flex-col items-center justify-center min-w-[50px] sm:min-w-16 h-[56px] sm:h-18 rounded-xl sm:rounded-2xl transition-all duration-300 active:scale-95"
       :class="[
