@@ -6,13 +6,25 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+logs.txt
 
+# dependencies
 node_modules
+/.pnp
+.pnp.*
+
+# Build outputs
 dist
 dist-ssr
 *.local
+/out/
+bin/
+
+# env files (can opt-in for committing if needed)
 .env
 .env.local
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +37,54 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Testing
+/coverage
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Package manager (optional - comment out if you commit lock files)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Misc files
+*.pem
+repomix-output.xml
+
+# semantic-release
+.nyc_output
+
+# Flutter (if ever needed)
+.dart_tool
+build/
+GoogleService-Info.plist
+
+# Claude/Agent tools
+.claude/agent-memory/
+.claude/hooks/.logs/
+.gemini/settings.json
+.claude/settings.bak.json
+
+# External repos & worktrees
+external/
+worktrees/
+
+# Meta/command files
+prompt.md
+ck.md
+
+# Plan files (if using plan tools)
+plans/**/*
+!plans/templates/*
+
+# Screenshots
+screenshots/*
+docs/screenshots/*
+
+# Test/cache files
+test-ck
+__pycache__
+.serena/cache

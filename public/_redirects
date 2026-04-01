@@ -1,0 +1,5 @@
+# Netlify Redirects for SPA
+# This file ensures that all routes are handled by the app, not Netlify
+
+# Redirect all paths to index.html for SPA routing
+/*    /index.html   200

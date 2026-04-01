@@ -1,40 +1,34 @@
-import { ref } from "vue";
-import { supabase } from "../lib/supabase";
-import { useAuth } from "./useAuth";
+import { ref, computed } from "vue";
 import { toast } from "vue3-toastify";
+import { DEFAULT_PRIORITY } from "../constants/priorities.js";
+import { DEFAULT_CATEGORY } from "../constants/categories.js";
+
+const STORAGE_KEY = "todos";
+
+const todos = ref([]);
+const loading = ref(false);
+const error = ref(null);
+const categoryFilter = ref("all");
+const dateFilter = ref(new Date().toISOString().split('T')[0]); // Default to today
+const timeRange = ref("all"); // all, today, tomorrow, week
 
 export function useTodos() {
-  const todos = ref([]);
-  const loading = ref(false);
-  const error = ref(null);
-  const { isGuest } = useAuth();
-
-  // Load from LocalStorage (Guest Mode)
+  // Load from LocalStorage
   const loadLocalTodos = () => {
-    const local = localStorage.getItem("guest_todos");
-    return local ? JSON.parse(local) : [];
+    const local = localStorage.getItem(STORAGE_KEY);
+    if (!local) return [];
+    return JSON.parse(local);
   };
 
   const saveLocalTodos = (newTodos) => {
     todos.value = newTodos;
-    localStorage.setItem("guest_todos", JSON.stringify(newTodos));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newTodos));
   };
 
   const fetchTodos = async () => {
     loading.value = true;
-    error.value = null;
     try {
-      if (isGuest.value) {
-        todos.value = loadLocalTodos();
-      } else {
-        const { data, error: err } = await supabase
-          .from("todos")
-          .select("*")
-          .order("position", { ascending: true });
-
-        if (err) throw err;
-        todos.value = data;
-      }
+      todos.value = loadLocalTodos();
     } catch (err) {
       error.value = "Error al cargar tareas: " + err.message;
       toast.error("Error al cargar tareas");
@@ -44,41 +38,33 @@ export function useTodos() {
     }
   };
 
-  const addTodo = async (title, userId) => {
+  const addTodo = async (
+    title,
+    category = DEFAULT_CATEGORY,
+    dueDate = new Date().toISOString().split("T")[0],
+    priority = 0 // 0: None, 1: Low, 2: Medium, 3: High
+  ) => {
     if (!title.trim()) return;
+    loading.value = true;
     try {
-      const currentMin =
-        todos.value.length > 0
-          ? Math.min(...todos.value.map((t) => t.position || 0))
-          : 0;
-      const newPosition = currentMin - 1000;
-
       const newTodo = {
+        id: crypto.randomUUID(),
         title,
-        user_id: userId,
-        position: newPosition,
         is_complete: false,
-        subtasks: [], // Subtasks array
+        category,
+        due_date: dueDate,
+        priority: parseInt(priority) || 0,
+        position:
+          todos.value.length > 0
+            ? Math.max(...todos.value.map((t) => t.position || 0)) + 1000
+            : 1000,
+        subtasks: [],
         created_at: new Date().toISOString(),
       };
 
-      if (isGuest.value) {
-        // Guest: Add locally
-        // Generate pseudo-ID
-        newTodo.id = crypto.randomUUID();
-        const newTodos = [newTodo, ...todos.value];
-        saveLocalTodos(newTodos);
-      } else {
-        // Supabase
-        const { data, error: err } = await supabase
-          .from("todos")
-          .insert([newTodo])
-          .select()
-          .single();
-
-        if (err) throw err;
-        todos.value.unshift(data);
-      }
+      const newTodos = [...todos.value, newTodo];
+      saveLocalTodos(newTodos);
+      loading.value = false;
     } catch (err) {
       console.error("Error adding todo:", err);
       toast.error("Error al agregar tarea");
@@ -88,80 +74,25 @@ export function useTodos() {
 
   const toggleTodo = async (todo) => {
     todo.is_complete = !todo.is_complete;
-    try {
-      if (isGuest.value) {
-        saveLocalTodos(todos.value);
-      } else {
-        const { error: err } = await supabase
-          .from("todos")
-          .update({ is_complete: todo.is_complete })
-          .eq("id", todo.id);
-
-        if (err) {
-          todo.is_complete = !todo.is_complete;
-          throw err;
-        }
-      }
-    } catch (err) {
-      console.error("Error updating todo:", err);
-      toast.error("Error al actualizar tarea");
-    }
+    saveLocalTodos(todos.value);
   };
 
   const removeTodo = async (id) => {
-    const previousTodos = [...todos.value];
     todos.value = todos.value.filter((t) => t.id !== id);
+    saveLocalTodos(todos.value);
+  };
 
-    try {
-      if (isGuest.value) {
-        saveLocalTodos(todos.value);
-      } else {
-        const { error: err } = await supabase
-          .from("todos")
-          .delete()
-          .eq("id", id);
+  const updateTodo = async (id, updates) => {
+    const todo = todos.value.find((t) => t.id === id);
+    if (!todo) return;
 
-        if (err) {
-          todos.value = previousTodos;
-          throw err;
-        }
-      }
-    } catch (err) {
-      console.error("Error deleting todo:", err);
-      toast.error("Error al eliminar tarea");
-    }
+    Object.assign(todo, updates);
+    saveLocalTodos(todos.value);
   };
 
   const updatePositions = async (newTodos) => {
-    todos.value = newTodos;
-
-    if (isGuest.value) {
-      saveLocalTodos(newTodos);
-      return;
-    }
-
-    // Prepare payload for RPC
-    const updates = newTodos.map((todo, index) => ({
-      id: todo.id,
-      position: index * 1000,
-    }));
-
-    try {
-      const { error: err } = await supabase.rpc("update_todo_positions", {
-        payload: updates,
-      });
-
-      if (err) throw err;
-
-      // Update local positions
-      todos.value = todos.value.map((t, i) => ({
-        ...t,
-        position: i * 1000,
-      }));
-    } catch (err) {
-      console.error("Error reordering:", err);
-      toast.error("Error al guardar el nuevo orden");
-    }
+    todos.value = newTodos.map((t, i) => ({ ...t, position: i * 1000 }));
+    saveLocalTodos(todos.value);
   };
 
   // Subtasks Logic
@@ -191,15 +122,9 @@ export function useTodos() {
       // Check if all subtasks are complete
       const allSubtasksComplete = todo.subtasks.every((s) => s.is_complete);
 
-      // Update local state immediately for reactivity
-      // Only auto-complete, do not auto-uncomplete (user preference usually)
-      // Or consistent behavior: if all complete, mark parent complete.
       if (allSubtasksComplete && !todo.is_complete) {
         todo.is_complete = true;
-      }
-      // Optional: if user unchecks a subtask, should parent uncheck?
-      // Usually yes for strict dependency. Let's add that for consistency.
-      else if (!allSubtasksComplete && todo.is_complete) {
+      } else if (!allSubtasksComplete && todo.is_complete) {
         todo.is_complete = false;
       }
 
@@ -213,7 +138,6 @@ export function useTodos() {
 
     todo.subtasks = todo.subtasks.filter((s) => s.id !== subtaskId);
 
-    // Check if remaining subtasks (if any) are all complete
     if (todo.subtasks.length > 0 && todo.subtasks.every((s) => s.is_complete)) {
       if (!todo.is_complete) todo.is_complete = true;
     }
@@ -221,42 +145,94 @@ export function useTodos() {
     await saveSubtasks(todo);
   };
 
-  const saveSubtasks = async (todo) => {
-    try {
-      if (isGuest.value) {
-        saveLocalTodos(todos.value);
-      } else {
-        // Update both subtasks and is_complete status
-        const { error: err } = await supabase
-          .from("todos")
-          .update({
-            subtasks: todo.subtasks,
-            is_complete: todo.is_complete,
-          })
-          .eq("id", todo.id);
+  const updateSubtaskTitle = async (todoId, subtaskId, newTitle) => {
+    const todo = todos.value.find((t) => t.id === todoId);
+    if (!todo || !todo.subtasks) return;
 
-        if (err) {
-          // Basic rollback could go here, but omitted for brevity in MVP
-          throw err;
-        }
-      }
-    } catch (err) {
-      console.error("Error saving subtasks:", err);
-      toast.error("Error al guardar subtarea");
+    const subtask = todo.subtasks.find((s) => s.id === subtaskId);
+    if (subtask) {
+      subtask.title = newTitle;
+      await saveSubtasks(todo);
     }
   };
 
+  const saveSubtasks = async (todo) => {
+    saveLocalTodos(todos.value);
+  };
+
+  const filteredTodos = computed(() => {
+    return todos.value
+      .filter((t) => {
+        // Category filter
+        const categoryMatch =
+          categoryFilter.value === "all" || t.category === categoryFilter.value;
+
+        // Date filter - uses the selected day from the calendar bar
+        const taskDate = t.due_date || t.created_at?.split("T")[0];
+        const dateMatch = taskDate === dateFilter.value;
+
+        return categoryMatch && dateMatch;
+      })
+      .sort((a, b) => {
+        // Primero: tareas completadas al final
+        if (a.is_complete !== b.is_complete) {
+          return a.is_complete ? 1 : -1;
+        }
+        // Segundo: prioridad (3 a 0)
+        const pA = a.priority || 0;
+        const pB = b.priority || 0;
+        if (pA !== pB) return pB - pA;
+        // Tercero: position personalizado
+        return (a.position || 0) - (b.position || 0);
+      });
+  });
+
+  const dayTodos = computed(() => {
+    return todos.value.filter((t) => {
+      const taskDate = t.due_date || t.created_at?.split("T")[0];
+      return taskDate === dateFilter.value;
+    });
+  });
+
+  const dayProgress = computed(() => {
+    const total = dayTodos.value.length;
+    const completed = dayTodos.value.filter((t) => t.is_complete).length;
+    return {
+      total,
+      completed,
+      percent: total === 0 ? 0 : Math.round((completed / total) * 100),
+    };
+  });
+
+  const categoryCounts = computed(() => {
+    const counts = { trabajo: 0, personal: 0, salud: 0, ideas: 0, otros: 0 };
+    todos.value.forEach(t => {
+      if (t.category && counts[t.category] !== undefined) {
+        counts[t.category]++;
+      }
+    });
+    return counts;
+  });
+
   return {
     todos,
+    filteredTodos,
+    categoryFilter,
+    dateFilter,
+    timeRange,
+    categoryCounts,
+    dayProgress,
     loading,
     error,
     fetchTodos,
     addTodo,
     toggleTodo,
     removeTodo,
+    updateTodo,
     updatePositions,
     addSubtask,
     toggleSubtask,
     removeSubtask,
+    updateSubtaskTitle,
   };
 }
