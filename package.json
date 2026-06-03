@@ -9,18 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.2.2",
-    "autoprefixer": "^10.4.27",
+    "@tailwindcss/postcss": "^4.3.0",
+    "autoprefixer": "^10.5.0",
     "canvas-confetti": "^1.9.4",
-    "postcss": "^8.5.8",
-    "tailwindcss": "^4.2.2",
-    "vue": "^3.5.31",
-    "vue-router": "^4.6.4",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0",
+    "vue": "^3.5.35",
+    "vue-router": "^5.1.0",
     "vue3-toastify": "^0.2.9",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.5",
-    "vite": "^8.0.3"
+    "@vitejs/plugin-vue": "^6.0.7",
+    "vite": "^8.0.16"
   }
 }
