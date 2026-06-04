@@ -41,7 +41,10 @@ const writeCache = async () => {
   }
 };
 
-const fetchFresh = async ({ force = false } = {}) => {
+// clientFactory is injectable so unit tests can swap the network layer
+// without module-level mocks. Production callers omit it; the default
+// is the real RapidAPI client.
+const fetchFresh = async ({ force = false, clientFactory = createRapidApiFootballClient } = {}) => {
   // Single-flight: if a fetch is already running, return the same promise.
   if (inflight) return inflight;
 
@@ -56,7 +59,7 @@ const fetchFresh = async ({ force = false } = {}) => {
   error.value = null;
   inflight = (async () => {
     try {
-      const client = createRapidApiFootballClient({ apiKey });
+      const client = clientFactory({ apiKey });
       const body = await fetchWorldCupFixtures(client);
       fixtures.value = Array.isArray(body?.response) ? body.response : [];
       lastFetchedAt.value = Date.now();
@@ -91,4 +94,22 @@ export function useWorldCupFixtures() {
     refresh: (force = true) => fetchFresh({ force }),
     loadFromCache: readCache,
   };
+}
+
+// Test-only: reset module-level singleton state between cases.
+// Not part of the public composable API — exported so unit tests can
+// start each case with a clean slate without re-importing the module.
+export function __resetWorldCupFixturesState() {
+  fixtures.value = [];
+  loading.value = false;
+  error.value = null;
+  lastFetchedAt.value = null;
+  inflight = null;
+}
+
+// Test-only: invoke fetchFresh with a custom clientFactory. Mirrors
+// the public refresh() but lets tests inject a network mock directly,
+// sidestepping module-level vi.mock quirks.
+export function __refreshWithClientFactory(clientFactory) {
+  return fetchFresh({ force: true, clientFactory });
 }
