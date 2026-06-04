@@ -9,6 +9,9 @@ import { useNotifications } from "../composables/use-notifications.js";
 import { useHaptics } from "../composables/use-haptics.js";
 import { useDeepLink } from "../composables/use-deep-link.js";
 
+// World Cup 2026 — view swap, no router change.
+import WorldCupView from "../components/worldcup/WorldCupView.vue";
+
 // Components
 import ProgressBar from "../components/ui/ProgressBar.vue";
 import AddTodoForm from "../components/ui/AddTodoForm.vue";
@@ -17,6 +20,11 @@ import CategoryFilter from "../components/ui/CategoryFilter.vue";
 import WeekFilter from "../components/ui/WeekFilter.vue";
 import SettingsDialog from "../components/ui/SettingsDialog.vue";
 import CategoryManagerDialog from "../components/ui/CategoryManagerDialog.vue";
+
+const currentView = ref("todos"); // 'todos' | 'worldcup'
+const toggleWorldCup = () => {
+  currentView.value = currentView.value === "worldcup" ? "todos" : "worldcup";
+};
 
 // Assets
 const { user, isDarkMode, toggleDarkMode } = useAuth();
@@ -259,6 +267,11 @@ fetchTodos();
   <div
     class="min-h-dvh flex flex-col items-center bg-background transition-colors duration-500"
   >
+    <WorldCupView
+      v-if="currentView === 'worldcup'"
+      @view-change="(v) => (currentView = v || 'todos')"
+    />
+    <template v-else>
     <!-- Header -->
     <header
       class="sticky top-0 w-full z-40 bg-background/80 backdrop-blur-xl saturate-150 border-b border-border/50"
@@ -288,12 +301,14 @@ fetchTodos();
           <!-- Header action icons: bare buttons, no wrapper cards.
                Tap target kept at 40px via padding; only the icon paints. -->
           <div class="flex items-center gap-1">
-            <!-- World Cup 2026 calendar — wires up in a follow-up plan -->
+            <!-- World Cup 2026 calendar — toggles between dashboard and fullscreen view -->
             <button
-              class="p-2.5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors active:scale-[0.92]"
-              aria-label="Mundial 2026"
+              @click="toggleWorldCup"
+              class="p-2.5 flex items-center justify-center transition-colors active:scale-[0.92]"
+              :class="currentView === 'worldcup' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'"
+              :aria-label="currentView === 'worldcup' ? 'Volver a TODOs' : 'Mundial 2026'"
+              :aria-pressed="currentView === 'worldcup'"
               data-feature="worldcup"
-              disabled
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -536,6 +551,7 @@ fetchTodos();
       :open="showCategoriesDialog"
       @close="showCategoriesDialog = false"
     />
+    </template>
   </div>
 </template>
 
