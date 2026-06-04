@@ -2,7 +2,10 @@
 import { ref, watch } from "vue";
 import { useTauriCommand } from "../../composables/use-tauri-command.js";
 import { storage } from "../../composables/use-storage-adapter.js";
-import { createRapidApiFootballClient } from "../../api/rapidapi-football-client.js";
+import {
+  createRapidApiFootballClient,
+  formatApiError,
+} from "../../api/rapidapi-football-client.js";
 import { fetchWorldCupFixtures } from "../../api/worldcup-fixtures-endpoint.js";
 
 const props = defineProps({
@@ -55,7 +58,7 @@ const testRapidApi = async () => {
       message: `Conexión OK — ${count} fixture(s) encontrados`,
     };
   } catch (err) {
-    testResult.value = { ok: false, message: err?.message || "Error desconocido" };
+    testResult.value = { ok: false, message: formatApiError(err) };
   } finally {
     testingApi.value = false;
   }

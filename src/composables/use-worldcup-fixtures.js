@@ -1,6 +1,9 @@
 import { ref, computed } from "vue";
 import { storage } from "./use-storage-adapter.js";
-import { createRapidApiFootballClient } from "../api/rapidapi-football-client.js";
+import {
+  createRapidApiFootballClient,
+  formatApiError,
+} from "../api/rapidapi-football-client.js";
 import { fetchWorldCupFixtures } from "../api/worldcup-fixtures-endpoint.js";
 
 const CACHE_KEY = "worldcup.fixtures";
@@ -65,7 +68,7 @@ const fetchFresh = async ({ force = false, clientFactory = createRapidApiFootbal
       lastFetchedAt.value = Date.now();
       await writeCache();
     } catch (err) {
-      error.value = err?.message || "Error desconocido";
+      error.value = formatApiError(err);
     } finally {
       loading.value = false;
       inflight = null;

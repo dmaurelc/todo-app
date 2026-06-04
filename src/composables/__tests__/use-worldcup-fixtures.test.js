@@ -112,9 +112,40 @@ describe("useWorldCupFixtures", () => {
     await loadFromCache();
     expect(fixtures.value).toEqual(previous);
     await __refreshWithClientFactory(clientFactory);
+    // formatApiError maps 429 to a Spanish rate-limit message; we
+    // don't pin the full string — the dedicated tests in
+    // rapidapi-football-client.test.js cover the mapping. Here we
+    // only assert that the prior cache survived.
     expect(typeof error.value).toBe("string");
-    expect(error.value).toMatch(/429|API/);
     expect(fixtures.value).toEqual(previous);
+  });
+
+  it("network failure surfaces a Spanish 'sin conexion' message", async () => {
+    store.set("worldcup.apiKey", "k");
+    const clientFactory = vi.fn(
+      () => () => Promise.reject({
+        name: "ApiError",
+        body: { kind: "network", cause: "NetworkError" },
+      })
+    );
+    const { error } = useWorldCupFixtures();
+    await __refreshWithClientFactory(clientFactory);
+    expect(error.value).toMatch(/sin conexi/i);
+  });
+
+  it("403 'not subscribed' surfaces the RapidAPI copy", async () => {
+    store.set("worldcup.apiKey", "k");
+    const clientFactory = vi.fn(
+      () => () => Promise.reject({
+        name: "ApiError",
+        status: 403,
+        body: { message: "You are not subscribed to this API" },
+      })
+    );
+    const { error } = useWorldCupFixtures();
+    await __refreshWithClientFactory(clientFactory);
+    expect(error.value).toMatch(/suscrito/i);
+    expect(error.value).toMatch(/api-football/i);
   });
 
   it("concurrent refresh calls share a single fetch via single-flight", async () => {
