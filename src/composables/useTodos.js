@@ -1,7 +1,9 @@
 import { ref, computed } from "vue";
 import { toast } from "vue3-toastify";
 import { DEFAULT_PRIORITY } from "../constants/priorities.js";
-import { DEFAULT_CATEGORY } from "../constants/categories.js";
+import { DEFAULT_CATEGORY, FALLBACK_CATEGORY } from "../constants/categories.js";
+import { storage } from "./use-storage-adapter.js";
+import { useCategories } from "./use-categories.js";
 
 const STORAGE_KEY = "todos";
 
@@ -9,30 +11,34 @@ const todos = ref([]);
 const loading = ref(false);
 const error = ref(null);
 const categoryFilter = ref("all");
-const dateFilter = ref(new Date().toISOString().split('T')[0]); // Default to today
-const timeRange = ref("all"); // all, today, tomorrow, week
+const dateFilter = ref(new Date().toISOString().split("T")[0]);
+const timeRange = ref("all");
 
 export function useTodos() {
-  // Load from LocalStorage
-  const loadLocalTodos = () => {
-    const local = localStorage.getItem(STORAGE_KEY);
-    if (!local) return [];
-    return JSON.parse(local);
+  // Async: storage adapter may hit Tauri store (async fs) or localStorage (sync).
+  const loadLocalTodos = async () => {
+    const data = await storage.get(STORAGE_KEY);
+    if (!Array.isArray(data)) return [];
+    return data;
   };
 
-  const saveLocalTodos = (newTodos) => {
+  const saveLocalTodos = async (newTodos) => {
     todos.value = newTodos;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newTodos));
+    await storage.set(STORAGE_KEY, newTodos);
   };
 
   const fetchTodos = async () => {
     loading.value = true;
     try {
-      todos.value = loadLocalTodos();
+      const loaded = await loadLocalTodos();
+      todos.value = loaded;
     } catch (err) {
-      error.value = "Error al cargar tareas: " + err.message;
-      toast.error("Error al cargar tareas");
-      console.error(err);
+      // Log full error so we can diagnose (Tauri IPC failures, schema mismatches).
+      console.error("[useTodos] fetchTodos failed:", err);
+      error.value = "Error al cargar tareas: " + (err?.message || String(err));
+      toast.error("No se pudieron cargar las tareas");
+      // Surface empty list so UI stays usable; user can retry by adding a task.
+      todos.value = [];
     } finally {
       loading.value = false;
     }
@@ -42,7 +48,7 @@ export function useTodos() {
     title,
     category = DEFAULT_CATEGORY,
     dueDate = new Date().toISOString().split("T")[0],
-    priority = 0 // 0: None, 1: Low, 2: Medium, 3: High
+    priority = 0
   ) => {
     if (!title.trim()) return;
     loading.value = true;
@@ -63,7 +69,7 @@ export function useTodos() {
       };
 
       const newTodos = [...todos.value, newTodo];
-      saveLocalTodos(newTodos);
+      await saveLocalTodos(newTodos);
       loading.value = false;
     } catch (err) {
       console.error("Error adding todo:", err);
@@ -74,12 +80,12 @@ export function useTodos() {
 
   const toggleTodo = async (todo) => {
     todo.is_complete = !todo.is_complete;
-    saveLocalTodos(todos.value);
+    await saveLocalTodos(todos.value);
   };
 
   const removeTodo = async (id) => {
     todos.value = todos.value.filter((t) => t.id !== id);
-    saveLocalTodos(todos.value);
+    await saveLocalTodos(todos.value);
   };
 
   const updateTodo = async (id, updates) => {
@@ -87,15 +93,15 @@ export function useTodos() {
     if (!todo) return;
 
     Object.assign(todo, updates);
-    saveLocalTodos(todos.value);
+    await saveLocalTodos(todos.value);
   };
 
   const updatePositions = async (newTodos) => {
     todos.value = newTodos.map((t, i) => ({ ...t, position: i * 1000 }));
-    saveLocalTodos(todos.value);
+    await saveLocalTodos(todos.value);
   };
 
-  // Subtasks Logic
+  // Subtasks
   const addSubtask = async (todoId, title) => {
     const todo = todos.value.find((t) => t.id === todoId);
     if (!todo) return;
@@ -107,7 +113,6 @@ export function useTodos() {
       is_complete: false,
     };
     todo.subtasks.push(newSubtask);
-
     await saveSubtasks(todo);
   };
 
@@ -119,9 +124,7 @@ export function useTodos() {
     if (subtask) {
       subtask.is_complete = !subtask.is_complete;
 
-      // Check if all subtasks are complete
       const allSubtasksComplete = todo.subtasks.every((s) => s.is_complete);
-
       if (allSubtasksComplete && !todo.is_complete) {
         todo.is_complete = true;
       } else if (!allSubtasksComplete && todo.is_complete) {
@@ -157,32 +160,25 @@ export function useTodos() {
   };
 
   const saveSubtasks = async (todo) => {
-    saveLocalTodos(todos.value);
+    await saveLocalTodos(todos.value);
   };
 
   const filteredTodos = computed(() => {
     return todos.value
       .filter((t) => {
-        // Category filter
         const categoryMatch =
           categoryFilter.value === "all" || t.category === categoryFilter.value;
-
-        // Date filter - uses the selected day from the calendar bar
         const taskDate = t.due_date || t.created_at?.split("T")[0];
         const dateMatch = taskDate === dateFilter.value;
-
         return categoryMatch && dateMatch;
       })
       .sort((a, b) => {
-        // Primero: tareas completadas al final
         if (a.is_complete !== b.is_complete) {
           return a.is_complete ? 1 : -1;
         }
-        // Segundo: prioridad (3 a 0)
         const pA = a.priority || 0;
         const pB = b.priority || 0;
         if (pA !== pB) return pB - pA;
-        // Tercero: position personalizado
         return (a.position || 0) - (b.position || 0);
       });
   });
@@ -205,14 +201,40 @@ export function useTodos() {
   });
 
   const categoryCounts = computed(() => {
-    const counts = { trabajo: 0, personal: 0, salud: 0, ideas: 0, otros: 0 };
-    todos.value.forEach(t => {
-      if (t.category && counts[t.category] !== undefined) {
-        counts[t.category]++;
-      }
+    // Iterate all known categories (from useCategories) plus `otros` fallback
+    // so consumers can render chips for any user-added category. Todos with
+    // a category that was deleted still count under their last value (so
+    // they show up in `counts` even though the chip is gone).
+    const cats = useCategories();
+    const counts = {};
+    for (const c of cats.categories.value) {
+      counts[c.id] = 0;
+    }
+    if (counts[FALLBACK_CATEGORY] === undefined) counts[FALLBACK_CATEGORY] = 0;
+    todos.value.forEach((t) => {
+      const key = t.category || FALLBACK_CATEGORY;
+      counts[key] = (counts[key] || 0) + 1;
     });
     return counts;
   });
+
+  // Reassign every todo from `oldId` to `newId`, then persist. Returns the
+  // number of todos touched. Used by CategoryManagerDialog when deleting a
+  // category so existing tasks don't end up orphaned.
+  const reassignCategory = async (oldId, newId) => {
+    let n = 0;
+    const updated = todos.value.map((t) => {
+      if (t.category === oldId) {
+        n++;
+        return { ...t, category: newId };
+      }
+      return t;
+    });
+    if (n === 0) return 0;
+    todos.value = updated;
+    await saveLocalTodos(updated);
+    return n;
+  };
 
   return {
     todos,
@@ -234,5 +256,6 @@ export function useTodos() {
     toggleSubtask,
     removeSubtask,
     updateSubtaskTitle,
+    reassignCategory,
   };
 }
