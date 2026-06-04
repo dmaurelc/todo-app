@@ -183,6 +183,19 @@ describe("formatApiError", () => {
     expect(formatApiError(err)).toBe("I'm a teapot");
   });
 
+  it("returns the upstream message from a 200 with a flat { token } body", () => {
+    const err = new ApiError("API errors", {
+      status: 200,
+      body: { token: "Invalid API key" },
+    });
+    expect(formatApiError(err)).toMatch(/Invalid API key/);
+  });
+
+  it("falls back to a plan hint when status is 200 and body is empty", () => {
+    const err = new ApiError("API errors", { status: 200, body: {} });
+    expect(formatApiError(err)).toMatch(/plan|dashboard|temporada/i);
+  });
+
   it("returns a friendly default for null/undefined", () => {
     expect(formatApiError(null)).toMatch(/desconocido/i);
     expect(formatApiError(undefined)).toMatch(/desconocido/i);

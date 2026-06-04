@@ -68,14 +68,13 @@ export const formatApiError = (err) => {
     return "Sin conexion. Verifica tu internet o la configuracion de red.";
   }
   const status = err?.status;
-  // API-Football returns errors as { errors: { token: "...", plan: "..." } }
-  // for non-2xx, and the same shape for 200-with-errors. Pick the first
-  // human-readable string the API gives us.
-  const firstErr = err?.body?.errors;
-  const upstreamMsg =
-    firstErr && typeof firstErr === "object"
-      ? Object.values(firstErr).find((v) => typeof v === "string" && v.length)
-      : null;
+  // API-Football returns errors in two shapes:
+  //   non-2xx: { errors: { token, plan, season, rateLimit, ... } }
+  //   200-with-bad-query: { errors: { token: "..." } } on its own,
+  //                       or sometimes nested.
+  // Walk any nested `errors` first, then fall back to scanning the
+  // whole body for the first human-readable string the API gave us.
+  const upstreamMsg = findUpstreamMessage(err?.body);
   switch (status) {
     case 401:
       return upstreamMsg
@@ -99,8 +98,34 @@ export const formatApiError = (err) => {
       }
       if (upstreamMsg) return String(upstreamMsg);
       if (err?.body?.message) return String(err.body.message);
-      return err?.message || "Error desconocido";
+      // 200 + non-empty body.errors: we already extracted upstreamMsg
+      // above; if it was present the previous branch returned it.
+      // This is the final fallback for an empty errors object that
+      // still triggered the throw (defensive).
+      return err?.message && err.message !== "API errors"
+        ? err.message
+        : "La API rechazo la consulta. Revisa tu plan en dashboard.api-football.com o espera a que la temporada 2026 este disponible.";
   }
+};
+
+// Walks an arbitrary body shape and returns the first non-empty string
+// the API gave us. Handles the { errors: { ... } } wrapper, a flat
+// { token: "..." }, or a deeply nested error structure.
+const findUpstreamMessage = (body) => {
+  if (!body || typeof body !== "object") return null;
+  // First try the documented { errors: { ... } } shape.
+  if (body.errors && typeof body.errors === "object") {
+    const fromErrors = Object.values(body.errors).find(
+      (v) => typeof v === "string" && v.length
+    );
+    if (fromErrors) return fromErrors;
+  }
+  // Then scan the body itself for any string field. Useful when the
+  // API returns { token: "Invalid API key" } at the top level.
+  const fromBody = Object.values(body).find(
+    (v) => typeof v === "string" && v.length
+  );
+  return fromBody || null;
 };
 
 // Re-export HOST for tests and the SettingsDialog that may want to

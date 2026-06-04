@@ -58,6 +58,11 @@ const testRapidApi = async () => {
       message: `Conexión OK — ${count} fixture(s) encontrados`,
     };
   } catch (err) {
+    // Always log the raw error in dev so the user (and we) can
+    // diagnose the upstream response without opening DevTools for
+    // every attempt.
+    // eslint-disable-next-line no-console
+    console.warn("[worldcup] test connection failed:", err);
     testResult.value = { ok: false, message: formatApiError(err) };
   } finally {
     testingApi.value = false;
