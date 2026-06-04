@@ -133,19 +133,34 @@ describe("useWorldCupFixtures", () => {
     expect(error.value).toMatch(/sin conexi/i);
   });
 
-  it("403 'not subscribed' surfaces the RapidAPI copy", async () => {
+  it("403 surfaces the upstream plan/season message in Spanish", async () => {
     store.set("worldcup.apiKey", "k");
     const clientFactory = vi.fn(
       () => () => Promise.reject({
         name: "ApiError",
         status: 403,
-        body: { message: "You are not subscribed to this API" },
+        body: { errors: { plan: "Your current plan does not include this season" } },
       })
     );
     const { error } = useWorldCupFixtures();
     await __refreshWithClientFactory(clientFactory);
-    expect(error.value).toMatch(/suscrito/i);
-    expect(error.value).toMatch(/api-football/i);
+    expect(error.value).toMatch(/403/);
+    expect(error.value).toMatch(/plan/);
+  });
+
+  it("401 surfaces the upstream token message in Spanish", async () => {
+    store.set("worldcup.apiKey", "k");
+    const clientFactory = vi.fn(
+      () => () => Promise.reject({
+        name: "ApiError",
+        status: 401,
+        body: { errors: { token: "Invalid API key" } },
+      })
+    );
+    const { error } = useWorldCupFixtures();
+    await __refreshWithClientFactory(clientFactory);
+    expect(error.value).toMatch(/api key inv/i);
+    expect(error.value).toMatch(/Invalid API key/);
   });
 
   it("concurrent refresh calls share a single fetch via single-flight", async () => {

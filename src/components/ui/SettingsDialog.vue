@@ -3,9 +3,9 @@ import { ref, watch } from "vue";
 import { useTauriCommand } from "../../composables/use-tauri-command.js";
 import { storage } from "../../composables/use-storage-adapter.js";
 import {
-  createRapidApiFootballClient,
+  createApiFootballClient,
   formatApiError,
-} from "../../api/rapidapi-football-client.js";
+} from "../../api/api-football-client.js";
 import { fetchWorldCupFixtures } from "../../api/worldcup-fixtures-endpoint.js";
 
 const props = defineProps({
@@ -32,7 +32,7 @@ const loadRapidApiKey = async () => {
   // Dev fallback: read from import.meta.env if no stored key.
   // import.meta.env.VITE_RAPIDAPI_KEY is inlined at build time only when set.
   if (!rapidApiKey.value) {
-    const envKey = import.meta?.env?.VITE_RAPIDAPI_KEY;
+    const envKey = import.meta?.env?.VITE_API_FOOTBALL_KEY;
     if (envKey && envKey !== "__REPLACE_ME__") rapidApiKey.value = envKey;
   }
 };
@@ -50,7 +50,7 @@ const testRapidApi = async () => {
       testResult.value = { ok: false, message: "Ingresa una key primero" };
       return;
     }
-    const client = createRapidApiFootballClient({ apiKey: rapidApiKey.value.trim() });
+    const client = createApiFootballClient({ apiKey: rapidApiKey.value.trim() });
     const body = await fetchWorldCupFixtures(client);
     const count = Array.isArray(body?.response) ? body.response.length : 0;
     testResult.value = {
@@ -200,15 +200,25 @@ const copyPath = async () => {
 
         <div class="border-t border-border my-3"></div>
 
-        <!-- World Cup 2026 — RapidAPI key. Stored in tauri-plugin-store (desktop)
-             or localStorage (web). Never committed. .env provides a dev fallback. -->
+        <!-- World Cup 2026 — API-Football key (api-football.com direct,
+             not via RapidAPI). Stored in tauri-plugin-store (desktop)
+             or localStorage (web). Never committed. .env provides a
+             dev fallback via VITE_RAPIDAPI_KEY for legacy setups. -->
         <div class="px-1">
           <h3 class="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
             Mundial 2026
           </h3>
           <div class="space-y-2 text-sm">
             <label class="block">
-              <span class="text-muted-foreground">RapidAPI key</span>
+              <span class="text-muted-foreground">API-Football key</span>
+              <a
+                href="https://dashboard.api-football.com/"
+                target="_blank"
+                rel="noopener"
+                class="text-[10px] text-muted-foreground hover:text-foreground ml-1 underline"
+              >
+                Obtener gratis
+              </a>
               <input
                 v-model="rapidApiKey"
                 type="password"

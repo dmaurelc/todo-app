@@ -1,9 +1,9 @@
 import { ref, computed } from "vue";
 import { storage } from "./use-storage-adapter.js";
 import {
-  createRapidApiFootballClient,
+  createApiFootballClient,
   formatApiError,
-} from "../api/rapidapi-football-client.js";
+} from "../api/api-football-client.js";
 import { fetchWorldCupFixtures } from "../api/worldcup-fixtures-endpoint.js";
 
 const CACHE_KEY = "worldcup.fixtures";
@@ -46,8 +46,8 @@ const writeCache = async () => {
 
 // clientFactory is injectable so unit tests can swap the network layer
 // without module-level mocks. Production callers omit it; the default
-// is the real RapidAPI client.
-const fetchFresh = async ({ force = false, clientFactory = createRapidApiFootballClient } = {}) => {
+// is the real API-Football client.
+const fetchFresh = async ({ force = false, clientFactory = createApiFootballClient } = {}) => {
   // Single-flight: if a fetch is already running, return the same promise.
   if (inflight) return inflight;
 
