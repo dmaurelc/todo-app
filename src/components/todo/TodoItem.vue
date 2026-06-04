@@ -41,17 +41,51 @@ const pressTimer = ref(null);
 const isPressing = ref(false);
 const touchStartPos = ref({ x: 0, y: 0 });
 
-const handlePressStart = (event) => {
-  // Only activate on touch events (mobile), not mouse events (desktop)
-  if (!event.touches || event.touches.length === 0) return;
+// Swipe-to-reveal actions (mobile). Tracks horizontal drag distance; on
+// release, snaps open if past threshold or closed otherwise. Vertical
+// drags are ignored so they don't conflict with the date-swipe gesture.
+const SWIPE_THRESHOLD = 60;
+const SWIPE_MAX = 80;
+const swipeOffset = ref(0);
+let swipeStartX = 0;
+let swipeStartY = 0;
+let swipeAxis = null; // 'h' once direction is decided
+let isSwiping = false;
 
-  // Record initial touch position
-  touchStartPos.value = {
-    x: event.touches[0].clientX,
-    y: event.touches[0].clientY,
-  };
+const resetSwipe = () => {
+  swipeOffset.value = 0;
+  isSwiping = false;
+  swipeAxis = null;
+};
+
+const handlePressStart = (event) => {
+  // Support both touch (mobile) and pointer (trackpad/mouse on macOS).
+  // pointerId check filters out pointer events emitted by touch emulation on
+  // hybrid devices — only handle genuine pointer input via primary pointer.
+  if (event.touches) {
+    // Touch event
+    if (event.touches.length === 0) return;
+    touchStartPos.value = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+    };
+    swipeStartX = event.touches[0].clientX;
+    swipeStartY = event.touches[0].clientY;
+  } else if (event.pointerType !== 'touch') {
+    // Pointer event (mouse/trackpad) — skip touch emulation
+    if (event.button !== 0) return; // primary button only
+    touchStartPos.value = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+    swipeStartX = event.clientX;
+    swipeStartY = event.clientY;
+  } else {
+    return; // pointerType === 'touch' = touch emulation, skip
+  }
 
   isPressing.value = true;
+  isSwiping = false;
   pressTimer.value = setTimeout(() => {
     emit("edit", props.todo);
     isPressing.value = false;
@@ -59,19 +93,37 @@ const handlePressStart = (event) => {
 };
 
 const handlePressMove = (event) => {
-  // If user is dragging, cancel the press & hold
-  if (!pressTimer.value) return;
+  // Reject non-primary pointer (e.g., pen hover) and pointer emulation.
+  if (event.touches) {
+    if (event.touches.length === 0) return;
+  } else if (event.pointerType === 'touch' || event.button !== 0) {
+    return;
+  }
+  const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+  const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+  const deltaX = clientX - swipeStartX;
+  const deltaY = clientY - swipeStartY;
+  const absX = Math.abs(deltaX);
+  const absY = Math.abs(deltaY);
 
-  const touch = event.touches[0];
-  const deltaX = Math.abs(touch.clientX - touchStartPos.value.x);
-  const deltaY = Math.abs(touch.clientY - touchStartPos.value.y);
-
-  // If moved more than 10px, consider it a drag, cancel press
-  if (deltaX > 10 || deltaY > 10) {
+  // Long-press gets cancelled the moment the user moves at all.
+  if (pressTimer.value && (absX > 10 || absY > 10)) {
     clearTimeout(pressTimer.value);
     pressTimer.value = null;
     isPressing.value = false;
   }
+
+  // Decide swipe axis on first significant movement.
+  if (!swipeAxis && (absX > 8 || absY > 8)) {
+    swipeAxis = absX > absY ? "h" : "v";
+  }
+  if (swipeAxis !== "h") return;
+
+  // Only reveal from a leftward swipe (right-to-left exposes actions).
+  const offset = Math.min(0, Math.max(-SWIPE_MAX, deltaX));
+  if (offset === 0 && deltaX > 0) return;
+  swipeOffset.value = offset;
+  isSwiping = true;
 };
 
 const handlePressEnd = () => {
@@ -80,7 +132,23 @@ const handlePressEnd = () => {
     clearTimeout(pressTimer.value);
     pressTimer.value = null;
   }
+  if (isSwiping) {
+    // Snap open if past threshold, otherwise close.
+    if (swipeOffset.value < -SWIPE_THRESHOLD) {
+      swipeOffset.value = -SWIPE_MAX;
+    } else {
+      swipeOffset.value = 0;
+    }
+  }
+  isSwiping = false;
+  swipeAxis = null;
 };
+
+const closeSwipe = () => {
+  swipeOffset.value = 0;
+};
+
+defineExpose({ closeSwipe, resetSwipe });
 
 // Computed for subtask progress
 const subtaskProgress = computed(() => {
@@ -139,14 +207,69 @@ const formatDate = (dateStr) => {
   <li
     class="group/item relative transition-all duration-300 hover:bg-accent/5 border-b border-border/30 last:border-0 overflow-hidden rounded-md"
   >
-    <!-- Main Content Row -->
+    <!-- Swipe-revealed action panel (right side, hidden under the row) -->
     <div
-      class="flex items-center py-4 md:px-4 sm:py-5 gap-3 sm:gap-4 cursor-pointer select-none active:bg-accent/50 transition-colors"
+      class="absolute inset-y-0 right-0 flex items-stretch pointer-events-none"
+      :style="{ width: `${Math.abs(swipeOffset)}px` }"
+    >
+      <button
+        @click.stop="emit('edit', todo); resetSwipe()"
+        :style="{ width: `${Math.abs(swipeOffset)}px` }"
+        class="bg-foreground/10 text-foreground flex items-center justify-center pointer-events-auto"
+        aria-label="Editar tarea"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
+          />
+        </svg>
+      </button>
+      <button
+        @click.stop="emit('remove', todo.id); resetSwipe()"
+        :style="{ width: `${Math.abs(swipeOffset)}px` }"
+        class="bg-foreground text-background flex items-center justify-center pointer-events-auto"
+        aria-label="Eliminar tarea"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Main Content Row (translates horizontally as user swipes) -->
+    <div
+      class="flex items-center py-4 md:px-4 sm:py-5 gap-3 sm:gap-4 cursor-pointer select-none active:bg-accent/50 transition-colors relative"
       :class="{ 'opacity-70': isPressing }"
+      :style="{
+        transform: `translateX(${swipeOffset}px)`,
+        transition: isSwiping ? 'none' : 'transform 200ms ease-out',
+      }"
       @click="$emit('expand', todo.id)"
       @touchstart="handlePressStart"
       @touchmove="handlePressMove"
       @touchend="handlePressEnd"
+      @pointerdown="handlePressStart"
+      @pointermove="handlePressMove"
+      @pointerup="handlePressEnd"
     >
       <!-- Custom Checkbox -->
       <div class="shrink-0" @click.stop>

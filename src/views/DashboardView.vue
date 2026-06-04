@@ -5,6 +5,9 @@ import { useTodos } from "../composables/useTodos";
 import { useAuth } from "../composables/useAuth";
 import { useMetaTags } from "../composables/useMetaTags.js";
 import { useEmojiOverlay } from "../composables/use-emoji-overlay.js";
+import { useNotifications } from "../composables/use-notifications.js";
+import { useHaptics } from "../composables/use-haptics.js";
+import { useDeepLink } from "../composables/use-deep-link.js";
 
 // Components
 import ProgressBar from "../components/ui/ProgressBar.vue";
@@ -12,6 +15,8 @@ import AddTodoForm from "../components/ui/AddTodoForm.vue";
 import TodoList from "../components/todo/TodoList.vue";
 import CategoryFilter from "../components/ui/CategoryFilter.vue";
 import WeekFilter from "../components/ui/WeekFilter.vue";
+import SettingsDialog from "../components/ui/SettingsDialog.vue";
+import CategoryManagerDialog from "../components/ui/CategoryManagerDialog.vue";
 
 // Assets
 const { user, isDarkMode, toggleDarkMode } = useAuth();
@@ -36,10 +41,20 @@ const {
 const { updateMeta } = useMetaTags(isDarkMode);
 const { showSadEmoji, showWarningEmoji, triggerSad, triggerWarning } =
   useEmojiOverlay();
+const { notify } = useNotifications();
+const haptics = useHaptics();
+
+// Deep-link: focus a todo by id when launched via `todoapp://task/<uuid>`.
+useDeepLink(({ id }) => {
+  expandedTodos.value.add(id);
+  expandedTodos.value = new Set(expandedTodos.value);
+});
 
 // State
 const expandedTodos = ref(new Set());
 const showAddSheet = ref(false);
+const showSettingsDialog = ref(false);
+const showCategoriesDialog = ref(false);
 const editingTodo = ref(null);
 const mainContentRef = ref(null);
 const weekFilterRef = ref(null);
@@ -126,9 +141,23 @@ const onDragChange = (newTodos) => {
 const handleToggleTodo = async (todo) => {
   const wasComplete = todo.is_complete;
   await originalToggleTodo(todo);
+  haptics.lightTap();
 
   if (wasComplete && !todo.is_complete) {
     triggerSad();
+  }
+
+  // Notify when last incomplete task of the day gets done.
+  if (!wasComplete && todo.is_complete) {
+    const remaining = todos.value.filter(
+      (t) =>
+        !t.is_complete &&
+        (t.due_date || t.created_at?.split("T")[0]) === dateFilter.value
+    ).length;
+    if (remaining === 0) {
+      haptics.success();
+      notify("🎉 Día limpio", "Todas las tareas del día completadas.");
+    }
   }
 };
 
@@ -256,37 +285,87 @@ fetchTodos();
               >
             </div>
           </div>
-          <button
-            @click="toggleDarkMode"
-            class="w-10 h-10 flex items-center justify-center rounded-2xl bg-secondary text-secondary-foreground transition-all active:scale-[0.92] border border-border/50 hover:bg-accent hover:text-foreground"
-          >
-            <svg
-              v-if="isDarkMode"
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              stroke-width="2"
+          <!-- Header action icons: bare buttons, no wrapper cards.
+               Tap target kept at 40px via padding; only the icon paints. -->
+          <div class="flex items-center gap-1">
+            <!-- World Cup 2026 calendar — wires up in a follow-up plan -->
+            <button
+              class="p-2.5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors active:scale-[0.92]"
+              aria-label="Mundial 2026"
+              data-feature="worldcup"
+              disabled
             >
-              <path
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"
-                stroke-linecap="round"
-              />
-            </svg>
-            <svg
-              v-else
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              stroke-width="2"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0"
+                />
+              </svg>
+            </button>
+            <button
+              @click="toggleDarkMode"
+              class="p-2.5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors active:scale-[0.92]"
+              :aria-label="isDarkMode ? 'Modo claro' : 'Modo oscuro'"
             >
-              <path
-                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              <svg
+                v-if="isDarkMode"
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                stroke-width="2"
                 stroke-linecap="round"
-              />
-            </svg>
-          </button>
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+              </svg>
+              <svg
+                v-else
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            </button>
+            <button
+              @click="showSettingsDialog = true"
+              class="p-2.5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors active:scale-[0.92]"
+              aria-label="Ajustes"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+                />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <!-- Week Calendar Filter -->
@@ -447,6 +526,16 @@ fetchTodos();
         </button>
       </div>
     </div>
+
+    <SettingsDialog
+      :open="showSettingsDialog"
+      @close="showSettingsDialog = false"
+      @open-categories="showCategoriesDialog = true"
+    />
+    <CategoryManagerDialog
+      :open="showCategoriesDialog"
+      @close="showCategoriesDialog = false"
+    />
   </div>
 </template>
 
