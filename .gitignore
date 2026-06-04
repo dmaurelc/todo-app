@@ -88,3 +88,7 @@ docs/screenshots/*
 test-ck
 __pycache__
 .serena/cache
+
+# Tauri
+src-tauri/target/
+src-tauri/gen/

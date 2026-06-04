@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/mobile-schema.json",
+  "identifier": "mobile",
+  "description": "Mobile-only permissions (loaded via tauri.conf.json app.security.capabilities)",
+  "windows": ["main"],
+  "permissions": [
+    "notification:default",
+    "notification:allow-notify",
+    "notification:allow-is-permission-granted",
+    "notification:allow-request-permission",
+    "deep-link:default"
+  ]
+}
+
