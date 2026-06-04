@@ -1,24 +1,19 @@
 <script setup>
 import { computed } from "vue";
-import { CATEGORIES, DEFAULT_CATEGORY } from "../../constants/categories.js";
+import { useCategories } from "../../composables/use-categories.js";
 
 const props = defineProps({
   modelValue: {
     type: String,
-    default: DEFAULT_CATEGORY,
+    default: null,
   },
 });
 
 const emit = defineEmits(["update:modelValue"]);
+const { categories, DEFAULT_CATEGORY } = useCategories();
 
-const categories = computed(() => Object.values(CATEGORIES).map(cat => ({
-  id: cat.value,
-  label: cat.label,
-  icon: cat.icon
-})));
-
-const selectCategory = (value) => {
-  emit("update:modelValue", value);
+const selectCategory = (id) => {
+  emit("update:modelValue", id);
 };
 </script>
 

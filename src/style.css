@@ -91,6 +91,8 @@
   --sidebar-accent-foreground: #ededed;
   --sidebar-border: #262626;
   --sidebar-ring: #4e4e4e;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 @theme inline {
@@ -163,4 +165,73 @@
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* vue3-toastify overrides — match app design system */
+:root {
+  --toastify-color-light: transparent;
+  --toastify-color-dark: transparent;
+  --toastify-text-color-light: #19191a;
+  --toastify-text-color-dark: #ededed;
+}
+
+.Toastify__toast {
+  padding: 0 !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: 0 !important;
+}
+
+.Toastify__toast-body {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.Toastify__toast--error,
+.Toastify__toast--success,
+.Toastify__toast--info {
+  background: #ffffff !important;
+  color: #19191a !important;
+  border: 1px solid #dadada !important;
+  border-radius: 14px !important;
+  padding: 12px 16px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  min-height: 0 !important;
+}
+
+.dark .Toastify__toast--error,
+.dark .Toastify__toast--success,
+.dark .Toastify__toast--info {
+  background: #1f1f23 !important;
+  color: #ededed !important;
+  border-color: #2a2a2f !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.Toastify__close-button {
+  color: inherit !important;
+  opacity: 0.4 !important;
+}
+
+.Toastify__progress-bar--error,
+.Toastify__progress-bar--success,
+.Toastify__progress-bar--info,
+.Toastify__progress-bar--warning {
+  background: #19191a !important;
+}
+
+.dark .Toastify__progress-bar--error,
+.dark .Toastify__progress-bar--success,
+.dark .Toastify__progress-bar--info,
+.dark .Toastify__progress-bar--warning {
+  background: #ededed !important;
+}
+
+/* Vue3-toastify injects a colored circle/check SVG via its built-in icon
+   system. Hide it so toasts read as plain B&N messages. */
+.Toastify__toast-icon {
+  display: none !important;
 }
