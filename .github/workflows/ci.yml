@@ -49,7 +49,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: node .github/scripts/ci-lint.js
+        run: node .github/scripts/ci-lint.cjs
 
       - name: Build (unsigned, no bundles — CI smoke)
         run: pnpm exec tauri build --no-bundle
