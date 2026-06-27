@@ -5,10 +5,17 @@ import {
   formatApiError,
 } from "../api/api-football-client.js";
 import { fetchWorldCupFixtures } from "../api/worldcup-fixtures-endpoint.js";
+import bundledFixtures from "../data/worldcup-2026-fixtures.json";
 
 const CACHE_KEY = "worldcup.fixtures";
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6h — respects 100 req/day free tier
 const API_KEY_STORAGE = "worldcup.apiKey";
+
+// Build-time fallback scraped from Wikipedia (see scripts/build-worldcup-fixtures.mjs).
+// Used when api-football.com rejects the request (free plan only covers
+// 2022-2024). Static so the app always has something to render when the
+// API path is blocked AND we have nothing in the per-user cache yet.
+const BUNDLED = Array.isArray(bundledFixtures) ? bundledFixtures : [];
 
 // Module-level singletons — same pattern as useAuth/useCategories so all
 // callers see the same fixtures, loading flag, and lastFetchedAt.
@@ -44,6 +51,16 @@ const writeCache = async () => {
   }
 };
 
+// Fill fixtures from the bundled JSON. Used only when the API path
+// failed AND the per-user cache is also empty — never overwrites a
+// fresher cached dataset.
+const loadBundledFallback = () => {
+  if (BUNDLED.length === 0) return;
+  fixtures.value = BUNDLED;
+  lastFetchedAt.value = Date.now();
+  console.info(`[worldcup] cargados ${BUNDLED.length} fixtures del fallback bundleado`);
+};
+
 // clientFactory is injectable so unit tests can swap the network layer
 // without module-level mocks. Production callers omit it; the default
 // is the real API-Football client.
@@ -52,8 +69,15 @@ const fetchFresh = async ({ force = false, clientFactory = createApiFootballClie
   if (inflight) return inflight;
 
   const apiKey = await storage.get(API_KEY_STORAGE);
+  // Without an API key the live fetch is impossible. The bundled JSON
+  // is good enough to render the calendar — don't punish the user for
+  // skipping the optional key configuration. Clear any prior error so
+  // the view doesn't keep showing "Falta configurar la API key".
   if (!apiKey) {
-    error.value = "Falta configurar la API key en Ajustes";
+    error.value = null;
+    if (fixtures.value.length === 0 && BUNDLED.length > 0) {
+      loadBundledFallback();
+    }
     return;
   }
   if (!force && !isStale() && fixtures.value.length > 0) return;
@@ -69,6 +93,13 @@ const fetchFresh = async ({ force = false, clientFactory = createApiFootballClie
       await writeCache();
     } catch (err) {
       error.value = formatApiError(err);
+      // Graceful degradation: if we have no cached fixtures to fall
+      // back to, fill from the bundled Wikipedia scrape so the calendar
+      // isn't blank. The bundled data is always older than a real API
+      // hit, so we never overwrite a populated fixtures array.
+      if (fixtures.value.length === 0 && BUNDLED.length > 0) {
+        loadBundledFallback();
+      }
     } finally {
       loading.value = false;
       inflight = null;
@@ -87,6 +118,27 @@ const groupedByMatchday = computed(() => {
   return Array.from(map, ([round, list]) => ({ round, list }));
 });
 
+// Group fixtures by calendar day (YYYY-MM-DD) and sort each day by kickoff.
+// Used by WorldCupView to render the calendar the same way the todos view
+// does — one section per day, matches of that day stacked underneath.
+const groupedByDay = computed(() => {
+  const map = new Map();
+  for (const fx of fixtures.value) {
+    const dateKey = fx?.fixture?.date?.slice(0, 10);
+    if (!dateKey) continue;
+    if (!map.has(dateKey)) map.set(dateKey, []);
+    map.get(dateKey).push(fx);
+  }
+  for (const list of map.values()) {
+    list.sort((a, b) =>
+      String(a?.fixture?.date || "").localeCompare(String(b?.fixture?.date || ""))
+    );
+  }
+  return Array.from(map, ([date, list]) => ({ date, list })).sort((a, b) =>
+    a.date.localeCompare(b.date)
+  );
+});
+
 export function useWorldCupFixtures() {
   return {
     fixtures: computed(() => fixtures.value),
@@ -94,6 +146,7 @@ export function useWorldCupFixtures() {
     error: computed(() => error.value),
     lastFetchedAt: computed(() => lastFetchedAt.value),
     groupedByMatchday,
+    groupedByDay,
     refresh: (force = true) => fetchFresh({ force }),
     loadFromCache: readCache,
   };

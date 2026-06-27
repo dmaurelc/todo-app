@@ -1,12 +1,17 @@
 <script setup>
 import { onMounted } from "vue";
+import { toast } from "vue3-toastify";
 import { useWorldCupFixtures } from "../../composables/use-worldcup-fixtures.js";
+import { syncFixturesToCalendar } from "../../composables/useWorldcupSync.js";
+import { useTodos } from "../../composables/useTodos";
+import { formatWorldcupDay, formatWorldcupDaySub } from "../../utils/format-worldcup-day.js";
 import FixtureCard from "./FixtureCard.vue";
 
 const emit = defineEmits(["view-change"]);
 
 const {
-  groupedByMatchday,
+  fixtures,
+  groupedByDay,
   loading,
   error,
   lastFetchedAt,
@@ -14,10 +19,36 @@ const {
   loadFromCache,
 } = useWorldCupFixtures();
 
-// Instant render from persistent cache, then refresh in background if stale.
+const { todos, addTodo } = useTodos();
+
+// Idempotently insert any missing fixtures into the todo store. Fires a
+// toast only when at least one new match was added — repeated visits are
+// silent. No-op when fixtures is empty (no API key / first run / API error).
+const runSync = async () => {
+  if (!fixtures.value || fixtures.value.length === 0) return;
+  const { inserted } = await syncFixturesToCalendar({
+    fixtures: fixtures.value,
+    getTodos: () => todos.value,
+    addTodo,
+  });
+  if (inserted > 0) {
+    toast.success(`${inserted} partidos agregados al calendario`);
+  }
+};
+
+const onManualRefresh = async () => {
+  await refresh(true);
+  await runSync();
+};
+
+// Instant render from persistent cache, then refresh in background if stale,
+// then sync new fixtures to the calendar. Sync runs ONCE per mount — even
+// if refresh resolves early via the TTL cache hit, fixtures.value is
+// already populated from loadFromCache so the dedup Set will short-circuit.
 onMounted(async () => {
   await loadFromCache();
   await refresh(false);
+  await runSync();
 });
 
 const lastFetchedLabel = () => {
@@ -41,7 +72,7 @@ const lastFetchedLabel = () => {
           </p>
         </div>
         <button
-          @click="refresh(true)"
+          @click="onManualRefresh"
           :disabled="loading"
           class="text-xs px-3 py-1.5 rounded bg-secondary text-foreground disabled:opacity-50"
           :aria-label="loading ? 'Actualizando' : 'Actualizar fixtures'"
@@ -64,7 +95,7 @@ const lastFetchedLabel = () => {
       </div>
 
       <div
-        v-else-if="!loading && groupedByMatchday.length === 0"
+        v-else-if="!loading && groupedByDay.length === 0"
         class="rounded-lg border border-border bg-card p-6 text-center text-sm text-muted-foreground"
       >
         Calendario no disponible aún. La API-Football suele publicar los
@@ -73,23 +104,28 @@ const lastFetchedLabel = () => {
       </div>
 
       <div
-        v-else-if="loading && groupedByMatchday.length === 0"
+        v-else-if="loading && groupedByDay.length === 0"
         class="rounded-lg border border-border bg-card p-6 text-center text-sm text-muted-foreground"
       >
         Cargando fixture(s)…
       </div>
 
       <section
-        v-for="group in groupedByMatchday"
-        :key="group.round"
+        v-for="day in groupedByDay"
+        :key="day.date"
         class="space-y-2"
       >
-        <h2 class="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-          {{ group.round }}
-        </h2>
+        <header class="flex items-baseline justify-between px-1">
+          <h2 class="text-sm font-semibold text-foreground capitalize tracking-tight">
+            {{ formatWorldcupDay(day.date) }}
+          </h2>
+          <span class="text-[11px] font-medium text-muted-foreground capitalize">
+            {{ formatWorldcupDaySub(day.date) }}
+          </span>
+        </header>
         <div class="space-y-2">
           <FixtureCard
-            v-for="fx in group.list"
+            v-for="fx in day.list"
             :key="fx.fixture?.id"
             :fixture="fx"
           />

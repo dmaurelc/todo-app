@@ -43,12 +43,14 @@ beforeEach(() => {
 });
 
 describe("useWorldCupFixtures", () => {
-  it("refresh with no key sets error and does not fetch", async () => {
+  it("refresh with no key loads bundled fallback instead of erroring", async () => {
+    // The API key is OPTIONAL — the bundled Wikipedia JSON is good
+    // enough to render the calendar. No error, no broken view.
     const { refresh, error, fixtures } = useWorldCupFixtures();
     await refresh(true);
 
-    expect(error.value).toMatch(/api key/i);
-    expect(fixtures.value).toEqual([]);
+    expect(error.value).toBeNull();
+    expect(fixtures.value.length).toBeGreaterThan(0);
   });
 
   it("refresh with key + valid response populates fixtures and writes cache", async () => {
@@ -182,5 +184,82 @@ describe("useWorldCupFixtures", () => {
     resolveFn(okBody(1));
     await Promise.all([p1, p2]);
     expect(clientFactory).toHaveBeenCalledTimes(1);
+  });
+
+  it("ApiError with no cache falls back to the bundled Wikipedia JSON", async () => {
+    // Simulates api-football.com rejecting the 2026 season on the free
+    // plan. The user has no prior cache, so we should still render the
+    // calendar from the bundled JSON shipped at build time.
+    store.set("worldcup.apiKey", "k");
+    const clientFactory = vi.fn(() => () => Promise.reject(apiError(403)));
+    const { fixtures, error, lastFetchedAt } = useWorldCupFixtures();
+    await __refreshWithClientFactory(clientFactory);
+
+    expect(error.value).toMatch(/plan|temporada/i);
+    expect(fixtures.value.length).toBeGreaterThan(0);
+    expect(lastFetchedAt.value).toBeGreaterThan(0);
+  });
+
+  it("ApiError does NOT overwrite a populated fixtures array with bundled data", async () => {
+    // If the cache had a fresher dataset than the bundled JSON (e.g. the
+    // API worked once, then started failing), the cache wins.
+    store.set("worldcup.apiKey", "k");
+    const freshFromCache = [{ fixture: { id: 999 }, league: { round: "X" }, teams: {}, goals: {} }];
+    store.set("worldcup.fixtures", { fixtures: freshFromCache, fetchedAt: 1 });
+    const clientFactory = vi.fn(() => () => Promise.reject(apiError(500)));
+    const { loadFromCache, fixtures, error } = useWorldCupFixtures();
+    await loadFromCache();
+    expect(fixtures.value).toEqual(freshFromCache);
+    await __refreshWithClientFactory(clientFactory);
+    expect(typeof error.value).toBe("string");
+    // Cache survives — bundled JSON does not overwrite a non-empty array.
+    expect(fixtures.value).toEqual(freshFromCache);
+  });
+
+  describe("groupedByDay", () => {
+    const sampleBody = [
+      { fixture: { id: 1, date: "2026-06-15T18:00:00Z" }, league: { round: "Group Stage · A" }, teams: {}, goals: {} },
+      { fixture: { id: 2, date: "2026-06-15T21:00:00Z" }, league: { round: "Group Stage · A" }, teams: {}, goals: {} },
+      { fixture: { id: 3, date: "2026-06-16T17:00:00Z" }, league: { round: "Group Stage · A" }, teams: {}, goals: {} },
+      { fixture: { id: 4, date: "2026-06-14T20:00:00Z" }, league: { round: "Round of 32" }, teams: {}, goals: {} },
+    ];
+
+    it("groups by YYYY-MM-DD and sorts days chronologically", async () => {
+      store.set("worldcup.apiKey", "k");
+      const clientFactory = vi.fn(() => () => Promise.resolve({ response: sampleBody }));
+      const { groupedByDay } = useWorldCupFixtures();
+      await __refreshWithClientFactory(clientFactory);
+
+      expect(groupedByDay.value.map((d) => d.date)).toEqual([
+        "2026-06-14",
+        "2026-06-15",
+        "2026-06-16",
+      ]);
+    });
+
+    it("sorts fixtures within a day by kickoff time", async () => {
+      store.set("worldcup.apiKey", "k");
+      const clientFactory = vi.fn(() => () => Promise.resolve({ response: sampleBody }));
+      const { groupedByDay } = useWorldCupFixtures();
+      await __refreshWithClientFactory(clientFactory);
+
+      const june15 = groupedByDay.value.find((d) => d.date === "2026-06-15");
+      expect(june15.list.map((f) => f.fixture.id)).toEqual([1, 2]);
+    });
+
+    it("skips fixtures without a parseable date", async () => {
+      store.set("worldcup.apiKey", "k");
+      const body = {
+        response: [
+          { fixture: { id: 1, date: "2026-06-15T18:00:00Z" }, league: {}, teams: {}, goals: {} },
+          { fixture: { id: 2 }, league: {}, teams: {}, goals: {} },
+        ],
+      };
+      const clientFactory = vi.fn(() => () => Promise.resolve(body));
+      const { groupedByDay } = useWorldCupFixtures();
+      await __refreshWithClientFactory(clientFactory);
+      expect(groupedByDay.value).toHaveLength(1);
+      expect(groupedByDay.value[0].list).toHaveLength(1);
+    });
   });
 });

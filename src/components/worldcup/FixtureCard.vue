@@ -22,6 +22,12 @@ const home = computed(() => props.fixture?.teams?.home || {});
 const away = computed(() => props.fixture?.teams?.away || {});
 const goals = computed(() => props.fixture?.goals || {});
 const status = computed(() => props.fixture?.fixture?.status?.short || "NS");
+const round = computed(() => props.fixture?.league?.round || "");
+// Stadium lives on league in the bundled JSON; api-football keeps it on
+// a different field. Normalize.
+const stadium = computed(
+  () => props.fixture?.league?.stadium || props.fixture?.fixture?.venue?.name || ""
+);
 
 const statusLabel = computed(() => {
   switch (status.value) {
@@ -51,7 +57,15 @@ const live = computed(() =>
     class="rounded-xl border border-border bg-card text-card-foreground p-3 flex flex-col gap-2"
   >
     <div class="flex items-center justify-between text-xs text-muted-foreground">
-      <span>{{ kickoff }}</span>
+      <span class="flex items-center gap-2 truncate">
+        <span>{{ kickoff }}</span>
+        <span
+          v-if="round"
+          class="px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground font-medium tracking-wide text-[10px] uppercase truncate"
+        >
+          {{ round }}
+        </span>
+      </span>
       <span
         v-if="live"
         class="px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-500 font-semibold tracking-wide"
@@ -60,6 +74,13 @@ const live = computed(() =>
       </span>
       <span v-else class="font-medium">{{ statusLabel }}</span>
     </div>
+
+    <p
+      v-if="stadium"
+      class="text-[11px] text-muted-foreground truncate -mt-1"
+    >
+      {{ stadium }}
+    </p>
 
     <div class="flex items-center gap-3">
       <div class="flex-1 flex items-center gap-2 min-w-0">
