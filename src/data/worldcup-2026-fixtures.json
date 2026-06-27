@@ -1,0 +1,3642 @@
+[
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-a-1632205281-1",
+      "date": "2026-06-11T19:00:00.000Z",
+      "timestamp": 1781204400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · A",
+      "stadium": "Estadio Azteca, Mexico City"
+    },
+    "teams": {
+      "home": {
+        "id": 76224,
+        "name": "Mexico",
+        "logo": ""
+      },
+      "away": {
+        "id": 81440,
+        "name": "South Africa",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 0
+    },
+    "score": {
+      "home": 2,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-a-734829498-2",
+      "date": "2026-06-12T02:00:00.000Z",
+      "timestamp": 1781229600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · A",
+      "stadium": "Estadio Akron, Zapopan"
+    },
+    "teams": {
+      "home": {
+        "id": 74606,
+        "name": "South Korea",
+        "logo": ""
+      },
+      "away": {
+        "id": 67246,
+        "name": "Czech Republic",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 1
+    },
+    "score": {
+      "home": 2,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-b-93633665-7",
+      "date": "2026-06-12T19:00:00.000Z",
+      "timestamp": 1781290800,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · B",
+      "stadium": "BMO Field, Toronto"
+    },
+    "teams": {
+      "home": {
+        "id": 66480,
+        "name": "Canada",
+        "logo": ""
+      },
+      "away": {
+        "id": 65761,
+        "name": "Bosnia and Herzegovina",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 1
+    },
+    "score": {
+      "home": 1,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-d-736699013-19",
+      "date": "2026-06-13T01:00:00.000Z",
+      "timestamp": 1781312400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · D",
+      "stadium": "SoFi Stadium, Inglewood"
+    },
+    "teams": {
+      "home": {
+        "id": 84323,
+        "name": "United States",
+        "logo": ""
+      },
+      "away": {
+        "id": 78977,
+        "name": "Paraguay",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 4,
+      "away": 1
+    },
+    "score": {
+      "home": 4,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-b-1413918144-8",
+      "date": "2026-06-13T19:00:00.000Z",
+      "timestamp": 1781377200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · B",
+      "stadium": "Levi's Stadium, Santa Clara"
+    },
+    "teams": {
+      "home": {
+        "id": 79940,
+        "name": "Qatar",
+        "logo": ""
+      },
+      "away": {
+        "id": 82471,
+        "name": "Switzerland",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 1
+    },
+    "score": {
+      "home": 1,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-c-247955911-13",
+      "date": "2026-06-13T22:00:00.000Z",
+      "timestamp": 1781388000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · C",
+      "stadium": "MetLife Stadium, East Rutherford"
+    },
+    "teams": {
+      "home": {
+        "id": 66033,
+        "name": "Brazil",
+        "logo": ""
+      },
+      "away": {
+        "id": 76094,
+        "name": "Morocco",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 1
+    },
+    "score": {
+      "home": 1,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-c-2081736281-14",
+      "date": "2026-06-14T01:00:00.000Z",
+      "timestamp": 1781398800,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · C",
+      "stadium": "Gillette Stadium, Foxborough"
+    },
+    "teams": {
+      "home": {
+        "id": 71280,
+        "name": "Haiti",
+        "logo": ""
+      },
+      "away": {
+        "id": 81919,
+        "name": "Scotland",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 1
+    },
+    "score": {
+      "home": 0,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-d-1663468317-20",
+      "date": "2026-06-14T04:00:00.000Z",
+      "timestamp": 1781409600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · D",
+      "stadium": "BC Place, Vancouver"
+    },
+    "teams": {
+      "home": {
+        "id": 65183,
+        "name": "Australia",
+        "logo": ""
+      },
+      "away": {
+        "id": 83441,
+        "name": "Türkiye",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 0
+    },
+    "score": {
+      "home": 2,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-e-1538603360-25",
+      "date": "2026-06-14T17:00:00.000Z",
+      "timestamp": 1781456400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · E",
+      "stadium": "NRG Stadium, Houston"
+    },
+    "teams": {
+      "home": {
+        "id": 70452,
+        "name": "Germany",
+        "logo": ""
+      },
+      "away": {
+        "id": 67109,
+        "name": "Curaçao",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 7,
+      "away": 1
+    },
+    "score": {
+      "home": 7,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-f-1590401703-31",
+      "date": "2026-06-14T20:00:00.000Z",
+      "timestamp": 1781467200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · F",
+      "stadium": "AT&T Stadium, Arlington"
+    },
+    "teams": {
+      "home": {
+        "id": 77165,
+        "name": "Netherlands",
+        "logo": ""
+      },
+      "away": {
+        "id": 73672,
+        "name": "Japan",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 2
+    },
+    "score": {
+      "home": 2,
+      "away": 2
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-e-1946630053-26",
+      "date": "2026-06-14T23:00:00.000Z",
+      "timestamp": 1781478000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · E",
+      "stadium": "Lincoln Financial Field, Philadelphia"
+    },
+    "teams": {
+      "home": {
+        "id": 66736,
+        "name": "Ivory Coast",
+        "logo": ""
+      },
+      "away": {
+        "id": 68471,
+        "name": "Ecuador",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 0
+    },
+    "score": {
+      "home": 1,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-f-352042332-32",
+      "date": "2026-06-15T02:00:00.000Z",
+      "timestamp": 1781488800,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · F",
+      "stadium": "Estadio BBVA, Guadalupe"
+    },
+    "teams": {
+      "home": {
+        "id": 82529,
+        "name": "Sweden",
+        "logo": ""
+      },
+      "away": {
+        "id": 83437,
+        "name": "Tunisia",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 5,
+      "away": 1
+    },
+    "score": {
+      "home": 5,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-h-67074849-43",
+      "date": "2026-06-15T16:00:00.000Z",
+      "timestamp": 1781539200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · H",
+      "stadium": "Mercedes-Benz Stadium, Atlanta"
+    },
+    "teams": {
+      "home": {
+        "id": 68962,
+        "name": "Spain",
+        "logo": ""
+      },
+      "away": {
+        "id": 66953,
+        "name": "Cape Verde",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 0
+    },
+    "score": {
+      "home": 0,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-g-289153501-37",
+      "date": "2026-06-15T19:00:00.000Z",
+      "timestamp": 1781550000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · G",
+      "stadium": "Lumen Field, Seattle"
+    },
+    "teams": {
+      "home": {
+        "id": 65641,
+        "name": "Belgium",
+        "logo": ""
+      },
+      "away": {
+        "id": 68599,
+        "name": "Egypt",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 1
+    },
+    "score": {
+      "home": 1,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-h-876808732-44",
+      "date": "2026-06-15T22:00:00.000Z",
+      "timestamp": 1781560800,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · H",
+      "stadium": "Hard Rock Stadium, Miami Gardens"
+    },
+    "teams": {
+      "home": {
+        "id": 74713,
+        "name": "Saudi Arabia",
+        "logo": ""
+      },
+      "away": {
+        "id": 84312,
+        "name": "Uruguay",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 1
+    },
+    "score": {
+      "home": 1,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-g-1057446565-38",
+      "date": "2026-06-16T01:00:00.000Z",
+      "timestamp": 1781571600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · G",
+      "stadium": "SoFi Stadium, Inglewood"
+    },
+    "teams": {
+      "home": {
+        "id": 72773,
+        "name": "Iran",
+        "logo": ""
+      },
+      "away": {
+        "id": 77824,
+        "name": "New Zealand",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 2
+    },
+    "score": {
+      "home": 2,
+      "away": 2
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-i-1858744924-49",
+      "date": "2026-06-16T19:00:00.000Z",
+      "timestamp": 1781636400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · I",
+      "stadium": "MetLife Stadium, East Rutherford"
+    },
+    "teams": {
+      "home": {
+        "id": 69877,
+        "name": "France",
+        "logo": ""
+      },
+      "away": {
+        "id": 81980,
+        "name": "Senegal",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 3,
+      "away": 1
+    },
+    "score": {
+      "home": 3,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-i-661762884-50",
+      "date": "2026-06-16T22:00:00.000Z",
+      "timestamp": 1781647200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · I",
+      "stadium": "Gillette Stadium, Foxborough"
+    },
+    "teams": {
+      "home": {
+        "id": 72776,
+        "name": "Iraq",
+        "logo": ""
+      },
+      "away": {
+        "id": 77489,
+        "name": "Norway",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 4
+    },
+    "score": {
+      "home": 1,
+      "away": 4
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-j-1636909501-55",
+      "date": "2026-06-17T01:00:00.000Z",
+      "timestamp": 1781658000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · J",
+      "stadium": "Arrowhead Stadium, Kansas City"
+    },
+    "teams": {
+      "home": {
+        "id": 65078,
+        "name": "Argentina",
+        "logo": ""
+      },
+      "away": {
+        "id": 64892,
+        "name": "Algeria",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 3,
+      "away": 0
+    },
+    "score": {
+      "home": 3,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-j-1249661344-56",
+      "date": "2026-06-17T04:00:00.000Z",
+      "timestamp": 1781668800,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · J",
+      "stadium": "Levi's Stadium, Santa Clara"
+    },
+    "teams": {
+      "home": {
+        "id": 65184,
+        "name": "Austria",
+        "logo": ""
+      },
+      "away": {
+        "id": 73645,
+        "name": "Jordan",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 3,
+      "away": 1
+    },
+    "score": {
+      "home": 3,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-k-1124796387-61",
+      "date": "2026-06-17T17:00:00.000Z",
+      "timestamp": 1781715600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · K",
+      "stadium": "NRG Stadium, Houston"
+    },
+    "teams": {
+      "home": {
+        "id": 79411,
+        "name": "Portugal",
+        "logo": ""
+      },
+      "away": {
+        "id": 66904,
+        "name": "DR Congo",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 1
+    },
+    "score": {
+      "home": 1,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-l-2004208676-67",
+      "date": "2026-06-17T20:00:00.000Z",
+      "timestamp": 1781726400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · L",
+      "stadium": "AT&T Stadium, Arlington"
+    },
+    "teams": {
+      "home": {
+        "id": 68798,
+        "name": "England",
+        "logo": ""
+      },
+      "away": {
+        "id": 67008,
+        "name": "Croatia",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 4,
+      "away": 2
+    },
+    "score": {
+      "home": 4,
+      "away": 2
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-l-1903510463-68",
+      "date": "2026-06-17T23:00:00.000Z",
+      "timestamp": 1781737200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · L",
+      "stadium": "BMO Field, Toronto"
+    },
+    "teams": {
+      "home": {
+        "id": 70528,
+        "name": "Ghana",
+        "logo": ""
+      },
+      "away": {
+        "id": 78973,
+        "name": "Panama",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 0
+    },
+    "score": {
+      "home": 1,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-k-30744834-62",
+      "date": "2026-06-18T02:00:00.000Z",
+      "timestamp": 1781748000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · K",
+      "stadium": "Estadio Azteca, Mexico City"
+    },
+    "teams": {
+      "home": {
+        "id": 84541,
+        "name": "Uzbekistan",
+        "logo": ""
+      },
+      "away": {
+        "id": 66912,
+        "name": "Colombia",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 3
+    },
+    "score": {
+      "home": 1,
+      "away": 3
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-a-56525367-3",
+      "date": "2026-06-18T16:00:00.000Z",
+      "timestamp": 1781798400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · A",
+      "stadium": "Mercedes-Benz Stadium, Atlanta"
+    },
+    "teams": {
+      "home": {
+        "id": 67246,
+        "name": "Czech Republic",
+        "logo": ""
+      },
+      "away": {
+        "id": 81440,
+        "name": "South Africa",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 1
+    },
+    "score": {
+      "home": 1,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-b-361742597-9",
+      "date": "2026-06-18T19:00:00.000Z",
+      "timestamp": 1781809200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · B",
+      "stadium": "SoFi Stadium, Inglewood"
+    },
+    "teams": {
+      "home": {
+        "id": 82471,
+        "name": "Switzerland",
+        "logo": ""
+      },
+      "away": {
+        "id": 65761,
+        "name": "Bosnia and Herzegovina",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 4,
+      "away": 1
+    },
+    "score": {
+      "home": 4,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-b-835239443-10",
+      "date": "2026-06-18T22:00:00.000Z",
+      "timestamp": 1781820000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · B",
+      "stadium": "BC Place, Vancouver"
+    },
+    "teams": {
+      "home": {
+        "id": 66480,
+        "name": "Canada",
+        "logo": ""
+      },
+      "away": {
+        "id": 79940,
+        "name": "Qatar",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 6,
+      "away": 0
+    },
+    "score": {
+      "home": 6,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-a-1099015854-4",
+      "date": "2026-06-19T01:00:00.000Z",
+      "timestamp": 1781830800,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · A",
+      "stadium": "Estadio Akron, Zapopan"
+    },
+    "teams": {
+      "home": {
+        "id": 76224,
+        "name": "Mexico",
+        "logo": ""
+      },
+      "away": {
+        "id": 74606,
+        "name": "South Korea",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 0
+    },
+    "score": {
+      "home": 1,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-d-1931334020-21",
+      "date": "2026-06-19T19:00:00.000Z",
+      "timestamp": 1781895600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · D",
+      "stadium": "Lumen Field, Seattle"
+    },
+    "teams": {
+      "home": {
+        "id": 84323,
+        "name": "United States",
+        "logo": ""
+      },
+      "away": {
+        "id": 65183,
+        "name": "Australia",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 0
+    },
+    "score": {
+      "home": 2,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-c-703332173-15",
+      "date": "2026-06-19T22:00:00.000Z",
+      "timestamp": 1781906400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · C",
+      "stadium": "Gillette Stadium, Foxborough"
+    },
+    "teams": {
+      "home": {
+        "id": 81919,
+        "name": "Scotland",
+        "logo": ""
+      },
+      "away": {
+        "id": 76094,
+        "name": "Morocco",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 1
+    },
+    "score": {
+      "home": 0,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-c-751166336-16",
+      "date": "2026-06-20T00:30:00.000Z",
+      "timestamp": 1781915400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · C",
+      "stadium": "Lincoln Financial Field, Philadelphia"
+    },
+    "teams": {
+      "home": {
+        "id": 66033,
+        "name": "Brazil",
+        "logo": ""
+      },
+      "away": {
+        "id": 71280,
+        "name": "Haiti",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 3,
+      "away": 0
+    },
+    "score": {
+      "home": 3,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-d-256642143-22",
+      "date": "2026-06-20T03:00:00.000Z",
+      "timestamp": 1781924400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · D",
+      "stadium": "Levi's Stadium, Santa Clara"
+    },
+    "teams": {
+      "home": {
+        "id": 83441,
+        "name": "Türkiye",
+        "logo": ""
+      },
+      "away": {
+        "id": 78977,
+        "name": "Paraguay",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 1
+    },
+    "score": {
+      "home": 0,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-f-541609626-33",
+      "date": "2026-06-20T17:00:00.000Z",
+      "timestamp": 1781974800,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · F",
+      "stadium": "NRG Stadium, Houston"
+    },
+    "teams": {
+      "home": {
+        "id": 77165,
+        "name": "Netherlands",
+        "logo": ""
+      },
+      "away": {
+        "id": 82529,
+        "name": "Sweden",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 5,
+      "away": 1
+    },
+    "score": {
+      "home": 5,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-e-686392221-27",
+      "date": "2026-06-20T20:00:00.000Z",
+      "timestamp": 1781985600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · E",
+      "stadium": "BMO Field, Toronto"
+    },
+    "teams": {
+      "home": {
+        "id": 70452,
+        "name": "Germany",
+        "logo": ""
+      },
+      "away": {
+        "id": 66736,
+        "name": "Ivory Coast",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 1
+    },
+    "score": {
+      "home": 2,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-e-1407965602-28",
+      "date": "2026-06-21T00:00:00.000Z",
+      "timestamp": 1782000000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · E",
+      "stadium": "Arrowhead Stadium, Kansas City"
+    },
+    "teams": {
+      "home": {
+        "id": 68471,
+        "name": "Ecuador",
+        "logo": ""
+      },
+      "away": {
+        "id": 67109,
+        "name": "Curaçao",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 0
+    },
+    "score": {
+      "home": 0,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-f-1955316285-36",
+      "date": "2026-06-21T04:00:00.000Z",
+      "timestamp": 1782014400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · F",
+      "stadium": "Estadio BBVA, Guadalupe"
+    },
+    "teams": {
+      "home": {
+        "id": 83437,
+        "name": "Tunisia",
+        "logo": ""
+      },
+      "away": {
+        "id": 73672,
+        "name": "Japan",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 4
+    },
+    "score": {
+      "home": 0,
+      "away": 4
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-h-1982118330-45",
+      "date": "2026-06-21T16:00:00.000Z",
+      "timestamp": 1782057600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · H",
+      "stadium": "Mercedes-Benz Stadium, Atlanta"
+    },
+    "teams": {
+      "home": {
+        "id": 68962,
+        "name": "Spain",
+        "logo": ""
+      },
+      "away": {
+        "id": 74713,
+        "name": "Saudi Arabia",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 4,
+      "away": 0
+    },
+    "score": {
+      "home": 4,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-g-1956620616-39",
+      "date": "2026-06-21T19:00:00.000Z",
+      "timestamp": 1782068400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · G",
+      "stadium": "SoFi Stadium, Inglewood"
+    },
+    "teams": {
+      "home": {
+        "id": 65641,
+        "name": "Belgium",
+        "logo": ""
+      },
+      "away": {
+        "id": 72773,
+        "name": "Iran",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 0
+    },
+    "score": {
+      "home": 0,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-h-1172384447-46",
+      "date": "2026-06-21T22:00:00.000Z",
+      "timestamp": 1782079200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · H",
+      "stadium": "Hard Rock Stadium, Miami Gardens"
+    },
+    "teams": {
+      "home": {
+        "id": 84312,
+        "name": "Uruguay",
+        "logo": ""
+      },
+      "away": {
+        "id": 66953,
+        "name": "Cape Verde",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 2
+    },
+    "score": {
+      "home": 2,
+      "away": 2
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-g-1188327552-40",
+      "date": "2026-06-22T01:00:00.000Z",
+      "timestamp": 1782090000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · G",
+      "stadium": "BC Place, Vancouver"
+    },
+    "teams": {
+      "home": {
+        "id": 77824,
+        "name": "New Zealand",
+        "logo": ""
+      },
+      "away": {
+        "id": 68599,
+        "name": "Egypt",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 3
+    },
+    "score": {
+      "home": 1,
+      "away": 3
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-j-614174824-57",
+      "date": "2026-06-22T17:00:00.000Z",
+      "timestamp": 1782147600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · J",
+      "stadium": "AT&T Stadium, Arlington"
+    },
+    "teams": {
+      "home": {
+        "id": 65078,
+        "name": "Argentina",
+        "logo": ""
+      },
+      "away": {
+        "id": 65184,
+        "name": "Austria",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 0
+    },
+    "score": {
+      "home": 2,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-i-1713093952-51",
+      "date": "2026-06-22T21:00:00.000Z",
+      "timestamp": 1782162000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · I",
+      "stadium": "Lincoln Financial Field, Philadelphia"
+    },
+    "teams": {
+      "home": {
+        "id": 69877,
+        "name": "France",
+        "logo": ""
+      },
+      "away": {
+        "id": 72776,
+        "name": "Iraq",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 3,
+      "away": 0
+    },
+    "score": {
+      "home": 3,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-i-252181152-52",
+      "date": "2026-06-23T00:00:00.000Z",
+      "timestamp": 1782172800,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · I",
+      "stadium": "MetLife Stadium, East Rutherford"
+    },
+    "teams": {
+      "home": {
+        "id": 77489,
+        "name": "Norway",
+        "logo": ""
+      },
+      "away": {
+        "id": 81980,
+        "name": "Senegal",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 3,
+      "away": 2
+    },
+    "score": {
+      "home": 3,
+      "away": 2
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-j-670449116-58",
+      "date": "2026-06-23T03:00:00.000Z",
+      "timestamp": 1782183600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · J",
+      "stadium": "Levi's Stadium, Santa Clara"
+    },
+    "teams": {
+      "home": {
+        "id": 73645,
+        "name": "Jordan",
+        "logo": ""
+      },
+      "away": {
+        "id": 64892,
+        "name": "Algeria",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 2
+    },
+    "score": {
+      "home": 1,
+      "away": 2
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-k-924396792-63",
+      "date": "2026-06-23T17:00:00.000Z",
+      "timestamp": 1782234000,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · K",
+      "stadium": "NRG Stadium, Houston"
+    },
+    "teams": {
+      "home": {
+        "id": 79411,
+        "name": "Portugal",
+        "logo": ""
+      },
+      "away": {
+        "id": 84541,
+        "name": "Uzbekistan",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 5,
+      "away": 0
+    },
+    "score": {
+      "home": 5,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-l-241565441-69",
+      "date": "2026-06-23T20:00:00.000Z",
+      "timestamp": 1782244800,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · L",
+      "stadium": "Gillette Stadium, Foxborough"
+    },
+    "teams": {
+      "home": {
+        "id": 68798,
+        "name": "England",
+        "logo": ""
+      },
+      "away": {
+        "id": 70528,
+        "name": "Ghana",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 0
+    },
+    "score": {
+      "home": 0,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-l-145682716-70",
+      "date": "2026-06-23T23:00:00.000Z",
+      "timestamp": 1782255600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · L",
+      "stadium": "BMO Field, Toronto"
+    },
+    "teams": {
+      "home": {
+        "id": 78973,
+        "name": "Panama",
+        "logo": ""
+      },
+      "away": {
+        "id": 67008,
+        "name": "Croatia",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 1
+    },
+    "score": {
+      "home": 0,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-k-2079938013-64",
+      "date": "2026-06-24T02:00:00.000Z",
+      "timestamp": 1782266400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · K",
+      "stadium": "Estadio Akron, Zapopan"
+    },
+    "teams": {
+      "home": {
+        "id": 66912,
+        "name": "Colombia",
+        "logo": ""
+      },
+      "away": {
+        "id": 66904,
+        "name": "DR Congo",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 0
+    },
+    "score": {
+      "home": 1,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-b-1884031520-11",
+      "date": "2026-06-24T19:00:00.000Z",
+      "timestamp": 1782327600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · B",
+      "stadium": "BC Place, Vancouver"
+    },
+    "teams": {
+      "home": {
+        "id": 82471,
+        "name": "Switzerland",
+        "logo": ""
+      },
+      "away": {
+        "id": 66480,
+        "name": "Canada",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 1
+    },
+    "score": {
+      "home": 2,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-b-1884031520-12",
+      "date": "2026-06-24T19:00:00.000Z",
+      "timestamp": 1782327600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · B",
+      "stadium": "Lumen Field, Seattle"
+    },
+    "teams": {
+      "home": {
+        "id": 65761,
+        "name": "Bosnia and Herzegovina",
+        "logo": ""
+      },
+      "away": {
+        "id": 79940,
+        "name": "Qatar",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 3,
+      "away": 1
+    },
+    "score": {
+      "home": 3,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-c-1244973543-17",
+      "date": "2026-06-24T22:00:00.000Z",
+      "timestamp": 1782338400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · C",
+      "stadium": "Hard Rock Stadium, Miami Gardens"
+    },
+    "teams": {
+      "home": {
+        "id": 81919,
+        "name": "Scotland",
+        "logo": ""
+      },
+      "away": {
+        "id": 66033,
+        "name": "Brazil",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 3
+    },
+    "score": {
+      "home": 0,
+      "away": 3
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-c-1244973543-18",
+      "date": "2026-06-24T22:00:00.000Z",
+      "timestamp": 1782338400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · C",
+      "stadium": "Mercedes-Benz Stadium, Atlanta"
+    },
+    "teams": {
+      "home": {
+        "id": 76094,
+        "name": "Morocco",
+        "logo": ""
+      },
+      "away": {
+        "id": 71280,
+        "name": "Haiti",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 4,
+      "away": 2
+    },
+    "score": {
+      "home": 4,
+      "away": 2
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-a-1146758263-5",
+      "date": "2026-06-25T01:00:00.000Z",
+      "timestamp": 1782349200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · A",
+      "stadium": "Estadio Azteca, Mexico City"
+    },
+    "teams": {
+      "home": {
+        "id": 67246,
+        "name": "Czech Republic",
+        "logo": ""
+      },
+      "away": {
+        "id": 76224,
+        "name": "Mexico",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 3
+    },
+    "score": {
+      "home": 0,
+      "away": 3
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-a-1146758263-6",
+      "date": "2026-06-25T01:00:00.000Z",
+      "timestamp": 1782349200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · A",
+      "stadium": "Estadio BBVA, Guadalupe"
+    },
+    "teams": {
+      "home": {
+        "id": 81440,
+        "name": "South Africa",
+        "logo": ""
+      },
+      "away": {
+        "id": 74606,
+        "name": "South Korea",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 0
+    },
+    "score": {
+      "home": 1,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-e-1738567768-29",
+      "date": "2026-06-25T20:00:00.000Z",
+      "timestamp": 1782417600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · E",
+      "stadium": "Lincoln Financial Field, Philadelphia"
+    },
+    "teams": {
+      "home": {
+        "id": 67109,
+        "name": "Curaçao",
+        "logo": ""
+      },
+      "away": {
+        "id": 66736,
+        "name": "Ivory Coast",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 2
+    },
+    "score": {
+      "home": 0,
+      "away": 2
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-e-1738567768-30",
+      "date": "2026-06-25T20:00:00.000Z",
+      "timestamp": 1782417600,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · E",
+      "stadium": "MetLife Stadium, East Rutherford"
+    },
+    "teams": {
+      "home": {
+        "id": 68471,
+        "name": "Ecuador",
+        "logo": ""
+      },
+      "away": {
+        "id": 70452,
+        "name": "Germany",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 2,
+      "away": 1
+    },
+    "score": {
+      "home": 2,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-f-1320299804-34",
+      "date": "2026-06-25T23:00:00.000Z",
+      "timestamp": 1782428400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · F",
+      "stadium": "AT&T Stadium, Arlington"
+    },
+    "teams": {
+      "home": {
+        "id": 73672,
+        "name": "Japan",
+        "logo": ""
+      },
+      "away": {
+        "id": 82529,
+        "name": "Sweden",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 1
+    },
+    "score": {
+      "home": 1,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-f-1320299804-35",
+      "date": "2026-06-25T23:00:00.000Z",
+      "timestamp": 1782428400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · F",
+      "stadium": "Arrowhead Stadium, Kansas City"
+    },
+    "teams": {
+      "home": {
+        "id": 83437,
+        "name": "Tunisia",
+        "logo": ""
+      },
+      "away": {
+        "id": 77165,
+        "name": "Netherlands",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 3
+    },
+    "score": {
+      "home": 1,
+      "away": 3
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-d-582935686-23",
+      "date": "2026-06-26T02:00:00.000Z",
+      "timestamp": 1782439200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · D",
+      "stadium": "SoFi Stadium, Inglewood"
+    },
+    "teams": {
+      "home": {
+        "id": 83441,
+        "name": "Türkiye",
+        "logo": ""
+      },
+      "away": {
+        "id": 84323,
+        "name": "United States",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 3,
+      "away": 2
+    },
+    "score": {
+      "home": 3,
+      "away": 2
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-d-582935686-24",
+      "date": "2026-06-26T02:00:00.000Z",
+      "timestamp": 1782439200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · D",
+      "stadium": "Levi's Stadium, Santa Clara"
+    },
+    "teams": {
+      "home": {
+        "id": 78977,
+        "name": "Paraguay",
+        "logo": ""
+      },
+      "away": {
+        "id": 65183,
+        "name": "Australia",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 0
+    },
+    "score": {
+      "home": 0,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-i-1348210747-53",
+      "date": "2026-06-26T19:00:00.000Z",
+      "timestamp": 1782500400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · I",
+      "stadium": "Gillette Stadium, Foxborough"
+    },
+    "teams": {
+      "home": {
+        "id": 77489,
+        "name": "Norway",
+        "logo": ""
+      },
+      "away": {
+        "id": 69877,
+        "name": "France",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 4
+    },
+    "score": {
+      "home": 1,
+      "away": 4
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-i-1348210747-54",
+      "date": "2026-06-26T19:00:00.000Z",
+      "timestamp": 1782500400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · I",
+      "stadium": "BMO Field, Toronto"
+    },
+    "teams": {
+      "home": {
+        "id": 81980,
+        "name": "Senegal",
+        "logo": ""
+      },
+      "away": {
+        "id": 72776,
+        "name": "Iraq",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 5,
+      "away": 0
+    },
+    "score": {
+      "home": 5,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-h-1956401285-47",
+      "date": "2026-06-27T00:00:00.000Z",
+      "timestamp": 1782518400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · H",
+      "stadium": "NRG Stadium, Houston"
+    },
+    "teams": {
+      "home": {
+        "id": 66953,
+        "name": "Cape Verde",
+        "logo": ""
+      },
+      "away": {
+        "id": 74713,
+        "name": "Saudi Arabia",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 0
+    },
+    "score": {
+      "home": 0,
+      "away": 0
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-h-1956401285-48",
+      "date": "2026-06-27T00:00:00.000Z",
+      "timestamp": 1782518400,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · H",
+      "stadium": "Estadio Akron, Zapopan"
+    },
+    "teams": {
+      "home": {
+        "id": 84312,
+        "name": "Uruguay",
+        "logo": ""
+      },
+      "away": {
+        "id": 68962,
+        "name": "Spain",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 0,
+      "away": 1
+    },
+    "score": {
+      "home": 0,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-g-1982337661-41",
+      "date": "2026-06-27T03:00:00.000Z",
+      "timestamp": 1782529200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · G",
+      "stadium": "Lumen Field, Seattle"
+    },
+    "teams": {
+      "home": {
+        "id": 68599,
+        "name": "Egypt",
+        "logo": ""
+      },
+      "away": {
+        "id": 72773,
+        "name": "Iran",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 1
+    },
+    "score": {
+      "home": 1,
+      "away": 1
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-g-1982337661-42",
+      "date": "2026-06-27T03:00:00.000Z",
+      "timestamp": 1782529200,
+      "timezone": "UTC",
+      "status": {
+        "short": "FT"
+      }
+    },
+    "league": {
+      "round": "Group Stage · G",
+      "stadium": "BC Place, Vancouver"
+    },
+    "teams": {
+      "home": {
+        "id": 77824,
+        "name": "New Zealand",
+        "logo": ""
+      },
+      "away": {
+        "id": 65641,
+        "name": "Belgium",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": 1,
+      "away": 5
+    },
+    "score": {
+      "home": 1,
+      "away": 5
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-l-1622757218-71",
+      "date": "2026-06-27T21:00:00.000Z",
+      "timestamp": 1782594000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Group Stage · L",
+      "stadium": "MetLife Stadium, East Rutherford"
+    },
+    "teams": {
+      "home": {
+        "id": 78973,
+        "name": "Panama",
+        "logo": ""
+      },
+      "away": {
+        "id": 68798,
+        "name": "England",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-l-1622757218-72",
+      "date": "2026-06-27T21:00:00.000Z",
+      "timestamp": 1782594000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Group Stage · L",
+      "stadium": "Lincoln Financial Field, Philadelphia"
+    },
+    "teams": {
+      "home": {
+        "id": 67008,
+        "name": "Croatia",
+        "logo": ""
+      },
+      "away": {
+        "id": 70528,
+        "name": "Ghana",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-k-1260362334-65",
+      "date": "2026-06-27T23:30:00.000Z",
+      "timestamp": 1782603000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Group Stage · K",
+      "stadium": "Hard Rock Stadium, Miami Gardens"
+    },
+    "teams": {
+      "home": {
+        "id": 66912,
+        "name": "Colombia",
+        "logo": ""
+      },
+      "away": {
+        "id": 79411,
+        "name": "Portugal",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-k-1260362334-66",
+      "date": "2026-06-27T23:30:00.000Z",
+      "timestamp": 1782603000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Group Stage · K",
+      "stadium": "Mercedes-Benz Stadium, Atlanta"
+    },
+    "teams": {
+      "home": {
+        "id": 66904,
+        "name": "DR Congo",
+        "logo": ""
+      },
+      "away": {
+        "id": 84541,
+        "name": "Uzbekistan",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-j-510809150-59",
+      "date": "2026-06-28T02:00:00.000Z",
+      "timestamp": 1782612000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Group Stage · J",
+      "stadium": "Arrowhead Stadium, Kansas City"
+    },
+    "teams": {
+      "home": {
+        "id": 64892,
+        "name": "Algeria",
+        "logo": ""
+      },
+      "away": {
+        "id": 65184,
+        "name": "Austria",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-group-stage-j-510809150-60",
+      "date": "2026-06-28T02:00:00.000Z",
+      "timestamp": 1782612000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Group Stage · J",
+      "stadium": "AT&T Stadium, Arlington"
+    },
+    "teams": {
+      "home": {
+        "id": 73645,
+        "name": "Jordan",
+        "logo": ""
+      },
+      "away": {
+        "id": 65078,
+        "name": "Argentina",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-1673498332-73",
+      "date": "2026-06-28T19:00:00.000Z",
+      "timestamp": 1782673200,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "SoFi Stadium, Inglewood"
+    },
+    "teams": {
+      "home": {
+        "id": 81440,
+        "name": "South Africa",
+        "logo": ""
+      },
+      "away": {
+        "id": 66480,
+        "name": "Canada",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-424111961-74",
+      "date": "2026-06-29T17:00:00.000Z",
+      "timestamp": 1782752400,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "NRG Stadium, Houston"
+    },
+    "teams": {
+      "home": {
+        "id": 66033,
+        "name": "Brazil",
+        "logo": ""
+      },
+      "away": {
+        "id": 73672,
+        "name": "Japan",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-2084332780-75",
+      "date": "2026-06-29T20:30:00.000Z",
+      "timestamp": 1782765000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "Gillette Stadium, Foxborough"
+    },
+    "teams": {
+      "home": {
+        "id": 70452,
+        "name": "Germany",
+        "logo": ""
+      },
+      "away": {
+        "id": 78977,
+        "name": "Paraguay",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-2098803838-76",
+      "date": "2026-06-30T01:00:00.000Z",
+      "timestamp": 1782781200,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "Estadio BBVA, Guadalupe"
+    },
+    "teams": {
+      "home": {
+        "id": 77165,
+        "name": "Netherlands",
+        "logo": ""
+      },
+      "away": {
+        "id": 76094,
+        "name": "Morocco",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-1617710531-77",
+      "date": "2026-06-30T17:00:00.000Z",
+      "timestamp": 1782838800,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "AT&T Stadium, Arlington"
+    },
+    "teams": {
+      "home": {
+        "id": 66736,
+        "name": "Ivory Coast",
+        "logo": ""
+      },
+      "away": {
+        "id": 77489,
+        "name": "Norway",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-1609357444-78",
+      "date": "2026-06-30T21:00:00.000Z",
+      "timestamp": 1782853200,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "MetLife Stadium, East Rutherford"
+    },
+    "teams": {
+      "home": {
+        "id": 69877,
+        "name": "France",
+        "logo": ""
+      },
+      "away": {
+        "id": 82529,
+        "name": "Sweden",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-56721851-79",
+      "date": "2026-07-01T01:00:00.000Z",
+      "timestamp": 1782867600,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "Estadio Azteca, Mexico City"
+    },
+    "teams": {
+      "home": {
+        "id": 76224,
+        "name": "Mexico",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "3rd Group C/E",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-295288737-80",
+      "date": "2026-07-01T16:00:00.000Z",
+      "timestamp": 1782921600,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "Mercedes-Benz Stadium, Atlanta"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Group L",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "3rd Group I/J/K",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-772610584-81",
+      "date": "2026-07-01T20:00:00.000Z",
+      "timestamp": 1782936000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "Lumen Field, Seattle"
+    },
+    "teams": {
+      "home": {
+        "id": 65641,
+        "name": "Belgium",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "3rd Group A/I/J",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-1321747239-82",
+      "date": "2026-07-02T00:00:00.000Z",
+      "timestamp": 1782950400,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "Levi's Stadium, Santa Clara"
+    },
+    "teams": {
+      "home": {
+        "id": 84323,
+        "name": "United States",
+        "logo": ""
+      },
+      "away": {
+        "id": 65761,
+        "name": "Bosnia and Herzegovina",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-2104878593-83",
+      "date": "2026-07-02T19:00:00.000Z",
+      "timestamp": 1783018800,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "SoFi Stadium, Inglewood"
+    },
+    "teams": {
+      "home": {
+        "id": 68962,
+        "name": "Spain",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Runner-up Group J",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-1122189382-84",
+      "date": "2026-07-02T23:00:00.000Z",
+      "timestamp": 1783033200,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "BMO Field, Toronto"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Runner-up Group K",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Runner-up Group L",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-1078420091-85",
+      "date": "2026-07-03T03:00:00.000Z",
+      "timestamp": 1783047600,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "BC Place, Vancouver"
+    },
+    "teams": {
+      "home": {
+        "id": 82471,
+        "name": "Switzerland",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "3rd Group G/J",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-726409503-86",
+      "date": "2026-07-03T18:00:00.000Z",
+      "timestamp": 1783101600,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "AT&T Stadium, Arlington"
+    },
+    "teams": {
+      "home": {
+        "id": 65183,
+        "name": "Australia",
+        "logo": ""
+      },
+      "away": {
+        "id": 68599,
+        "name": "Egypt",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-1794308824-87",
+      "date": "2026-07-03T22:00:00.000Z",
+      "timestamp": 1783116000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "Hard Rock Stadium, Miami Gardens"
+    },
+    "teams": {
+      "home": {
+        "id": 65078,
+        "name": "Argentina",
+        "logo": ""
+      },
+      "away": {
+        "id": 66953,
+        "name": "Cape Verde",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-32-418574235-88",
+      "date": "2026-07-04T01:30:00.000Z",
+      "timestamp": 1783128600,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 32",
+      "stadium": "Arrowhead Stadium, Kansas City"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Group K",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "3rd Group E/I/L",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-16-1147089219-89",
+      "date": "2026-07-04T17:00:00.000Z",
+      "timestamp": 1783184400,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 16",
+      "stadium": "NRG Stadium, Houston"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 73",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 75",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-16-2079978756-90",
+      "date": "2026-07-04T21:00:00.000Z",
+      "timestamp": 1783198800,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 16",
+      "stadium": "Lincoln Financial Field, Philadelphia"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 74",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 77",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-16-836519450-91",
+      "date": "2026-07-05T20:00:00.000Z",
+      "timestamp": 1783281600,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 16",
+      "stadium": "MetLife Stadium, East Rutherford"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 76",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 78",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-16-1257838373-92",
+      "date": "2026-07-06T00:00:00.000Z",
+      "timestamp": 1783296000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 16",
+      "stadium": "Estadio Azteca, Mexico City"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 79",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 80",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-16-2126179837-93",
+      "date": "2026-07-06T19:00:00.000Z",
+      "timestamp": 1783364400,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 16",
+      "stadium": "AT&T Stadium, Arlington"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 83",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 84",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-16-1529577114-94",
+      "date": "2026-07-07T00:00:00.000Z",
+      "timestamp": 1783382400,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 16",
+      "stadium": "Lumen Field, Seattle"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 81",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 82",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-16-1048483807-95",
+      "date": "2026-07-07T16:00:00.000Z",
+      "timestamp": 1783440000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 16",
+      "stadium": "Mercedes-Benz Stadium, Atlanta"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 86",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 88",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-round-of-16-2116383128-96",
+      "date": "2026-07-07T20:00:00.000Z",
+      "timestamp": 1783454400,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Round of 16",
+      "stadium": "BC Place, Vancouver"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 85",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 87",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-quarter-finals-217808664-97",
+      "date": "2026-07-09T20:00:00.000Z",
+      "timestamp": 1783627200,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Quarter-finals",
+      "stadium": "Gillette Stadium, Foxborough"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 89",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 90",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-quarter-finals-43740244-98",
+      "date": "2026-07-10T19:00:00.000Z",
+      "timestamp": 1783710000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Quarter-finals",
+      "stadium": "SoFi Stadium, Inglewood"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 93",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 94",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-quarter-finals-225227294-99",
+      "date": "2026-07-11T21:00:00.000Z",
+      "timestamp": 1783803600,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Quarter-finals",
+      "stadium": "Hard Rock Stadium, Miami Gardens"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 91",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 92",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-quarter-finals-1975382179-100",
+      "date": "2026-07-12T01:00:00.000Z",
+      "timestamp": 1783818000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Quarter-finals",
+      "stadium": "Arrowhead Stadium, Kansas City"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 95",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 96",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-semi-finals-1164940890-101",
+      "date": "2026-07-14T19:00:00.000Z",
+      "timestamp": 1784055600,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Semi-finals",
+      "stadium": "AT&T Stadium, Arlington"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 97",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 98",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-semi-finals-1622474597-102",
+      "date": "2026-07-15T19:00:00.000Z",
+      "timestamp": 1784142000,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Semi-finals",
+      "stadium": "Mercedes-Benz Stadium, Atlanta"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 99",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 100",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-third-place-playoff-1166120409-103",
+      "date": "2026-07-18T21:00:00.000Z",
+      "timestamp": 1784408400,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Third-place playoff",
+      "stadium": "Hard Rock Stadium, Miami Gardens"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Loser Match 101",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Loser Match 102",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  },
+  {
+    "fixture": {
+      "id": "wc2026-final-1434612123-104",
+      "date": "2026-07-19T19:00:00.000Z",
+      "timestamp": 1784487600,
+      "timezone": "UTC",
+      "status": {
+        "short": "NS"
+      }
+    },
+    "league": {
+      "round": "Final",
+      "stadium": "MetLife Stadium, East Rutherford"
+    },
+    "teams": {
+      "home": {
+        "id": null,
+        "name": "Winner Match 101",
+        "logo": ""
+      },
+      "away": {
+        "id": null,
+        "name": "Winner Match 102",
+        "logo": ""
+      }
+    },
+    "goals": {
+      "home": null,
+      "away": null
+    },
+    "score": {
+      "home": null,
+      "away": null
+    }
+  }
+]
