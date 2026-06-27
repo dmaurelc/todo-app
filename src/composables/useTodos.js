@@ -48,7 +48,8 @@ export function useTodos() {
     title,
     category = DEFAULT_CATEGORY,
     dueDate = new Date().toISOString().split("T")[0],
-    priority = 0
+    priority = 0,
+    externalId = null
   ) => {
     if (!title.trim()) return;
     loading.value = true;
@@ -66,6 +67,10 @@ export function useTodos() {
             : 1000,
         subtasks: [],
         created_at: new Date().toISOString(),
+        // External id (e.g. api-football fixture.id) lets sync callers
+        // dedupe via Set lookup. Persisted only when truthy so legacy
+        // todos keep their original slim shape.
+        ...(externalId ? { external_id: String(externalId) } : {}),
       };
 
       const newTodos = [...todos.value, newTodo];
