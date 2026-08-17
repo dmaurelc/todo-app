@@ -1,12 +1,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useTauriCommand } from "../../composables/use-tauri-command.js";
-import { storage } from "../../composables/use-storage-adapter.js";
-import {
-  createRapidApiFootballClient,
-  formatApiError,
-} from "../../api/rapidapi-football-client.js";
-import { fetchWorldCupFixtures } from "../../api/worldcup-fixtures-endpoint.js";
+import { isTauriRuntime } from "../../composables/use-storage-adapter.js";
 
 const props = defineProps({
   open: { type: Boolean, default: false },
@@ -19,56 +14,10 @@ const storagePath = ref(null);
 const loading = ref(false);
 const copied = ref(false);
 
-// World Cup 2026 — RapidAPI key (stored in tauri-plugin-store / localStorage).
-// Never commit a real key. .env provides a dev fallback loaded below.
-const RAPIDAPI_KEY_STORE = "worldcup.apiKey";
-const rapidApiKey = ref("");
-const testingApi = ref(false);
-const testResult = ref(null);
-
-const loadRapidApiKey = async () => {
-  const stored = await storage.get(RAPIDAPI_KEY_STORE);
-  if (stored) rapidApiKey.value = stored;
-  // Dev fallback: read from import.meta.env if no stored key.
-  // import.meta.env.VITE_RAPIDAPI_KEY is inlined at build time only when set.
-  if (!rapidApiKey.value) {
-    const envKey = import.meta?.env?.VITE_RAPIDAPI_KEY;
-    if (envKey && envKey !== "__REPLACE_ME__") rapidApiKey.value = envKey;
-  }
-};
-
-const saveRapidApiKey = async () => {
-  await storage.set(RAPIDAPI_KEY_STORE, rapidApiKey.value.trim());
-  testResult.value = null;
-};
-
-const testRapidApi = async () => {
-  testingApi.value = true;
-  testResult.value = null;
-  try {
-    if (!rapidApiKey.value.trim()) {
-      testResult.value = { ok: false, message: "Ingresa una key primero" };
-      return;
-    }
-    const client = createRapidApiFootballClient({ apiKey: rapidApiKey.value.trim() });
-    const body = await fetchWorldCupFixtures(client);
-    const count = Array.isArray(body?.response) ? body.response.length : 0;
-    testResult.value = {
-      ok: true,
-      message: `Conexión OK — ${count} fixture(s) encontrados`,
-    };
-  } catch (err) {
-    testResult.value = { ok: false, message: formatApiError(err) };
-  } finally {
-    testingApi.value = false;
-  }
-};
-
 watch(
   () => props.open,
   async (isOpen) => {
     if (!isOpen) return;
-    loadRapidApiKey();
     loading.value = true;
     copied.value = false;
     const [infoRes, pathRes] = await Promise.all([
@@ -142,8 +91,8 @@ const copyPath = async () => {
 
         <div class="border-t border-border my-3"></div>
 
-        <!-- About section -->
-        <div class="px-1">
+        <!-- About section — solo visible dentro de la app Tauri (web no tiene info nativa). -->
+        <div v-if="isTauriRuntime()" class="px-1">
           <h3 class="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
             Acerca de
           </h3>
@@ -180,7 +129,7 @@ const copyPath = async () => {
                 <code
                   class="flex-1 text-xs break-all rounded bg-secondary px-2 py-1.5 text-foreground/80"
                 >
-                  {{ storagePath || "(no disponible — Tauri no detectado)" }}
+                  {{ storagePath || "(no disponible)" }}
                 </code>
                 <button
                   v-if="storagePath"
@@ -191,54 +140,6 @@ const copyPath = async () => {
                 </button>
               </div>
             </div>
-          </div>
-
-          <div v-else class="text-sm text-muted-foreground">
-            Información nativa no disponible (no se está ejecutando dentro de Tauri).
-          </div>
-        </div>
-
-        <div class="border-t border-border my-3"></div>
-
-        <!-- World Cup 2026 — RapidAPI key. Stored in tauri-plugin-store (desktop)
-             or localStorage (web). Never committed. .env provides a dev fallback. -->
-        <div class="px-1">
-          <h3 class="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
-            Mundial 2026
-          </h3>
-          <div class="space-y-2 text-sm">
-            <label class="block">
-              <span class="text-muted-foreground">RapidAPI key</span>
-              <input
-                v-model="rapidApiKey"
-                type="password"
-                autocomplete="off"
-                placeholder="xxxxxxxxxxxxxxxxxxxxxxxx"
-                class="mt-1 w-full px-2 py-1.5 text-xs rounded bg-secondary text-foreground font-mono"
-              />
-            </label>
-            <div class="flex gap-2">
-              <button
-                @click="saveRapidApiKey"
-                class="text-xs px-3 py-1.5 rounded bg-primary text-primary-foreground"
-              >
-                Guardar
-              </button>
-              <button
-                @click="testRapidApi"
-                :disabled="testingApi"
-                class="text-xs px-3 py-1.5 rounded bg-secondary text-foreground disabled:opacity-50"
-              >
-                {{ testingApi ? "Probando…" : "Probar conexión" }}
-              </button>
-            </div>
-            <p
-              v-if="testResult"
-              class="text-xs"
-              :class="testResult.ok ? 'text-emerald-500' : 'text-destructive'"
-            >
-              {{ testResult.message }}
-            </p>
           </div>
         </div>
       </div>

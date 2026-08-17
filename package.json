@@ -9,32 +9,27 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "dev:tauri": "tauri dev",
-    "build:tauri": "tauri build",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "build:tauri": "tauri build"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.3.0",
-    "@tauri-apps/api": "^2.11.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tauri-apps/api": "^2.11.1",
     "@tauri-apps/plugin-deep-link": "^2.4.9",
     "@tauri-apps/plugin-haptics": "^2.3.2",
     "@tauri-apps/plugin-notification": "^2.3.3",
-    "@tauri-apps/plugin-store": "^2.4.3",
-    "autoprefixer": "^10.5.0",
+    "@tauri-apps/plugin-store": "^2.4.4",
+    "autoprefixer": "^10.5.4",
     "canvas-confetti": "^1.9.4",
-    "postcss": "^8.5.15",
-    "tailwindcss": "^4.3.0",
-    "vue": "^3.5.35",
-    "vue-router": "^5.1.0",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3",
+    "vue": "^3.5.41",
+    "vue-router": "^5.2.0",
     "vue3-toastify": "^0.2.9",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.11.2",
-    "@vitejs/plugin-vue": "^6.0.7",
-    "@vue/test-utils": "^2.4.10",
-    "happy-dom": "^20.9.0",
-    "vite": "^8.0.16",
-    "vitest": "^4.1.8"
+    "@tauri-apps/cli": "^2.11.4",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.2.1"
   }
 }
