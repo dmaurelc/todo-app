@@ -23,9 +23,17 @@ Una aplicación de tareas moderna, minimalista y con una estética premium, dise
 - **Framework de Estilos**: [Tailwind CSS 4.0](https://tailwindcss.com/)
 - **Gestión de Estado**: Composables nativos de Vue
 - **Herramienta de Construcción**: [Vite](https://vitejs.dev/)
+- **Autenticación y Datos**: [Supabase](https://supabase.com/) (auth + base de datos)
+- **Aplicación Nativa**: [Tauri 2](https://tauri.app/) (desktop: macOS, Windows, Linux · móvil: Android, iOS)
 - **Efectos Visuales**: [Canvas-confetti](https://github.com/catdad/canvas-confetti)
 - **Notificaciones**: [Vue3-toastify](https://github.com/jerrybend/vue3-toastify)
 - **Interactividad**: [Vuedraggable](https://github.com/SortableJS/Vue.Draggable)
+
+## 📱 Plataformas
+
+- **Web/PWA**: despliegue estático en cualquier hosting (Vercel, Netlify, Cloudflare Pages, etc.). Funciona sin Tauri; las funciones nativas degradan con gracia.
+- **Desktop**: macOS, Windows y Linux mediante [Tauri 2](https://tauri.app/) (`pnpm build:tauri`).
+- **Móvil**: Android e iOS mediante Tauri (notificaciones, haptics y deep-link `todoapp://`).
 
 ## 📦 Instalación y Uso
 
@@ -37,17 +45,22 @@ Una aplicación de tareas moderna, minimalista y con una estética premium, dise
 
 2. **Instalar dependencias**:
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Ejecutar en desarrollo**:
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 4. **Construir para producción**:
    ```bash
-   npm run build
+   pnpm run build
+   ```
+
+5. **Generar la app nativa (Tauri)**:
+   ```bash
+   pnpm run build:tauri
    ```
 
 ## 🎨 Principios de Diseño

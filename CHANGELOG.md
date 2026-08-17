@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### 🗑️ Removed
+
+- **Modo Mundial 2026**: eliminado el modo World Cup completo (vista WorldCup, API client de RapidAPI, composable de fixtures, botón de globo en el header y sección de API key en Ajustes).
+- **Infraestructura de tests vitest** (solo existía para el modo mundial) y logo `vue.svg` sin uso.
+
+### ⚡ Improved
+
+- **Dependencias actualizadas a latest**: vue 3.5.41, vue-router 5.2.0, vite 8.2.1, tailwindcss 4.3.3, Tauri api/cli 2.11.x y plugins de store.
+
+### 🐛 Fixed
+
+- La sección "Acerca de" de Ajustes ya no muestra el mensaje de fallback en web; ahora solo se renderiza dentro de la app Tauri (donde hay información nativa).
+
 ## [0.2.0] - 2025-12-17
 
 ### ✨ Added
